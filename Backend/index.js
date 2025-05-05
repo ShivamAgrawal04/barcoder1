@@ -14,7 +14,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "http://192.168.29.138:3000",
-      "https://barcoder1.vercel.app/",
+      "https://barcoder1.vercel.app",
     ],
     credentials: true,
   })
