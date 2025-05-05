@@ -8,6 +8,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [shopName, setShopName] = useState("");
+  const [error, setError] = useState("");
   const { signup } = useAuth();
   const navigate = useNavigate();
 
