@@ -12,7 +12,8 @@ const QrCode = () => {
     const qr = new QRCodeStyling({
       width: 300,
       height: 300,
-      data: `http://192.168.29.138:3000/qrproducts/${user._id}`,
+      // data: `http://192.168.29.138:3000/qrproducts/${user._id}`,
+      data: `/qrproducts/${user._id}`,
       image: "food.png", // optional logo
       dotsOptions: {
         color: "#000000",

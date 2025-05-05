@@ -5,22 +5,18 @@ import { useAuth } from "../context/AuthContext";
 
 const ProductOnly = () => {
   const { id } = useParams();
+  const { getPublicProducts } = useAuth();
 
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    getPublicProducts();
+    getPublicProducts1();
   }, [id]);
 
-  const getPublicProducts = async () => {
+  const getPublicProducts1 = async () => {
     try {
-      const result = await axios.get(
-        `http://192.168.29.138:5000/api/products/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
-      setProducts(result.data.data); // Store the products in the state
+      const result = await getPublicProducts(id);
+      setProducts(result); // Store the products in the state
     } catch (error) {
       console.error("Failed to fetch products", error); // Log any errors
     }

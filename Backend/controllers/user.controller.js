@@ -45,10 +45,13 @@ export const login = asyncHandler(async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
+  const newUser = user.toJSON();
+  delete newUser.password;
+
   return res.json(
     new ApiResponse(200, "User logged in successfully", {
       token,
-      newUser: user,
+      newUser,
     })
   );
 });

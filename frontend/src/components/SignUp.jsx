@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [shopName, setShopName] = useState("");
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    const res = await axios.post(
-      "http://localhost:5000/api/users/signup",
-      {
-        name,
-        email,
-        password,
-        shopName,
-      },
-      { withcredentials: true }
-    );
-    console.log(res);
+    const res = await signup({ email, password, name, shopName });
+    if (!res.success) {
+      setError(res?.message || "Invalid email or password");
+    } else {
+      navigate("/");
+    }
     navigate("/login");
   };
 

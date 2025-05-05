@@ -45,6 +45,17 @@ export const AuthProvider = ({ children }) => {
     checkUser();
   }, []);
 
+  const signup = async (credentials) => {
+    const res = await axios.post("/users/signup", credentials, {
+      withCredentials: true,
+    });
+    if (res.data?.status === 200 && res.data?.data.newUser) {
+      return { success: true };
+    } else {
+      return { success: false, message: "Something went wrong" };
+    }
+  };
+
   const login = async (credentials) => {
     const res = await axios.post("/users/login", credentials, {
       withCredentials: true,
@@ -82,6 +93,13 @@ export const AuthProvider = ({ children }) => {
     console.log(res);
   };
 
+  const getPublicProducts = async (id) => {
+    const res = await axios.get(`/products/${id}`, {
+      withCredentials: true,
+    });
+    return res.data.data;
+  };
+
   const getProductById = async (id) => {
     const res = await axios.get(`/products/getProductById/${id}`, {
       withCredentials: true,
@@ -99,6 +117,8 @@ export const AuthProvider = ({ children }) => {
         addProduct,
         getProductById,
         getProducts,
+        signup,
+        getPublicProducts,
       }}
     >
       {children}
