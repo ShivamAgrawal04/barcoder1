@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom QR Code</title>
+    <style>
+        body {
+            background: #f0f4f8;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #qr-container {
+            padding: 20px;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="qr-container"></div>
+
+    <!-- qr-code-styling library -->
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling/lib/qr-code-styling.js"></script>
+
+    <script>
+        const qrCode = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            type: "canvas", // or "svg"
+            data: "https://www.google.com", // link to encode
+            image: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png", // center logo
+            dotsOptions: {
+                type: "rounded", // options: square, dots, rounded, extra-rounded, classy
+                gradient: {
+                    type: "linear",
+                    rotation: 45,
+                    colorStops: [
+                        { offset: 0, color: "#6366f1" },
+                        { offset: 1, color: "#ec4899" }
+                    ]
+                }
+            },
+            backgroundOptions: {
+                color: "lightblue", // optional image background support
+                image: "h.png" // optional
+            },
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 4,
+                imageSize: 0.3 // logo covers 30% of QR
+            },
+            cornersSquareOptions: {
+                color: "#1e3a8a",
+                type: "extra-rounded"
+            },
+            cornersDotOptions: {
+                color: "#1d4ed8",
+                type: "dot"
+            }
+        });
+
+        // Append the QR code to the container
+        qrCode.append(document.getElementById("qr-container"));
+    </script>
+
+</body>
+
+</html>

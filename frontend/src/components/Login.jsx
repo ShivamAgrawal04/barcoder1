@@ -1,44 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    const auth = localStorage.getItem("users");
-    if (auth) {
-      navigate("/");
-    }
-  });
-
-  const handleLogin = async () => {
-    console.log(email, password);
-    let result = await fetch("http://localhost:5000/login", {
-      method: "post",
-      body: JSON.stringify({ email, password }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    result = await result.json();
-    console.log(result);
-
-    if (result.user) {
-      localStorage.setItem("users", JSON.stringify(result.user));
-      localStorage.setItem("token", JSON.stringify(result.auth));
-      // alert("successfully Logged IN");
-      navigate("/");
+  const handleSubmit = async () => {
+    const res = await login({ email, password });
+    if (!res.success) {
+      setError(res?.message || "Invalid email or password");
     } else {
-      alert("please enter correct fields");
+      navigate("/");
     }
   };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       if (email && password) {
-        handleLogin();
+        handleSubmit();
       } else {
         alert("Please fill both fields first");
       }
@@ -79,7 +62,7 @@ const Login = () => {
 
         {/* Button */}
         <button
-          onClick={handleLogin}
+          onClick={handleSubmit}
           className="relative w-full py-2 bg-cyan-500 hover:bg-cyan-600 text-white font-bold rounded-md overflow-hidden transition-all duration-300 shadow-lg group"
         >
           <span className="z-10 relative">🚀 Login</span>

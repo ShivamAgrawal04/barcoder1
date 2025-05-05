@@ -1,35 +1,27 @@
 import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const ProductsAdd = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [company, setCompany] = useState("");
+  const [description, setDescription] = useState("");
   const [error, setError] = useState(false);
+
+  const { addProduct } = useAuth();
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
-    if (!name || !price || !category || !company) {
+    if (!name || !price || !category || !description) {
       setError(true);
       return false;
     }
-    const userID = JSON.parse(localStorage.getItem("users"))._id;
-    const result = await fetch("http://localhost:5000/add-product", {
-      method: "post",
-      body: JSON.stringify({ name, price, category, company, userID }),
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
-      },
-    });
-    // const addResult = await result.json();
-    alert("Data Successfully Added In List!!");
-    // console.warn(addResult);
+    await addProduct({ name, price, category, description });
 
     setName("");
     setPrice("");
     setCategory("");
-    setCompany("");
+    setDescription("");
     setError(false);
   };
   return (
@@ -78,7 +70,7 @@ const ProductsAdd = () => {
           <input
             type="text"
             className="w-full px-4 py-2 rounded-md bg-white/10 text-white placeholder-cyan-200/70 border border-cyan-400/20 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
-            placeholder="Electronics, Clothing"
+            placeholder="e.g., Electronics, Clothing"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           />
@@ -89,16 +81,16 @@ const ProductsAdd = () => {
 
         {/* Company */}
         <div>
-          <label className="text-cyan-200 block mb-1">Company</label>
+          <label className="text-cyan-200 block mb-1">description</label>
           <input
             type="text"
             className="w-full px-4 py-2 rounded-md bg-white/10 text-white placeholder-cyan-200/70 border border-cyan-400/20 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
-            placeholder="Company name"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
+            placeholder="description "
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        {error && !company && (
+        {error && !description && (
           <span className="text-red-500">Enter the valid company </span>
         )}
 

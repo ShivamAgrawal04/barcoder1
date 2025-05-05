@@ -1,36 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [shopName, setShopName] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const auth = localStorage.getItem("users");
-    if (auth) {
-      navigate("/");
-    }
-  }, []);
-  const handelSubmit = async () => {
-    console.log(name, email, password);
-    let result = await fetch("http://localhost:5000/signup", {
-      method: "post",
-      body: JSON.stringify({ name, email, password }),
-      headers: {
-        "content-type": "application/json",
+  const handleSubmit = async () => {
+    const res = await axios.post(
+      "http://localhost:5000/api/users/signup",
+      {
+        name,
+        email,
+        password,
+        shopName,
       },
-    });
-    const resdata = await result.json();
-    localStorage.setItem("users", JSON.stringify(resdata.result));
-    localStorage.setItem("token", JSON.stringify(resdata.auth));
-    console.log(resdata);
-
-    if (resdata) {
-      navigate("/");
-    }
+      { withcredentials: true }
+    );
+    console.log(res);
+    navigate("/login");
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-100 to-pink-200 p-4">
       <form className="backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl -mt-40 lg:-mt-24 rounded-2xl p-10 max-w-md w-full transition-all duration-300 hover:scale-105">
@@ -66,6 +59,20 @@ const SignUp = () => {
           />
         </div>
 
+        <div className="mb-6">
+          <label className="block text-blue-800 font-semibold mb-2">
+            ShopName
+          </label>
+          <input
+            type="text"
+            name="shopName"
+            className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white bg-blue-50"
+            placeholder="your shop name"
+            value={shopName}
+            onChange={(e) => setShopName(e.target.value)}
+          />
+        </div>
+
         {/* Password Field */}
         <div className="mb-8">
           <label className="block text-blue-800 font-semibold mb-2">
@@ -81,11 +88,10 @@ const SignUp = () => {
           />
         </div>
 
-        
         <button
           type="button"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold text-lg transition duration-300 shadow-md hover:shadow-xl"
-          onClick={handelSubmit}
+          onClick={handleSubmit}
         >
           Login
         </button>

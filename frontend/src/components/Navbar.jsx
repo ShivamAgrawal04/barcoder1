@@ -2,17 +2,19 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/Anurag.png";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const auth = localStorage.getItem("users");
+  const { user, logout } = useAuth();
+
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [menu, setMenu] = useState(false);
   const ClickRef = useRef();
 
-  const logout = () => {
-    localStorage.clear();
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    await logout();
     navigate("/login");
   };
 
@@ -78,17 +80,6 @@ const Navbar = () => {
     setMenu(!menu);
   };
 
-  // const user = auth ? JSON.parse(auth) : null;
-
-  const getUser = () => {
-    try {
-      return JSON.parse(localStorage.getItem("users"));
-    } catch (e) {
-      return null;
-    }
-  };
-  const user = getUser();
-
   const getShortName = () => {
     if (!user || !user.name) return "Profile";
 
@@ -114,7 +105,7 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex space-x-6 text-white items-center text-lg">
-            {auth ? (
+            {user ? (
               <MenuItems />
             ) : (
               <>
@@ -145,7 +136,7 @@ const Navbar = () => {
               : "max-h-0 opacity-0 overflow-hidden"
           }`}
         >
-          {auth ? (
+          {user ? (
             <MenuItems isMobile />
           ) : (
             <>
@@ -179,7 +170,7 @@ const Navbar = () => {
             <li>
               <button
                 onClick={() => {
-                  logout();
+                  handleLogout();
                   setMenu(false);
                 }}
                 className="w-full text-left px-4 py-2 bg-gradient-to-r from-red-400 to-pink-500 text-white font-bold rounded-md shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"

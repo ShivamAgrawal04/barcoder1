@@ -2,45 +2,33 @@ import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { CgCloseO } from "react-icons/cg";
-
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const ProductList = () => {
   const [product, setProduct] = useState([]);
   const [searchkey, setsearchkey] = useState("");
   const [text, setText] = useState("");
-  
 
   useEffect(() => {
     getProducts();
   }, []);
 
   const getProducts = async () => {
-    const result = await fetch("http://192.168.29.235:5000/products", {
-      method: "Get",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
-      },
+    const res = await axios.get("http://localhost:5000/api/products/", {
+      withCredentials: true,
     });
-
-    const finalData = await result.json();
-    setProduct(finalData);
-    
+    setProduct(res.data.data);
   };
 
   const deleteProduct = async (id) => {
-    let result = await fetch(`http://localhost:5000/products/${id}`, {
-      method: "delete",
-      headers: {
-        authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
-      },
+    let res = await axios.delete(`http://localhost:5000/api/products/${id}`, {
+      withCredentials: true,
     });
-    result = await result.json();
 
-    if (result) {
+    if (res) {
       getProducts();
     }
-    console.log(result);
   };
 
   const handelSearch = async (events) => {

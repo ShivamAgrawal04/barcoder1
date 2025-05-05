@@ -2,44 +2,32 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaBox, FaDollarSign, FaTags, FaBuilding } from "react-icons/fa";
 import Demovideo from "../assets/System.mp4";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const UpdateProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [company, setCompany] = useState("");
+  const [description, setDescription] = useState("");
   const params = useParams();
   const navigate = useNavigate();
+  const { updateProduct, getProductById } = useAuth();
 
   useEffect(() => {
     getDetails();
   }, []);
 
   const getDetails = async () => {
-    let result = await fetch(`http://localhost:5000/products/${params.id}`, {
-      headers: {
-        authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
-      },
-    });
-    result = await result.json();
-    setName(result.name);
-    setPrice(result.price);
-    setCategory(result.category);
-    setCompany(result.company);
+    const res = await getProductById(params.id);
+    setName(res.name);
+    setPrice(res.price);
+    setCategory(res.category);
+    setDescription(res.description);
   };
 
   const handelUpdate = async () => {
-    let result = await fetch(`http://localhost:5000/products/${params.id}`, {
-      method: "put",
-      body: JSON.stringify({ name, price, company, category }),
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
-      },
-    });
-
-    result = await result.json();
-    console.log(result);
+    await updateProduct(params.id, { name, price, category, description });
     navigate("/");
   };
 
@@ -117,9 +105,9 @@ const UpdateProduct = () => {
             <FaBuilding className="text-cyan-300" />
             <input
               type="text"
-              placeholder="Company"
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
+              placeholder="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full bg-transparent border-b border-cyan-300 placeholder-cyan-200 focus:outline-none py-2"
             />
           </div>
