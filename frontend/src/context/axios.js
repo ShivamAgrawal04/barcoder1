@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://barcoder1.onrender.com/api",
+  // baseURL: "http://localhost:5000/api",
   withCredentials: true,
 });
 
