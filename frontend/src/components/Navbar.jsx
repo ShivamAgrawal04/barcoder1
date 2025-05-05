@@ -38,7 +38,7 @@ const Navbar = () => {
       </Link>
 
       <Link
-        to="/qrproducts/:id"
+        to="/qrproducts/681922ab9c6efe9afaf2dfa4"
         className="hover:text-cyan-400 transition-all duration-300"
         onClick={() => isMobile && setMenuOpen(false)}
       >
