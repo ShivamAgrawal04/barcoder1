@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getPublicProducts = async (id) => {
-    const res = await axios.get(`/products/${id}`, {
+    const res = await axios.get(`/qrproducts/${id}`, {
       withCredentials: true,
     });
     return res.data.data;
