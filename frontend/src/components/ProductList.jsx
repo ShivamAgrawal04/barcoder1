@@ -9,16 +9,15 @@ const ProductList = () => {
   const [product, setProduct] = useState([]);
   const [searchkey, setsearchkey] = useState("");
   const [text, setText] = useState("");
+  const { getProducts } = useAuth();
 
   useEffect(() => {
-    getProducts();
+    getProducts1();
   }, []);
 
-  const getProducts = async () => {
-    const res = await axios.get("http://localhost:5000/api/products/", {
-      withCredentials: true,
-    });
-    setProduct(res.data.data);
+  const getProducts1 = async () => {
+    const res = await getProducts();
+    setProduct(res);
   };
 
   const deleteProduct = async (id) => {

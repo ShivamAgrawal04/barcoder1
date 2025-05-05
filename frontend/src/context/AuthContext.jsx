@@ -62,6 +62,13 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: "LOGOUT" });
   };
 
+  const getProducts = async () => {
+    const res = await axios.get("/products/", {
+      withCredentials: true,
+    });
+    return res.data.data;
+  };
+
   const addProduct = async (product) => {
     const res = await axios.post("/products/addProduct", product, {
       withCredentials: true,
@@ -91,6 +98,7 @@ export const AuthProvider = ({ children }) => {
         updateProduct,
         addProduct,
         getProductById,
+        getProducts,
       }}
     >
       {children}
