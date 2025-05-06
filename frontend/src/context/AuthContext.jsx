@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         const res = await axios.get("/users/me", {
           withCredentials: true,
         });
+        console.log("updated profule ", res.data);
         dispatch({ type: "SET_USER", payload: res.data.data });
       } catch (err) {
         dispatch({ type: "LOGOUT" });
@@ -95,7 +96,7 @@ export const AuthProvider = ({ children }) => {
 
   const getPublicProducts = async (id) => {
     const res = await axios.get(`/products/${id}`, {
-      withCredentials: true,
+      withCredentials: false,
     });
     return res.data.data;
   };

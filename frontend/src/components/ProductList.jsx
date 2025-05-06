@@ -17,6 +17,7 @@ const ProductList = () => {
 
   const getProducts1 = async () => {
     const res = await getProducts();
+    console.log(res);
     setProduct(res);
   };
 
