@@ -19,7 +19,7 @@ const ProductOnly = () => {
       }
     };
     fetchProducts();
-  }, [id, productsVersion]);
+  }, [id, productsVersion, getPublicProducts]);
 
   // Fetch the products when the component mounts
 
