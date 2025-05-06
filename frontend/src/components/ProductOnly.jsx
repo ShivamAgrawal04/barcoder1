@@ -1,25 +1,30 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const ProductOnly = () => {
   const { id } = useParams();
-  const { getPublicProducts, productsVersion } = useAuth();
+  const { getPublicProducts } = useAuth();
 
   const [products, setProducts] = useState([]);
 
+  const fetchProducts = useCallback(async () => {
+    try {
+      const result = await getPublicProducts(id);
+      setProducts(result); // Store the products in the state
+    } catch (error) {
+      console.error("Failed to fetch products", error); // Log any errors
+    }
+  }, [id, getPublicProducts]);
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const result = await getPublicProducts(id);
-        setProducts(result); // Store the products in the state
-      } catch (error) {
-        console.error("Failed to fetch products", error); // Log any errors
-      }
-    };
     fetchProducts();
-  }, [id, productsVersion, getPublicProducts]);
+    const intervalId = setInterval(() => {
+      fetchProducts();
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, [fetchProducts]);
 
   // Fetch the products when the component mounts
 
