@@ -31,6 +31,12 @@ const reducer = (state, action) => {
 // create provider
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  // const [productsVersion, setProductsVersion] = useState(0);
+
+  // const triggerProductsUpdate = () => {
+  //   setProductsVersion((prev) => prev + 1);
+  // };
+
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -120,6 +126,8 @@ export const AuthProvider = ({ children }) => {
         getProducts,
         signup,
         getPublicProducts,
+        // productsVersion,
+        // triggerProductsUpdate,
       }}
     >
       {children}

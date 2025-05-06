@@ -5,22 +5,22 @@ import { useAuth } from "../context/AuthContext";
 
 const ProductOnly = () => {
   const { id } = useParams();
-  const { getPublicProducts } = useAuth();
+  const { getPublicProducts, productsVersion } = useAuth();
 
   const [products, setProducts] = useState([]);
 
-  const fetchProducts = useCallback(async () => {
+  useEffect(() => {
+    getPublicProducts1();
+  }, [id, productsVersion]);
+
+  const getPublicProducts1 = async () => {
     try {
       const result = await getPublicProducts(id);
-      setProducts(result);
+      setProducts(result); // Store the products in the state
     } catch (error) {
-      console.error("Failed to fetch products", error);
+      console.error("Failed to fetch products", error); // Log any errors
     }
-  }, [id, getPublicProducts]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+  };
 
   // Fetch the products when the component mounts
 

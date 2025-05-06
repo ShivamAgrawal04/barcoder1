@@ -28,6 +28,7 @@ const UpdateProduct = () => {
 
   const handelUpdate = async () => {
     await updateProduct(params.id, { name, price, category, description });
+
     navigate("/");
   };
 

@@ -9,13 +9,13 @@ const ProductList = () => {
   const [product, setProduct] = useState([]);
   const [searchkey, setsearchkey] = useState("");
   const [text, setText] = useState("");
-  const { getProducts } = useAuth();
+  const { getProducts, triggerProductsUpdate } = useAuth();
 
   useEffect(() => {
-    getProducts1();
+    fetch();
   }, []);
 
-  const getProducts1 = async () => {
+  const fetch = async () => {
     const res = await getProducts();
     console.log(res);
     setProduct(res);
