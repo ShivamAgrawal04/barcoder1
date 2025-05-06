@@ -8,7 +8,7 @@ const ProductsAdd = () => {
   const [description, setDescription] = useState("");
   const [error, setError] = useState(false);
 
-  const { addProduct, triggerProductsUpdate } = useAuth();
+  const { addProduct } = useAuth();
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
@@ -17,7 +17,6 @@ const ProductsAdd = () => {
       return false;
     }
     await addProduct({ name, price, category, description });
-    triggerProductsUpdate();
 
     setName("");
     setPrice("");

@@ -14,7 +14,6 @@ const ProductList = () => {
   useEffect(() => {
     const fetch = async () => {
       const res = await getProducts();
-      // triggerProductsUpdate();
       console.log(res);
       setProduct(res);
     };
@@ -25,11 +24,6 @@ const ProductList = () => {
     let res = await axios.delete(`http://localhost:5000/api/products/${id}`, {
       withCredentials: true,
     });
-
-    // if (res) {
-    //   getProducts();
-    //   triggerProductsUpdate();
-    // }
   };
 
   const handelSearch = async (events) => {
