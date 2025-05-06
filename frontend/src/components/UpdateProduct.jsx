@@ -12,7 +12,7 @@ const UpdateProduct = () => {
   const [description, setDescription] = useState("");
   const params = useParams();
   const navigate = useNavigate();
-  const { updateProduct, getProductById } = useAuth();
+  const { updateProduct, getProductById, triggerProductsUpdate } = useAuth();
 
   useEffect(() => {
     getDetails();
@@ -28,7 +28,7 @@ const UpdateProduct = () => {
 
   const handelUpdate = async () => {
     await updateProduct(params.id, { name, price, category, description });
-
+    triggerProductsUpdate();
     navigate("/");
   };
 

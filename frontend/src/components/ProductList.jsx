@@ -27,6 +27,7 @@ const ProductList = () => {
 
     if (res) {
       getProducts();
+      triggerProductsUpdate();
     }
   };
 
