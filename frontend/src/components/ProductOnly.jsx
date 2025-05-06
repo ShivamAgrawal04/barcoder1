@@ -9,18 +9,18 @@ const ProductOnly = () => {
 
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    getPublicProducts1();
-  }, [id, getPublicProducts1]);
-
-  const getPublicProducts1 = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       const result = await getPublicProducts(id);
-      setProducts(result); // Store the products in the state
+      setProducts(result);
     } catch (error) {
-      console.error("Failed to fetch products", error); // Log any errors
+      console.error("Failed to fetch products", error);
     }
-  };
+  }, [id, getPublicProducts]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   // Fetch the products when the component mounts
 
