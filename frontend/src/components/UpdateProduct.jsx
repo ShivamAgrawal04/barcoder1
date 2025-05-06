@@ -16,6 +16,7 @@ const UpdateProduct = () => {
 
   useEffect(() => {
     getDetails();
+    handelUpdate();
   }, []);
 
   const getDetails = async () => {
