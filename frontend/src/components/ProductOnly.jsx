@@ -10,17 +10,16 @@ const ProductOnly = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    getPublicProducts1();
-  }, [id, productsVersion]);
-
-  const getPublicProducts1 = async () => {
-    try {
-      const result = await getPublicProducts(id);
-      setProducts(result); // Store the products in the state
-    } catch (error) {
-      console.error("Failed to fetch products", error); // Log any errors
-    }
-  };
+    const fetchProducts = async () => {
+      try {
+        const result = await getPublicProducts(id);
+        setProducts(result); // Store the products in the state
+      } catch (error) {
+        console.error("Failed to fetch products", error); // Log any errors
+      }
+    };
+    fetchProducts();
+  }, [id]);
 
   // Fetch the products when the component mounts
 

@@ -12,14 +12,13 @@ const ProductList = () => {
   const { getProducts, triggerProductsUpdate } = useAuth();
 
   useEffect(() => {
+    const fetch = async () => {
+      const res = await getProducts();
+      console.log(res);
+      setProduct(res);
+    };
     fetch();
   }, []);
-
-  const fetch = async () => {
-    const res = await getProducts();
-    console.log(res);
-    setProduct(res);
-  };
 
   const deleteProduct = async (id) => {
     let res = await axios.delete(`http://localhost:5000/api/products/${id}`, {
