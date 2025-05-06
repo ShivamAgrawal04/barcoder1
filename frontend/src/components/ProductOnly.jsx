@@ -11,7 +11,7 @@ const ProductOnly = () => {
 
   useEffect(() => {
     getPublicProducts1();
-  }, [id]);
+  }, [id, getPublicProducts1]);
 
   const getPublicProducts1 = async () => {
     try {
