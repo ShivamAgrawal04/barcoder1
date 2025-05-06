@@ -9,12 +9,12 @@ const ProductList = () => {
   const [product, setProduct] = useState([]);
   const [searchkey, setsearchkey] = useState("");
   const [text, setText] = useState("");
-  const { getProducts, triggerProductsUpdate } = useAuth();
+  const { getProducts } = useAuth();
 
   useEffect(() => {
     const fetch = async () => {
       const res = await getProducts();
-      triggerProductsUpdate();
+      // triggerProductsUpdate();
       console.log(res);
       setProduct(res);
     };
@@ -26,10 +26,10 @@ const ProductList = () => {
       withCredentials: true,
     });
 
-    if (res) {
-      getProducts();
-      triggerProductsUpdate();
-    }
+    // if (res) {
+    //   getProducts();
+    //   triggerProductsUpdate();
+    // }
   };
 
   const handelSearch = async (events) => {
