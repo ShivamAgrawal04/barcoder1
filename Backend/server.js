@@ -27,5 +27,6 @@ io.on("connection", (socket) => {
 
 server.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("Server is running on port 5000");
+  console.log("Hello");
   connectDB();
 });
