@@ -18,12 +18,12 @@ function App() {
     <div>
       {!isQRProductPage && <Nav />}
       <Routes>
-        <Route element={<Private />}>
-          <Route path="/" element={<ProductList />} />
-          <Route path="/add" element={<ProductsAdd />} />
-          <Route path="/update/:id" element={<UpdateProduct />} />
-          <Route path="/qrcode" element={<QrCode />} />
-        </Route>
+        {/* <Route element={<Private />}> */}
+        <Route path="/" element={<ProductList />} />
+        <Route path="/add" element={<ProductsAdd />} />
+        <Route path="/update/:id" element={<UpdateProduct />} />
+        <Route path="/qrcode" element={<QrCode />} />
+        {/* </Route> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/qrproducts/:id" element={<ProductOnly />} />
