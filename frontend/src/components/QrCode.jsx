@@ -57,7 +57,7 @@ const QrCode = () => {
     <>
       <div ref={ref}></div>
       <button onClick={handleDownloadUpdatedQR}>
-        Update & Download QR anurag Helloooooooooooooooooooooooooooo
+        Update & Download QR anurag
       </button>
     </>
   );
