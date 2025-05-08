@@ -17,12 +17,13 @@ const io = new Server(server, {
   },
 });
 io.on("connection", (socket) => {
-  console.log("user connected");
-  console.log("user", socket.id);
+  console.log("user connected User", socket.id);
 
-  // socket.on("join-room",()=>{
-
-  // })
+  socket.on("join-shop-room", (shopId) => {
+    socket.join();
+    const menu = shopMenus[`shop_${shopId}`] || [];
+    socket.emit("menuUpdate", menu);
+  });
 });
 
 server.listen(process.env.PORT, "0.0.0.0", () => {

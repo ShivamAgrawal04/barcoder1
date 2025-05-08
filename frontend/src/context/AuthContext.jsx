@@ -109,6 +109,11 @@ export const AuthProvider = ({ children }) => {
     return res.data.data;
   };
 
+  const deleteProductById = async (id) => {
+    const res = await axios.delete(`/products/${id}`);
+    return true;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -121,6 +126,7 @@ export const AuthProvider = ({ children }) => {
         getProducts,
         signup,
         getPublicProducts,
+        deleteProductById,
       }}
     >
       {children}
