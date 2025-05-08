@@ -91,7 +91,7 @@ const SignUp = () => {
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold text-lg transition duration-300 shadow-md hover:shadow-xl"
           onClick={handleSubmit}
         >
-          Login
+          Signup
         </button>
       </form>
     </div>
