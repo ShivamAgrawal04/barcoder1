@@ -11,6 +11,7 @@ import Qrcode from "./components/ProductQR";
 import ProductOnly from "./components/ProductOnly";
 import QrCode from "./components/QrCode";
 import PageNotFound from "./components/PageNotFound";
+import StyledQRCode from "./components/StyledQRCode";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/qrcode" element={<QrCode />} />
         <Route path="/qrproducts/:id" element={<ProductOnly />} />
+        <Route path="/qr" element={<StyledQRCode />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
 
