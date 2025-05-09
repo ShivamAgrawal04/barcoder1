@@ -1,7 +1,5 @@
 import app from "./index.js";
 import connectDB from "./config/db.js";
-import cookie from "cookie";
-import jwt from "jsonwebtoken";
 import { Server } from "socket.io";
 import { createServer } from "http";
 
@@ -18,7 +16,6 @@ const io = new Server(server, {
   },
 });
 
-<<<<<<< HEAD
 // Make io accessible globally
 global.io = io;
 
@@ -54,24 +51,6 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
-=======
-// ✅ Define globalreq AFTER io is initialized
-// global.globalreq = global.globalreq || {};
-global.io = io;
-
-
-
-io.on("connection", (socket) => {
-  console.log("🟢 Connected:", socket.id);
-
-  socket.on("join-room", (shopId) => {
-    socket.join(shopId);
-    console.log(`🔗 User joined room: ${shopId}`);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("🔴 Disconnected:", socket.id);
->>>>>>> be126c00f1838f86cc1a268695c610694785ebde
   });
 });
 
