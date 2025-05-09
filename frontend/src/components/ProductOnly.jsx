@@ -1,101 +1,110 @@
-import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-
-import { io } from "socket.io-client";
-const socket = io("http://localhost:5000", {
-  withCredentials: true,
-  autoConnect: false,
-  // query: {
-  //   shopId: id, // `id` from URL which is shopUserId
-  // },
-});
+import { useSocket } from "../context/SocketContext";
 
 const ProductOnly = () => {
-  const [products, setProducts] = useState([]);
-
   const { id } = useParams();
-  console.log(id);
-  // const { getPublicProducts } = useAuth();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { socket, isConnected } = useSocket();
 
   const fetchProducts = async () => {
-    const result = await fetch(`http://192.168.29.138:5000/api/products/${id}`);
-    const data = await result.json();
-    console.log(data.data);
-    setProducts(data.data);
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://192.168.29.138:5000/api/products/${id}`
+      );
+      const data = await response.json();
+      console.log("Fetched products:", data.data);
+
+      setProducts(data.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    socket.connect();
     fetchProducts();
 
-    const handleMenuUpdate = ({ action, product }) => {
-      setProducts((prev) => {
-        if (action === "add") return [...prev, product];
-        if (action === "update")
-          return prev.map((p) => (p._id === product._id ? product : p));
-        if (action === "delete")
-          return prev.filter((p) => p._id !== product._id);
-        return prev;
-      });
-    };
+    if (socket && isConnected) {
+      console.log("Joining shop room:", id);
+      socket.emit("joinShop", id);
 
-    socket.on("menuUpdated", handleMenuUpdate);
+      socket.on("menuUpdated", (data) => {
+        console.log("Received menu update:", data);
+        switch (data.action) {
+          case "add":
+            setProducts((prev) => [...prev, data.product]);
+            break;
+          case "update":
+            setProducts((prev) =>
+              prev.map((p) => (p._id === data.product._id ? data.product : p))
+            );
+            break;
+          case "delete":
+            setProducts((prev) => prev.filter((p) => p._id !== data.productId));
+            break;
+          default:
+            console.log("Unknown action:", data.action);
+        }
+      });
+    }
 
     return () => {
-      socket.off("menuUpdated", handleMenuUpdate);
-      socket.disconnect();
+      if (socket) {
+        socket.off("menuUpdated");
+      }
     };
-  }, [id]);
+  }, [socket, isConnected, id]);
 
-  // const fetchProducts = useCallback(async () => {
-  //   try {
-  //     const result = await getPublicProducts(id);
-  //     setProducts(result); // Store the products in the state
-  //   } catch (error) {
-  //     console.error("Failed to fetch products", error); // Log any errors
-  //   }
-  // }, [id, getPublicProducts]);
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        Loading...
+      </div>
+    );
+  }
 
-  // useEffect(() => {
-  //   fetchProducts();
-  //   const intervalId = setInterval(() => {
-  //     fetchProducts();
-  //   }, 5000);
-  //   return () => clearInterval(intervalId);
-  // }, [fetchProducts]);
+  if (!isConnected) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        Connecting to server...
+      </div>
+    );
+  }
 
-  // Fetch the products when the component mounts
+  if (products.length === 0) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        No products found
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-5">
-      <h1 className="text-3xl font-bold mb-5 text-center text-cyan-700">
-        Available Products
-      </h1>
-
-      {/* Check if there are products to display */}
-      {products && products.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white p-5 rounded-lg shadow-md hover:shadow-lg transition"
-            >
-              {/* Display each product's details */}
-              <h2 className="text-xl font-semibold mb-2">{item.name}</h2>
-              <p className="text-gray-600 mb-1">Price: ₹{item.price}</p>
-              <p className="text-gray-600 mb-1">Category: {item.category}</p>
-              <p className="text-gray-600">
-                Availaible: {item.availability ? "True" : "false"}
-              </p>
-              <p className="text-gray-600">description: {item.description}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-center text-gray-500">No products available</p>
-      )}
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Menu</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {products.map((product) => (
+          <div key={product._id} className="border p-4 rounded shadow">
+            <img
+              src={product.productPic}
+              alt={product.name}
+              className="w-full h-48 object-cover"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  "https://via.placeholder.com/300x200?text=No+Image";
+              }}
+            />
+            <h2 className="text-xl font-semibold mt-2">{product.name}</h2>
+            <p className="text-gray-600">{product.description}</p>
+            <p className="text-lg font-bold">₹{product.price}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

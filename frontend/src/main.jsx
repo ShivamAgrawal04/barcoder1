@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { SocketProvider } from "./context/SocketContext";
 if (import.meta.env.DEV) {
   import("eruda").then((eruda) => {
     eruda.default.init(); // ✅ properly initialize Eruda
@@ -17,7 +18,9 @@ if (import.meta.env.DEV) {
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
-      <App />
+      <SocketProvider>
+        <App />
+      </SocketProvider>
     </AuthProvider>
   </BrowserRouter>
 );

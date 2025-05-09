@@ -16,55 +16,46 @@ const io = new Server(server, {
       "https://barcoder1.vercel.app",
     ],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
 
+// Make io accessible globally
 global.io = io;
 
-// global.io = io;
+// io.use((socket, next) => {
+//   try {
+//     const rawCookie = socket.handshake.headers.cookie;
+//     if (!rawCookie) return next(new Error("No cookies found"));
 
-// Save io globally
+//     const cookies = cookie.parse(rawCookie);
+//     const token1 = cookies.token; // Use your actual cookie name here
 
-io.use((socket, next) => {
-  try {
-    const rawCookie = socket.handshake.headers.cookie;
-    if (!rawCookie) return next(new Error("No cookies found"));
+//     const decoded = jwt.verify(token1, process.env.JWT_SECRET);
+//     if (decoded) {
+//       socket.user = decoded; // Attach the user data to the socket object
 
-    const cookies = cookie.parse(rawCookie);
-    const token1 = cookies.token; // Use your actual cookie name here
-
-    const decoded = jwt.verify(token1, process.env.JWT_SECRET);
-    if (decoded) {
-      socket.user = decoded; // Attach the user data to the socket object
-
-      next(); // Allow the connection
-    } else {
-      next(new Error("Authentication failed"));
-    }
-  } catch (err) {
-    next(new Error("Authentication failed"));
-  }
-});
+//       next(); // Allow the connection
+//     } else {
+//       next(new Error("Authentication failed"));
+//     }
+//   } catch (err) {
+//     next(new Error("Authentication failed"));
+//   }
+// });
 
 io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
+  console.log("A user connected", socket.id);
 
-  const shopUserId = socket.user.id;
+  // Join a room based on shop ID
+  socket.on("joinShop", (shopId) => {
+    socket.join(shopId);
+    console.log(`User joined shop room: ${shopId}`);
+  });
 
-  socket.join(shopUserId);
-  console.log("userJoined room", shopUserId);
-
-  // socket.on("error", (error) => {
-  //   console.error("Socket error:", error);
-  // });
-
-  socket.on("disconnect", (reason) => {
-    console.log("Socket disconnected:", reason);
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
   });
 });
-
-// app.set("io", io);
 
 server.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("Server is running on port 5000");

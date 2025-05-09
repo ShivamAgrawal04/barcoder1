@@ -67,7 +67,8 @@ export const addProduct = asyncHandler(async (req, res) => {
     shopName: req.user.shopName,
   });
 
-  globalreq.io.to(shopUserId).emit("menuUpdated", { action: "add", product }); // 👈
+  // Emit event to all users viewing this shop's menu
+  global.io.to(shopUserId).emit("menuUpdated", { action: "add", product });
 
   return res.json(new ApiResponse(200, "Product added successfully", product));
 });
@@ -75,9 +76,16 @@ export const addProduct = asyncHandler(async (req, res) => {
 export const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const shopUserId = req.user.id;
-  let result = await Product.findByIdAndDelete({ _id: id });
+
+  const result = await Product.findByIdAndDelete(id);
   if (!result) throw new ApiError(400, "Product not found");
-  global.io.to(shopUserId).emit("menuUpdated", { deleted: true, id });
+
+  // Emit event for product deletion
+  global.io.to(shopUserId).emit("menuUpdated", {
+    action: "delete",
+    productId: id,
+  });
+
   return res.json(new ApiResponse(200, "Product deleted successfully", result));
 });
 
@@ -101,18 +109,22 @@ export const updateProductById = asyncHandler(async (req, res) => {
   if (category) updateData.category = category;
   if (file) updateData.productPic = file.path;
 
-  const updateProduct = await Product.findByIdAndUpdate(id, updateData, {
-    new: true,
-    runValidators: true,
-  });
-  if (!updateProduct) throw new ApiError(400, "Product not found");
+  const updatedProduct = await Product.findByIdAndUpdate(
+    id,
+    { $set: req.body },
+    { new: true }
+  );
 
-  global.io
-    .to(shopUserId)
-    .emit("menuUpdated", { action: "update", updateProduct });
+  if (!updatedProduct) throw new ApiError(400, "Product not found");
+
+  // Emit event for product update
+  global.io.to(shopUserId).emit("menuUpdated", {
+    action: "update",
+    product: updatedProduct,
+  });
 
   return res.json(
-    new ApiResponse(200, "Product updated successfully", updateProduct)
+    new ApiResponse(200, "Product updated successfully", updatedProduct)
   );
 });
 
