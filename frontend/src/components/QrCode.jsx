@@ -114,7 +114,7 @@ const qrCode = () => {
       <p className="whitespace-pre-line mt-4 text-sm text-gray-300 break-words p-2">
         You Can Also Scan This QR CODE From:
         {"\n"}PhonePe, Paytm, Google Pay, Google Lens,
-        {"\n"}or Default Scanner of Your phone 😊
+        {"\n"}or Default Scanner of Your phone... 😊
       </p>
 
       <div className="flex gap-4 mt-6">
