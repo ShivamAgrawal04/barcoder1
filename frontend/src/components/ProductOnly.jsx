@@ -94,7 +94,7 @@ const ProductOnly = () => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-500">No products available</p>
+        <p className="text-center text-gray-500">No products available here</p>
       )}
     </div>
   );
