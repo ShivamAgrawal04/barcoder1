@@ -18,6 +18,10 @@ app.use(
     credentials: true,
   })
 );
+
+// Optional: handle preflight manually
+// app.options("*", cors());
+
 app.use(express.json());
 app.use(cookieParser());
 

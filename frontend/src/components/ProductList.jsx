@@ -9,7 +9,14 @@ const ProductList = () => {
   const [product, setProduct] = useState([]);
   const [searchkey, setsearchkey] = useState("");
   const [text, setText] = useState("");
-  const { getProducts } = useAuth();
+  const { getProducts, deleteProductById } = useAuth();
+
+  const deleteProduct = async (id) => {
+    const success = await deleteProductById(id);
+    if (success) {
+      setProduct((prevProducts) => prevProducts.filter((p) => p._id !== id));
+    }
+  };
 
   useEffect(() => {
     const fetch = async () => {
@@ -18,13 +25,7 @@ const ProductList = () => {
       setProduct(res);
     };
     fetch();
-  }, []);
-
-  const deleteProduct = async (id) => {
-    let res = await axios.delete(`http://localhost:5000/api/products/${id}`, {
-      withCredentials: true,
-    });
-  };
+  }, [getProducts]);
 
   const handelSearch = async (events) => {
     let key = events.target.value;
@@ -101,7 +102,7 @@ const ProductList = () => {
                 <th className="py-3 px-2 sm:px-4">Product Name</th>
                 <th className="py-3 px-2 sm:px-4">Price</th>
                 <th className="py-3 px-2 sm:px-4">Category</th>
-                <th className="py-3 px-2 sm:px-4">description</th>
+                <th className="py-3 px-2 sm:px-4">Description</th>
                 <th className="py-3 px-2 sm:px-4 text-center">Operation</th>
               </tr>
             </thead>
