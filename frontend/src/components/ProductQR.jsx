@@ -17,7 +17,7 @@ const ProductQR = () => {
   const adminId = user?._id;
 
   // Generate the URL for the QR code (link to admin's products)
-  const qrURL = `http://localhost:5000/qrproducts/${adminId}`;
+  const qrURL = `http://192.168.29.234:5000/qrproducts/${adminId}`;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
