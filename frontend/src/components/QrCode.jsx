@@ -1,69 +1,138 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import QRCodeStyling from "qr-code-styling";
-import { useAuth } from "../context/AuthContext";
+import { saveAs } from "file-saver";
+import { useAuth } from "../context/AuthContext"; // 👈 AuthContext से user
 
-const QrCode = () => {
-  const { user } = useAuth();
+const qrCode = () => {
+  const qrRef = useRef(null);
+  const navigate = useNavigate();
+  const { user } = useAuth(); // 👈 Context से user
   const [qrCode, setQrCode] = useState(null);
 
+  // Create QR code once user available
   useEffect(() => {
     if (!user?._id) return;
+
+    const isDevelopment = process.env.NODE_ENV === "development";
+    const baseURL = isDevelopment
+      ? "http://192.168.29.234:3000"
+      : "https://your-production-url.com";
+
+    const qrURL = `${baseURL}/qrproducts/${user._id}`;
 
     const qr = new QRCodeStyling({
       width: 300,
       height: 300,
-      data: `http://192.168.29.138:3000/qrproducts/${user._id}`,
-      // data: `${window.location.origin}/qrproducts/${user._id}`,
-      image: "food.png", // optional logo
+      data: qrURL,
+      image: "/food.png",
       dotsOptions: {
-        color: "#000000",
-        type: "rounded",
+        type: "extra-rounded",
+        gradient: {
+          type: "radial",
+          colorStops: [
+            { offset: 0, color: "#f44336" },
+            { offset: 0.5, color: "#ffeb3b" },
+            { offset: 1, color: "#4caf50" },
+          ],
+        },
       },
       backgroundOptions: {
-        color: "#ffffff",
+        color: "transparent",
       },
       imageOptions: {
         crossOrigin: "anonymous",
-        margin: 20,
+        margin: 5,
+        imageSize: 0.25,
+      },
+      cornersSquareOptions: {
+        type: "extra-rounded",
+        color: "#795548",
+      },
+      cornersDotOptions: {
+        type: "dot",
+        color: "#ff9800",
       },
     });
+
     setQrCode(qr);
   }, [user]);
 
-  const ref = useRef(null);
-
+  // Render QR code on screen
   useEffect(() => {
-    if (qrCode && ref.current) {
-      qrCode.append(ref.current); // attach to DOM
+    if (qrRef.current && qrCode) {
+      qrCode.append(qrRef.current);
+
+      qrCode.update({
+        image: "/food.png",
+        imageOptions: {
+          crossOrigin: "anonymous",
+          margin: 5,
+          imageSize: 0.5,
+        },
+      });
     }
   }, [qrCode]);
 
+  // 🔁 Update & Download QR (Manual update)
   const handleDownloadUpdatedQR = () => {
-    // 1. Update QR data
+    if (!qrCode) return;
+
+    const newData = "https://yourdomain.com/menu/new-shop-id"; // Example updated URL
     qrCode.update({
-      data: "https://yourdomain.com/menu/new-shop-id",
+      data: newData,
     });
 
-    // 2. Wait for a short delay to ensure update applies, then download
-    // setTimeout(() => {
-    //   qrCode.download({
-    //     name: "shop-qr",
-    //     extension: "png",
-    //   });
-    // }, 300); // 300ms is usually enough
+    setTimeout(() => {
+      qrCode.getRawData("png").then((blob) => {
+        saveAs(blob, "updated-product-qr.png");
+      });
+    }, 300);
   };
 
-  if (!user?._id) return <p>Loading QR...</p>; // 👈 add this
+  // ⬇️ Simple download (no update)
+  const downloadQR = () => {
+    if (qrCode) {
+      qrCode.getRawData("png", { width: 500, height: 500 }).then((blob) => {
+        saveAs(blob, "product-qr.png");
+      });
+    }
+  };
+
+  if (!user?._id) {
+    return <p className="text-white text-center">Loading QR...</p>;
+  }
 
   return (
-    <>
-      <div ref={ref}></div>
-      <button onClick={handleDownloadUpdatedQR}>Update & Download QR anurag shivam</button>
-      <button onClick={handleDownloadUpdatedQR}>
-        Update & Download QR anurag shivammmmmmm
-      </button>
-    </>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-center px-4">
+      <h1 className="text-2xl font-bold mb-4 text-cyan-400">
+        Scan myDish QR 🤤
+      </h1>
+
+      <div ref={qrRef}></div>
+
+      <p className="whitespace-pre-line mt-4 text-sm text-gray-300 break-words p-2">
+        You Can Also Scan This QR CODE From:
+        {"\n"}PhonePe, Paytm, Google Pay, Google Lens,
+        {"\n"}or Default Scanner of Your Phone... 😊
+      </p>
+
+      <div className="flex gap-4 mt-6">
+        <button
+          onClick={downloadQR}
+          className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          Download QR
+        </button>
+        <button
+          onClick={handleDownloadUpdatedQR}
+          className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+        >
+          Update & Download QR
+        </button>
+      </div>
+    </div>
   );
 };
 
-export default QrCode;
+export default qrCode;
