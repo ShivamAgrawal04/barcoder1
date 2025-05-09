@@ -100,7 +100,7 @@ const qrCode = () => {
   };
 
   if (!user?._id) {
-    return <p className="text-white text-center">Loading QR...</p>;
+    return <p className="text-white text-center">Loading QR....</p>;
   }
 
   return (
