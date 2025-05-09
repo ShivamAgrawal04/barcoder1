@@ -45,10 +45,10 @@ export const getProducts = asyncHandler(async (req, res) => {
 });
 
 export const addProduct = asyncHandler(async (req, res) => {
-  const { name, price, category, availability, description } = req?.body;
-  const shopUserId = req.user.id;
+  const { name, price, category, availability, description } = req.body;
+
   if (!name || !price || !category || !description) {
-    throw new ApiError(400, "All fields are required");
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   let imageUrl = "";
@@ -56,7 +56,7 @@ export const addProduct = asyncHandler(async (req, res) => {
     imageUrl = req.file.path;
   }
 
-  const product = await Product.create({
+  const newProduct = await Product.create({
     name,
     price,
     category,
@@ -67,26 +67,32 @@ export const addProduct = asyncHandler(async (req, res) => {
     shopName: req.user.shopName,
   });
 
-  // Emit event to all users viewing this shop's menu
-  global.io.to(shopUserId).emit("menuUpdated", { action: "add", product });
+  global.io.to(req.user.id).emit("menuUpdated", {
+    action: "add",
+    updateProduct: newProduct,
+  });
 
-  return res.json(new ApiResponse(200, "Product added successfully", product));
+  return res.status(201).json({
+    status: "success",
+    data: newProduct,
+  });
 });
 
 export const deleteProduct = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const shopUserId = req.user.id;
+  const productId = req.params.id;
+  const deletedProduct = await Product.findByIdAndDelete(productId);
 
-  const result = await Product.findByIdAndDelete(id);
-  if (!result) throw new ApiError(400, "Product not found");
+  if (!deletedProduct) {
+    return res.status(404).json({ message: "Product not found" });
+  }
 
-  // Emit event for product deletion
-  global.io.to(shopUserId).emit("menuUpdated", {
+  // ✅ Real-time emit
+  global.io.to(req.user.id).emit("menuUpdated", {
     action: "delete",
-    productId: id,
+    updateProduct: { _id: deletedProduct._id }, // ✅ Important
   });
 
-  return res.json(new ApiResponse(200, "Product deleted successfully", result));
+  res.status(200).json({ message: "Product deleted" });
 });
 
 export const getProductById = asyncHandler(async (req, res) => {
@@ -98,7 +104,6 @@ export const getProductById = asyncHandler(async (req, res) => {
 
 export const updateProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const shopUserId = req.user.id;
   const { name, price, category, description } = req.body;
   const file = req?.file;
 
@@ -109,18 +114,16 @@ export const updateProductById = asyncHandler(async (req, res) => {
   if (category) updateData.category = category;
   if (file) updateData.productPic = file.path;
 
-  const updatedProduct = await Product.findByIdAndUpdate(
-    id,
-    { $set: req.body },
-    { new: true }
-  );
+  const updateProduct = await Product.findByIdAndUpdate(id, updateData, {
+    new: true,
+    runValidators: true,
+  });
 
-  if (!updatedProduct) throw new ApiError(400, "Product not found");
+  if (!updateProduct) throw new ApiError(400, "Product not found");
 
-  // Emit event for product update
-  global.io.to(shopUserId).emit("menuUpdated", {
+  global.io.to(req.user.id).emit("menuUpdated", {
     action: "update",
-    product: updatedProduct,
+    updateProduct: updateProduct,
   });
 
   return res.json(

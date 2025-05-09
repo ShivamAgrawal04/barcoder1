@@ -83,10 +83,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const addProduct = async (product) => {
-    const res = await axios.post("/products/addProduct", product, {
-      withCredentials: true,
-    });
+    try {
+      const res = await axios.post("/products/addProduct", product, {
+        withCredentials: true,
+      });
+      console.log("Product Added: ", res.data);  // 👈 Add this
+    } catch (error) {
+      console.error("Add Product Error: ", error.response?.data || error.message);  // 👈 Add this
+    }
   };
+  
 
   const updateProduct = async (id, product) => {
     const res = await axios.put(`/products/${id}`, product, {

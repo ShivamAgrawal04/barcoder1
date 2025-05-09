@@ -2,7 +2,6 @@ import app from "./index.js";
 import connectDB from "./config/db.js";
 import cookie from "cookie";
 import jwt from "jsonwebtoken";
-
 import { Server } from "socket.io";
 import { createServer } from "http";
 
@@ -12,52 +11,58 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:3000",
-      "http://192.168.29.138:3000",
+      "http://192.168.29.234:3000",
       "https://barcoder1.vercel.app",
     ],
     credentials: true,
   },
 });
 
-// Make io accessible globally
 global.io = io;
 
-// io.use((socket, next) => {
-//   try {
-//     const rawCookie = socket.handshake.headers.cookie;
-//     if (!rawCookie) return next(new Error("No cookies found"));
+// global.io = io;
 
-//     const cookies = cookie.parse(rawCookie);
-//     const token1 = cookies.token; // Use your actual cookie name here
+// Save io globally
 
-//     const decoded = jwt.verify(token1, process.env.JWT_SECRET);
-//     if (decoded) {
-//       socket.user = decoded; // Attach the user data to the socket object
+io.use((socket, next) => {
+  try {
+    const rawCookie = socket.handshake.headers.cookie;
+    if (!rawCookie) return next(new Error("No cookies found"));
 
-//       next(); // Allow the connection
-//     } else {
-//       next(new Error("Authentication failed"));
-//     }
-//   } catch (err) {
-//     next(new Error("Authentication failed"));
-//   }
-// });
+    const cookies = cookie.parse(rawCookie);
+    const token1 = cookies.token; // Use your actual cookie name here
+
+    const decoded = jwt.verify(token1, process.env.JWT_SECRET);
+    if (decoded) {
+      socket.user = decoded; // Attach the user data to the socket object
+
+      next(); // Allow the connection
+    } else {
+      next(new Error("Authentication failed"));
+    }
+  } catch (err) {
+    next(new Error("Authentication failed"));
+  }
+});
 
 io.on("connection", (socket) => {
-  console.log("A user connected", socket.id);
+  console.log("User connected:", socket.id);
 
-  // Join a room based on shop ID
-  socket.on("joinShop", (shopId) => {
-    socket.join(shopId);
-    console.log(`User joined shop room: ${shopId}`);
-  });
+  const shopUserId = socket.user.id;
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
+  socket.join(shopUserId);
+  console.log("userJoined room", shopUserId);
+
+  // socket.on("error", (error) => {
+  //   console.error("Socket error:", error);
+  // });
+
+  socket.on("disconnect", (reason) => {
+    console.log("Socket disconnected:", reason);
   });
 });
 
 server.listen(process.env.PORT, "0.0.0.0", () => {
-  console.log("Server is running on port 5000");
+  console.log("🚀 Server running on port", process.env.PORT);
   connectDB();
 });

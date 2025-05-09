@@ -4,6 +4,12 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
 const SignUp = () => {
+  const [formData, setFormData] = useState({
+    name:"",
+    email:"",
+    password:"",
+    shopName:"",
+  })
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
