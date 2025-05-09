@@ -12,8 +12,8 @@ const QrCode = () => {
     const qr = new QRCodeStyling({
       width: 300,
       height: 300,
-      // data: `http://192.168.29.138:3000/qrproducts/${user._id}`,
-      data: `${window.location.origin}/qrproducts/${user._id}`,
+      data: `http://192.168.29.138:3000/qrproducts/${user._id}`,
+      // data: `${window.location.origin}/qrproducts/${user._id}`,
       image: "food.png", // optional logo
       dotsOptions: {
         color: "#000000",
@@ -52,6 +52,8 @@ const QrCode = () => {
     //   });
     // }, 300); // 300ms is usually enough
   };
+
+  if (!user?._id) return <p>Loading QR...</p>; // 👈 add this
 
   return (
     <>

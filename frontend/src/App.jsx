@@ -10,6 +10,7 @@ import Private from "./components/PrivateComponent";
 import ProductOnly from "./components/ProductOnly";
 import QrCode from "./components/QrCode";
 import PageNotFound from "./components/PageNotFound";
+// import Socket from "./components/Socket";
 
 function App() {
   const location = useLocation();
@@ -25,6 +26,8 @@ function App() {
         <Route path="/qrcode" element={<QrCode />} />
         {/* </Route> */}
         <Route path="/login" element={<Login />} />
+        {/* <Route path="/socket" element={<Socket />} /> */}
+
         <Route path="/signup" element={<SignUp />} />
         <Route path="/qrproducts/:id" element={<ProductOnly />} />
         <Route path="*" element={<PageNotFound />} />

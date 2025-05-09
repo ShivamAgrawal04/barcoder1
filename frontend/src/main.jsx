@@ -4,6 +4,15 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
+if (import.meta.env.DEV) {
+  import("eruda").then((eruda) => {
+    eruda.default.init(); // ✅ properly initialize Eruda
+  });
+}
+
+if (import.meta.env.DEV) {
+  import("eruda").then((eruda) => eruda.init());
+}
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>

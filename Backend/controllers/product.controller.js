@@ -46,6 +46,7 @@ export const getProducts = asyncHandler(async (req, res) => {
 
 export const addProduct = asyncHandler(async (req, res) => {
   const { name, price, category, availability, description } = req?.body;
+  const shopUserId = req.user.id;
   if (!name || !price || !category || !description) {
     throw new ApiError(400, "All fields are required");
   }
@@ -66,14 +67,17 @@ export const addProduct = asyncHandler(async (req, res) => {
     shopName: req.user.shopName,
   });
 
+  globalreq.io.to(shopUserId).emit("menuUpdated", { action: "add", product }); // 👈
+
   return res.json(new ApiResponse(200, "Product added successfully", product));
 });
 
 export const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  console.log(req.params);
+  const shopUserId = req.user.id;
   let result = await Product.findByIdAndDelete({ _id: id });
   if (!result) throw new ApiError(400, "Product not found");
+  global.io.to(shopUserId).emit("menuUpdated", { deleted: true, id });
   return res.json(new ApiResponse(200, "Product deleted successfully", result));
 });
 
@@ -86,6 +90,7 @@ export const getProductById = asyncHandler(async (req, res) => {
 
 export const updateProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const shopUserId = req.user.id;
   const { name, price, category, description } = req.body;
   const file = req?.file;
 
@@ -101,6 +106,10 @@ export const updateProductById = asyncHandler(async (req, res) => {
     runValidators: true,
   });
   if (!updateProduct) throw new ApiError(400, "Product not found");
+
+  global.io
+    .to(shopUserId)
+    .emit("menuUpdated", { action: "update", updateProduct });
 
   return res.json(
     new ApiResponse(200, "Product updated successfully", updateProduct)
