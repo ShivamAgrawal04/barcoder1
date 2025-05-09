@@ -3,28 +3,68 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const ProductOnly = () => {
-  const { id } = useParams();
-  const { getPublicProducts } = useAuth();
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000", {
+  withCredentials: true,
+  autoConnect: false,
+  // query: {
+  //   shopId: id, // `id` from URL which is shopUserId
+  // },
+});
 
+const ProductOnly = () => {
   const [products, setProducts] = useState([]);
 
-  const fetchProducts = useCallback(async () => {
-    try {
-      const result = await getPublicProducts(id);
-      setProducts(result); // Store the products in the state
-    } catch (error) {
-      console.error("Failed to fetch products", error); // Log any errors
-    }
-  }, [id, getPublicProducts]);
+  const { id } = useParams();
+  console.log(id);
+  // const { getPublicProducts } = useAuth();
+
+  const fetchProducts = async () => {
+    const result = await fetch(`http://192.168.29.138:5000/api/products/${id}`);
+    const data = await result.json();
+    console.log(data.data);
+    setProducts(data.data);
+  };
 
   useEffect(() => {
+    socket.connect();
     fetchProducts();
-    const intervalId = setInterval(() => {
-      fetchProducts();
-    }, 5000);
-    return () => clearInterval(intervalId);
-  }, [fetchProducts]);
+
+    const handleMenuUpdate = ({ action, product }) => {
+      setProducts((prev) => {
+        if (action === "add") return [...prev, product];
+        if (action === "update")
+          return prev.map((p) => (p._id === product._id ? product : p));
+        if (action === "delete")
+          return prev.filter((p) => p._id !== product._id);
+        return prev;
+      });
+    };
+
+    socket.on("menuUpdated", handleMenuUpdate);
+
+    return () => {
+      socket.off("menuUpdated", handleMenuUpdate);
+      socket.disconnect();
+    };
+  }, [id]);
+
+  // const fetchProducts = useCallback(async () => {
+  //   try {
+  //     const result = await getPublicProducts(id);
+  //     setProducts(result); // Store the products in the state
+  //   } catch (error) {
+  //     console.error("Failed to fetch products", error); // Log any errors
+  //   }
+  // }, [id, getPublicProducts]);
+
+  // useEffect(() => {
+  //   fetchProducts();
+  //   const intervalId = setInterval(() => {
+  //     fetchProducts();
+  //   }, 5000);
+  //   return () => clearInterval(intervalId);
+  // }, [fetchProducts]);
 
   // Fetch the products when the component mounts
 
