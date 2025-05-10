@@ -69,8 +69,8 @@ const ProductList = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black p-4 sm:p-6 flex justify-center items-start">
-      <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md border border-cyan-400/20 rounded-2xl shadow-2xl p-4 sm:p-6 animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black sm:p-6 flex justify-center items-start">
+      <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md border border-cyan-400/20 shadow-2xl p-4 sm:p-6 animate-fade-in">
         {/* 🔍 Search Bar */}
         <div className="mb-6 flex justify-center">
           <div className="relative w-full max-w-md">
