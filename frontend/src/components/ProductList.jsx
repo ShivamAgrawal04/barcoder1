@@ -175,7 +175,7 @@ const ProductList = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="text-center py-6 text-cyan-200">
+                  <td colSpan="8" className="text-center py-6 text-cyan-200">
                     No Products Found..😞
                   </td>
                 </tr>
