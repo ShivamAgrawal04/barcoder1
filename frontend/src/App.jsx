@@ -28,13 +28,13 @@ function App() {
           <Route path="/add" element={<ProductsAdd />} />
           <Route path="/update/:id" element={<UpdateProduct />} />
           <Route path="/qrcode" element={<QrCode />} />
-          <Route path="/qrproducts/:id" element={<ProductOnly />} />
         </Route>
 
         <Route element={<PublicComponent />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} /> {/* Optional */}
         </Route>
+        <Route path="/qrproducts/:id" element={<ProductOnly />} />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
