@@ -98,7 +98,7 @@ const ProductList = () => {
             .split(" ")
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
             .join(" ")}{" "}
-          Food List         
+          Food List
         </h2>
 
         <div className="overflow-x-auto">
