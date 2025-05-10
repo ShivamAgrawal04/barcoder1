@@ -1,7 +1,5 @@
 import app from "./index.js";
 import connectDB from "./config/db.js";
-import cookie from "cookie";
-import jwt from "jsonwebtoken";
 import { Server } from "socket.io";
 import { createServer } from "http";
 

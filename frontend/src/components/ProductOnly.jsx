@@ -8,7 +8,7 @@ const ProductOnly = () => {
 
   console.log("📦 Fetched Shop ID from URL:", id);
 
-  const socket = io("http://192.168.29.138:5000", {
+  const socket = io(import.meta.env.VITE_API_BASE_URL, {
     withCredentials: true,
     autoConnect: false,
     query: {
@@ -19,7 +19,7 @@ const ProductOnly = () => {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        `http://192.168.29.138:5000/api/products/${id}`
+        `${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`
       );
       const data = await response.json();
       console.log("🛒 Products from API:", data);
