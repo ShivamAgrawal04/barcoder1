@@ -44,9 +44,8 @@ const ProductsAdd = () => {
     e.preventDefault();
     const { name, price, category, description, productPic } = formData;
 
-    if (!name || !price || !category || !description || !productPic) {
+    if (!name || !price || !category || !description) {
       setError(true);
-      setImageError(!productPic ? "Please upload an image." : "");
       return;
     }
 
@@ -58,6 +57,7 @@ const ProductsAdd = () => {
     productData.append("category", category);
     productData.append("description", description);
     productData.append("productPic", productPic);
+    console.log(productData);
 
     const res = await addProduct(productData);
     if (!res.success) {

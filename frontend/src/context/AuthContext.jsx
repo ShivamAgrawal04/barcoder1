@@ -119,6 +119,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.put(`/products/${id}`, product, {
         withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       return { success: true, message: res?.data?.message };
     } catch (error) {

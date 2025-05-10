@@ -21,7 +21,7 @@ router.post(
   addProduct
 );
 router.get("/getProductById/:id", verifyToken, getProductById);
-router.put("/:id", verifyToken, updateProductById);
+router.put("/:id", verifyToken, upload.single("productPic"), updateProductById);
 router.delete("/:id", verifyToken, deleteProduct);
 
 export default router;
