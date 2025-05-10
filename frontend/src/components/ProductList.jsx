@@ -9,7 +9,7 @@ const ProductList = () => {
   const [product, setProduct] = useState([]);
   const [searchkey, setsearchkey] = useState("");
   const [text, setText] = useState("");
-  const { getProducts, deleteProductById } = useAuth();
+  const { user, getProducts, deleteProductById } = useAuth();
 
   const deleteProduct = async (id) => {
     const res = await deleteProductById(id);
@@ -93,7 +93,12 @@ const ProductList = () => {
           </div>
         </div>
         <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-4 sm:mb-6 text-center">
-          📦 Product List
+          🍕{" "}
+          {user?.shopName
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ")}{" "}
+          Food List         
         </h2>
 
         <div className="overflow-x-auto">
