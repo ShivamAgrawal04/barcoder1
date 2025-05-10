@@ -72,10 +72,9 @@ export const addProduct = asyncHandler(async (req, res) => {
     updateProduct: newProduct,
   });
 
-  return res.status(201).json({
-    status: "success",
-    data: newProduct,
-  });
+  return res.json(
+    new ApiResponse(200, "product added successfully", newProduct)
+  );
 });
 
 export const deleteProduct = asyncHandler(async (req, res) => {
@@ -83,7 +82,9 @@ export const deleteProduct = asyncHandler(async (req, res) => {
   const deletedProduct = await Product.findByIdAndDelete(productId);
 
   if (!deletedProduct) {
-    return res.status(404).json({ message: "Product not found" });
+    return res.json(
+      new ApiResponse(200, "product deleted successfully", deleteProduct)
+    );
   }
 
   // ✅ Real-time emit
@@ -127,7 +128,7 @@ export const updateProductById = asyncHandler(async (req, res) => {
   });
 
   return res.json(
-    new ApiResponse(200, "Product updated successfully", updatedProduct)
+    new ApiResponse(200, "Product updated successfully", updateProduct)
   );
 });
 

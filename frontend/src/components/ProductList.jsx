@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { CgCloseO } from "react-icons/cg";
-import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const ProductList = () => {
   const [product, setProduct] = useState([]);
@@ -12,16 +12,18 @@ const ProductList = () => {
   const { getProducts, deleteProductById } = useAuth();
 
   const deleteProduct = async (id) => {
-    const success = await deleteProductById(id);
-    if (success) {
+    const res = await deleteProductById(id);
+    if (!res.success) {
+      toast.error(res?.message);
+    } else {
       setProduct((prevProducts) => prevProducts.filter((p) => p._id !== id));
+      toast.success(res?.message);
     }
   };
 
   useEffect(() => {
     const fetch = async () => {
       const res = await getProducts();
-      console.log(res);
       setProduct(res);
     };
     fetch();
@@ -99,6 +101,7 @@ const ProductList = () => {
             <thead className=" text-left uppercase text-cyan-400 border-b border-cyan-500/20">
               <tr>
                 <th className="py-3 px-2 sm:px-4">S.No</th>
+                <th className="py-3 px-2 sm:px:4">Preview</th>
                 <th className="py-3 px-2 sm:px-4">Product Name</th>
                 <th className="py-3 px-2 sm:px-4">Price</th>
                 <th className="py-3 px-2 sm:px-4">Category</th>
@@ -116,6 +119,15 @@ const ProductList = () => {
                     <td className="py-2 px-2 sm:px-4 text-center">
                       {index + 1}
                     </td>
+
+                    <td>
+                      <img
+                        className="h-12 w-12 object-cover"
+                        src={item.productPic}
+                        alt=""
+                      />
+                    </td>
+
                     <td
                       className="py-2 px-2 sm:px-4"
                       dangerouslySetInnerHTML={{

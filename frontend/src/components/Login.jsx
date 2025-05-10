@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -13,8 +15,9 @@ const Login = () => {
     const res = await login({ email, password });
     console.log(res);
     if (!res.success) {
-      setError(res?.message || "Invalid email or password");
+      toast.error(res?.message);
     } else {
+      toast.success(res?.message || "✅ Login successfully");
       navigate("/");
     }
   };

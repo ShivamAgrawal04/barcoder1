@@ -12,7 +12,7 @@ const AuthContext = createContext();
 
 const initialState = {
   user: null,
-  loading: false,
+  loading: true,
 };
 
 const reducer = (state, action) => {
@@ -48,31 +48,53 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const signup = async (credentials) => {
-    const res = await axios.post("/users/signup", credentials, {
-      withCredentials: true,
-    });
-    if (res.data?.status === 200 && res.data?.data.newUser) {
-      return { success: true };
-    } else {
-      return { success: false, message: "Something went wrong" };
+    try {
+      const res = await axios.post("/users/signup", credentials, {
+        withCredentials: true,
+      });
+      console.log(res);
+      if (res?.data?.status === 200 && res?.data?.data) {
+        return { success: true, message: res?.data?.message };
+      }
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message };
     }
   };
 
   const login = async (credentials) => {
-    const res = await axios.post("/users/login", credentials, {
-      withCredentials: true,
-    });
-    if (res.data?.status === 200 && res.data?.data.newUser) {
-      dispatch({ type: "SET_USER", payload: res.data.data.newUser });
-      return { success: true, user: res.data.data.newUser };
-    } else {
-      return { success: false, message: "Invalid credentials or response" };
+    try {
+      const res = await axios.post("/users/login", credentials, {
+        withCredentials: true,
+      });
+
+      if (res.data?.status === 200 && res.data?.data.newUser) {
+        dispatch({ type: "SET_USER", payload: res.data.data.newUser });
+        return {
+          success: true,
+          user: res.data.data.newUser,
+          message: res.data.message || "Login successful",
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message,
+      };
     }
   };
 
   const logout = async () => {
-    await axios.post("/users/logout", {}, { withCredentials: true });
-    dispatch({ type: "LOGOUT" });
+    try {
+      const res = await axios.post(
+        "/users/logout",
+        {},
+        { withCredentials: true }
+      );
+      dispatch({ type: "LOGOUT" });
+      return { success: true, message: res?.data?.message };
+    } catch (error) {
+      return { success: false, message: error?.response?.data?.message };
+    }
   };
 
   const getProducts = async () => {
@@ -87,18 +109,21 @@ export const AuthProvider = ({ children }) => {
       const res = await axios.post("/products/addProduct", product, {
         withCredentials: true,
       });
-      console.log("Product Added: ", res.data);  // 👈 Add this
+      return { success: true, message: res?.data?.message };
     } catch (error) {
-      console.error("Add Product Error: ", error.response?.data || error.message);  // 👈 Add this
+      return { success: false, message: error?.response?.data?.message };
     }
   };
-  
 
   const updateProduct = async (id, product) => {
-    const res = await axios.put(`/products/${id}`, product, {
-      withCredentials: true,
-    });
-    console.log(res);
+    try {
+      const res = await axios.put(`/products/${id}`, product, {
+        withCredentials: true,
+      });
+      return { success: true, message: res?.data?.message };
+    } catch (error) {
+      return { success: false, message: error?.response?.data.message };
+    }
   };
 
   const getPublicProducts = async (id) => {
@@ -116,8 +141,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const deleteProductById = async (id) => {
-    const res = await axios.delete(`/products/${id}`);
-    return true;
+    try {
+      const res = await axios.delete(`/products/${id}`);
+      return { success: true, message: res?.data?.message };
+    } catch (error) {
+      return { success: false, message: error?.response?.data?.message };
+    }
   };
 
   return (

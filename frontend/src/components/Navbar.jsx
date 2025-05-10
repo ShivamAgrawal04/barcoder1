@@ -4,6 +4,7 @@ import Logo from "../assets/Anurag.png";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -14,8 +15,13 @@ const Navbar = () => {
   const ClickRef = useRef();
 
   const handleLogout = async () => {
-    await logout();
-    navigate("/login");
+    const res = await logout();
+    if (!res.success) {
+      toast.error(res?.message);
+    } else {
+      toast.success(res?.message);
+      navigate("/login");
+    }
   };
 
   const toggleMenu = () => setMenuOpen(!menuOpen);

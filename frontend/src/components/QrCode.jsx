@@ -16,7 +16,7 @@ const qrCode = () => {
 
     const isDevelopment = process.env.NODE_ENV === "development";
     const baseURL = isDevelopment
-      ? "http://192.168.29.234:3000"
+      ? "http://192.168.29.138:3000"
       : "https://your-production-url.com";
 
     const qrURL = `${baseURL}/qrproducts/${user._id}`;

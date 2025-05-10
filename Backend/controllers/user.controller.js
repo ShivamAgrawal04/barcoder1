@@ -28,6 +28,7 @@ export const signup = asyncHandler(async (req, res) => {
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) throw new ApiError(400, "All fields are required");
 
   const user = await User.findOne({ email }).select("+password");
   if (!user) {

@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-const PrivateComponent = () => {
+
+const PublicComponent = () => {
   const { user, loading } = useAuth();
   if (loading)
     return (
@@ -8,7 +9,7 @@ const PrivateComponent = () => {
         loading.............
       </div>
     );
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  return user ? <Navigate to="/" /> : <Outlet />;
 };
 
-export default PrivateComponent;
+export default PublicComponent;

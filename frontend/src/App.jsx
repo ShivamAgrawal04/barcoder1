@@ -1,5 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import Nav from "./components/Navbar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Footer from "./components/Footer";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
@@ -10,7 +12,7 @@ import Private from "./components/PrivateComponent";
 import ProductOnly from "./components/ProductOnly";
 import QrCode from "./components/QrCode";
 import PageNotFound from "./components/PageNotFound";
-// import Socket from "./components/Socket";
+import PublicComponent from "./components/PublicComponent";
 
 function App() {
   const location = useLocation();
@@ -18,18 +20,22 @@ function App() {
   return (
     <div>
       {!isQRProductPage && <Nav />}
-      <Routes>
-        {/* <Route element={<Private />}> */}
-        <Route path="/" element={<ProductList />} />
-        <Route path="/add" element={<ProductsAdd />} />
-        <Route path="/update/:id" element={<UpdateProduct />} />
-        <Route path="/qrcode" element={<QrCode />} />
-        {/* </Route> */}
-        <Route path="/login" element={<Login />} />
-        {/* <Route path="/socket" element={<Socket />} /> */}
+      <ToastContainer position="top-right" autoClose={3000} />
 
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/qrproducts/:id" element={<ProductOnly />} />
+      <Routes>
+        <Route element={<Private />}>
+          <Route path="/" element={<ProductList />} />
+          <Route path="/add" element={<ProductsAdd />} />
+          <Route path="/update/:id" element={<UpdateProduct />} />
+          <Route path="/qrcode" element={<QrCode />} />
+          <Route path="/qrproducts/:id" element={<ProductOnly />} />
+        </Route>
+
+        <Route element={<PublicComponent />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} /> {/* Optional */}
+        </Route>
+
         <Route path="*" element={<PageNotFound />} />
       </Routes>
 

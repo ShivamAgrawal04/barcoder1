@@ -4,6 +4,7 @@ import { FaBox, FaDollarSign, FaTags, FaBuilding } from "react-icons/fa";
 import Demovideo from "../assets/System.mp4";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const UpdateProduct = () => {
   const [name, setName] = useState("");
@@ -27,8 +28,18 @@ const UpdateProduct = () => {
   };
 
   const handelUpdate = async () => {
-    await updateProduct(params.id, { name, price, category, description });
-    navigate("/");
+    const res = await updateProduct(params.id, {
+      name,
+      price,
+      category,
+      description,
+    });
+    if (!res.success) {
+      toast.error(res?.message);
+    } else {
+      navigate("/");
+      toast.success(res?.message);
+    }
   };
 
   return (
