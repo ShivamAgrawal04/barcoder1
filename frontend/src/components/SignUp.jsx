@@ -38,7 +38,7 @@ const SignUp = () => {
 
         <div className="mb-2">
           <label className="block text-blue-800 font-semibold mb-2">
-            Reastrunt/Cafe
+            Restaurant/Cafe
           </label>
           <input
             type="text"
