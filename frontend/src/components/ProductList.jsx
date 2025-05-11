@@ -35,7 +35,6 @@ const ProductList = () => {
   useEffect(() => {
     const fetch = async () => {
       const res = await getProducts();
-      console.log(res);
       setProduct(res);
       setAllProducts(res);
     };
@@ -43,45 +42,35 @@ const ProductList = () => {
   }, [getProducts]);
 
   const handelSearch = (e) => {
-    const key = e.target.value.toLowerCase();
-    setsearchkey(key);
-    setText(key);
+  const key = e.target.value.toLowerCase();
+  setsearchkey(key);
+  setText(key);
 
-    if (key.trim() === "") {
-      setProduct(allProducts);
-      return;
-    }
+  if (key.trim() === "") {
+    setProduct(allProducts); // Full list ko restore kar dena jab search clear ho
+    return;
+  }
 
-    const filtered = allProducts
-      .map((item) => {
-        const nameMatches = (
-          item.name.toLowerCase().match(new RegExp(key, "g")) || []
-        ).length;
-        const priceMatches = (
-          String(item.price).match(new RegExp(key, "g")) || []
-        ).length;
+  const filtered = allProducts.filter((item) => {
+    // Check if name or price starts with the key
+    const nameMatch = item.name.toLowerCase().startsWith(key);
+    const priceMatch = String(item.price).startsWith(key); // Price ko string mein convert karna agar wo number ho
 
-        const totalMatches = nameMatches + priceMatches;
+    return nameMatch || priceMatch; // Agar name ya price match kare
+  });
 
-        return {
-          ...item,
-          matchCount: totalMatches,
-        };
-      })
-      .filter((item) => item.matchCount > 0)
-      .sort((a, b) => a.matchCount - b.matchCount); // lower match count first
+  setProduct(filtered); // Update the products state
+};
 
-    setProduct(filtered);
-  };
+const highlightMatch = (text, key) => {
+  if (!key) return text;
+  const regex = new RegExp(`^(${key})`, "i"); // Only match at the start of the string
+  return text.replace(
+    regex,
+    '<span class="font-bold text-highlight">$1</span>' // Match ko highlight karna
+  );
+};
 
-  const highlightMatch = (text, key) => {
-    if (!key) return text;
-    const regex = new RegExp(`(${key})`, "gi");
-    return text.replace(
-      regex,
-      '<span class="font-bold text-teal-500">$1</span>'
-    );
-  };
 
   const handelMSGdelete = () => {
     setText("");
@@ -101,9 +90,7 @@ const ProductList = () => {
 
     return (
       <div className="text-sm sm:text-sm md:text-base text-cyan-200 leading-snug">
-        <span className="font-semibold text-base text-cyan-400 mr-1">
-          Description:
-        </span>
+        <span className="font-semibold text-base text-cyan-400 mr-1">Description:</span>
         <span>
           {displayText}
           {!showFull && text.length > limit && (
@@ -139,9 +126,7 @@ const ProductList = () => {
 
     return (
       <div className="text-sm sm:text-sm md:text-base text-cyan-200 leading-snug">
-        <span className="font-semibold text-base text-cyan-400 mr-1">
-          Category:
-        </span>
+        <span className="font-semibold text-base text-cyan-400 mr-1">Category:</span>
         <span>
           {displayText}
           {!showFull && text.length > limit && (
@@ -217,7 +202,7 @@ const ProductList = () => {
               </tr>
             </thead>
             <tbody>
-              {product?.length > 0 ? (
+              {product && product.length> 0 ? (
                 product.map((item, index) => (
                   <tr
                     key={index}
@@ -354,7 +339,7 @@ const ProductList = () => {
                 className="bg-[#202636] border border-cyan-700/30 rounded-xl p-4 py-5 shadow-md text-cyan-100 transition-all duration-300 overflow-hidden"
               >
                 <p className="text-cyan-400 text-xs sm:text-sm mb-1">
-                  ❤ {index + 1}
+                  ❤️ {index + 1}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 sm:items-start">
@@ -409,7 +394,7 @@ const ProductList = () => {
                         to={`/update/${item._id}`}
                         className="flex items-center justify-center text-cyan-300 border border-cyan-400 px-4 py-2 rounded-full text-xs sm:text-sm hover:bg-cyan-500 hover:text-white transition-all duration-300"
                       >
-                        ✏ Update
+                        ✏️ Update
                       </Link>
                     </div>
                   </div>

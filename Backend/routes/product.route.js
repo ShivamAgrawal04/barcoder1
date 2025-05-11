@@ -13,7 +13,7 @@ import { upload } from "../config/cloudinary.js";
 const router = express.Router();
 
 router.get("/", verifyToken, getProducts);
-router.get("/:shopname", getPublicProducts);
+router.get("/:id", getPublicProducts);
 router.post(
   "/addProduct",
   verifyToken,
