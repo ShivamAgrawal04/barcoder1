@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { FaTrashAlt } from "react-icons/fa";
+import {
+  FaPenAlt,
+  FaPencilAlt,
+  FaPenFancy,
+  FaPenNib,
+  FaTrashAlt,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { CgCloseO } from "react-icons/cg";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 
 const ProductList = () => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const [product, setProduct] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [searchkey, setsearchkey] = useState("");
   const [text, setText] = useState("");
+  const [showMore, setShowMore] = useState({});
+  const [showMoreCategory, setShowMoreCategory] = useState({});
   const { getProducts, deleteProductById } = useAuth();
 
   const deleteProduct = async (id) => {
@@ -43,12 +51,24 @@ const ProductList = () => {
       return;
     }
 
-    const filtered = allProducts.filter((item) => {
-      return (
-        item.name.toLowerCase().includes(key) ||
-        String(item.price).includes(key)
-      );
-    });
+    const filtered = allProducts
+      .map((item) => {
+        const nameMatches = (
+          item.name.toLowerCase().match(new RegExp(key, "g")) || []
+        ).length;
+        const priceMatches = (
+          String(item.price).match(new RegExp(key, "g")) || []
+        ).length;
+
+        const totalMatches = nameMatches + priceMatches;
+
+        return {
+          ...item,
+          matchCount: totalMatches,
+        };
+      })
+      .filter((item) => item.matchCount > 0)
+      .sort((a, b) => a.matchCount - b.matchCount); // lower match count first
 
     setProduct(filtered);
   };
@@ -68,10 +88,82 @@ const ProductList = () => {
     setProduct(allProducts);
   };
 
+  const Description = ({ text }) => {
+    const [showFull, setShowFull] = useState(false);
+    const limit = 90; // characters to show before "Read more"
+
+    const toggleDescription = () => {
+      setShowFull((prev) => !prev);
+    };
+
+    const displayText = showFull ? text : text.slice(0, limit);
+
+    return (
+      <div className="text-xs sm:text-sm md:text-base text-cyan-200 leading-snug">
+        <span className="font-semibold text-cyan-400 mr-1">Description:</span>
+        <span>
+          {displayText}
+          {!showFull && text.length > limit && (
+            <span
+              onClick={toggleDescription}
+              className="text-cyan-400 underline cursor-pointer ml-1"
+            >
+              Read more
+            </span>
+          )}
+          {showFull && text.length > limit && (
+            <span
+              onClick={toggleDescription}
+              className="text-cyan-400 underline cursor-pointer ml-2"
+            >
+              Show less
+            </span>
+          )}
+        </span>
+      </div>
+    );
+  };
+
+  const Category = ({ text }) => {
+    const [showFull, setShowFull] = useState(false);
+    const limit = 90; // characters to show before "Read more"
+
+    const toggleCategory = () => {
+      setShowFull((prev) => !prev);
+    };
+
+    const displayText = showFull ? text : text.slice(0, limit);
+
+    return (
+      <div className="text-xs sm:text-sm md:text-base text-cyan-200 leading-snug">
+        <span className="font-semibold text-cyan-400 mr-1">Category:</span>
+        <span>
+          {displayText}
+          {!showFull && text.length > limit && (
+            <span
+              onClick={toggleCategory}
+              className="text-cyan-400 underline cursor-pointer ml-1"
+            >
+              Read more
+            </span>
+          )}
+          {showFull && text.length > limit && (
+            <span
+              onClick={toggleCategory}
+              className="text-cyan-400 underline cursor-pointer ml-2"
+            >
+              Show less
+            </span>
+          )}
+        </span>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black sm:p-6 flex justify-center items-start">
       <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md border border-cyan-400/20 shadow-2xl p-4 sm:p-6 animate-fade-in">
-        {/* 🔍 Search Bar */}
+        {/* Search Bar */}
         <div className="mb-6 flex justify-center">
           <div className="relative w-full max-w-md">
             <div className="absolute left- px-3 top-1/2 transform -translate-y-1/2 text-cyan-300 text-xl pointer-events-none animate-pulse">
@@ -95,8 +187,8 @@ const ProductList = () => {
           </div>
         </div>
 
-        {/* 🍕 Shop Title */}
-        <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-4 sm:mb-6 text-center">
+        {/* Title */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
           🍕{" "}
           {user?.shopName
             ?.split(" ")
@@ -105,17 +197,17 @@ const ProductList = () => {
           Food List
         </h2>
 
-        {/* ✅ Table for large screens */}
+        {/* TABLE VIEW - Large Screen */}
         <div className="overflow-x-auto hidden md:block">
-          <table className="w-full text-sm sm:text-base text-cyan-100">
-            <thead className="text-left uppercase text-cyan-400 border-b border-cyan-500/20">
+          <table className="w-full  text-sm sm:text-base text-cyan-100">
+            <thead className="text-left  uppercase text-cyan-400 border-b border-cyan-500/20">
               <tr>
-                <th className="py-3 px-2">S.No</th>
+                <th className="py-3 px-2 ">S.No</th>
                 <th className="py-3 px-2">Preview</th>
                 <th className="py-3 px-2">Dish Name</th>
                 <th className="py-3 px-2">Price</th>
-                <th className="py-3 px-2">Category</th>
-                <th className="py-3 px-2">Description</th>
+                <th className="py-3 px-2 w-[200px]">Category</th>
+                <th className="py-3 px-2 w-[200px]">Description</th>
                 <th className="py-3 px-2">Operation</th>
               </tr>
             </thead>
@@ -124,7 +216,7 @@ const ProductList = () => {
                 product.map((item, index) => (
                   <tr
                     key={index}
-                    className="hover:bg-white/10 border-b border-white/10 transition-all"
+                    className=" hover:bg-white/10 border-b border-white/10 transition-all"
                   >
                     <td className="py-2 px-2">{index + 1}</td>
                     <td>
@@ -155,31 +247,79 @@ const ProductList = () => {
                         __html: highlightMatch(String(item.price), searchkey),
                       }}
                     />
-                    <td
-                      className="px-2"
-                      dangerouslySetInnerHTML={{
-                        __html: highlightMatch(item.category, searchkey),
-                      }}
-                    />
-                    <td
-                      className="px-2"
-                      dangerouslySetInnerHTML={{
-                        __html: highlightMatch(item.description, searchkey),
-                      }}
-                    />
-                    <td>
-                      <div className="flex flex-row gap-2 justify-center -ml-20">
+                    {/* Category */}
+                    <td className="px-2 w-[200px] break-words">
+                      <div>
+                        <p
+                          className={`text-justify ${
+                            showMoreCategory[index]
+                              ? ""
+                              : "line-clamp-2 overflow-hidden"
+                          } transition-all duration-300`}
+                          dangerouslySetInnerHTML={{
+                            __html: highlightMatch(item.category, searchkey),
+                          }}
+                        />
+                        {item.category.length > 40 && (
+                          <button
+                            className="text-xs text-cyan-400 mt-1 hover:underline focus:outline-none"
+                            onClick={() =>
+                              setShowMoreCategory((prev) => ({
+                                ...prev,
+                                [index]: !prev[index],
+                              }))
+                            }
+                          >
+                            {showMoreCategory[index]
+                              ? "Show less"
+                              : "Read more"}
+                          </button>
+                        )}
+                      </div>
+                    </td>
+
+                    {/* Description with Read More */}
+                    <td className="px-2 w-[200px] break-words">
+                      <div>
+                        <p
+                          className={`text-justify ${
+                            showMore[index]
+                              ? ""
+                              : "line-clamp-2 overflow-hidden"
+                          } transition-all duration-300`}
+                          dangerouslySetInnerHTML={{
+                            __html: highlightMatch(item.description, searchkey),
+                          }}
+                        />
+                        {item.description.length > 90 && (
+                          <button
+                            className="text-xs text-cyan-400 mt-1 hover:underline focus:outline-none"
+                            onClick={() =>
+                              setShowMore((prev) => ({
+                                ...prev,
+                                [index]: !prev[index],
+                              }))
+                            }
+                          >
+                            {showMore[index] ? "Show less" : "Read more"}
+                          </button>
+                        )}
+                      </div>
+                    </td>
+
+                    <td className="px-2 py-1">
+                      <div className="flex gap-2 flex-wrap">
                         <button
                           onClick={() => deleteProduct(item._id)}
-                          className="flex bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-sm"
+                          className="flex items-center bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-sm"
                         >
-                          <FaTrashAlt className="mt-1 mr-1" /> Delete
+                          <FaTrashAlt className="mr-1" /> Delete
                         </button>
                         <Link
                           to={`/update/${item._id}`}
-                          className="text-cyan-300 border border-cyan-400 px-4 py-2 rounded-full text-sm hover:bg-cyan-500 hover:text-white animate-pulse"
+                          className="flex items-center text-cyan-300 border border-cyan-400 px-3  py-2 rounded-full text-sm hover:bg-cyan-500 hover:text-white animate-pulse"
                         >
-                          ✏ Update
+                          <FaPenAlt className="mr-1 text-white" /> Update
                         </Link>
                       </div>
                     </td>
@@ -196,90 +336,82 @@ const ProductList = () => {
           </table>
         </div>
 
-        {/* ✅ Card view for small screens */}
+        {/* CARD VIEW - Small Screens (unchanged) */}
         <div className="md:hidden space-y-4">
-          {product.map((item, index) => (
-            <div
-              key={index}
-              className="bg-[#202636] border border-cyan-500/20 rounded-xl p-4 py-5 shadow-md text-cyan-100"
-            >
-              <p className="text-cyan-400 text-sm">❤ {index + 1}</p>
-              <div className="relative flex flex-row">
-                <div className="flex-1 pr-4">
-                  <h3 className="text-2xl mb-3 font-semibold text-cyan-300">
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: highlightMatch(
-                          item.name
-                            ?.split(" ")
-                            .map(
-                              (word) =>
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                            )
-                            .join(" "),
-                          searchkey
-                        ),
-                      }}
-                    />
-                  </h3>
-                </div>
-
-                <div className="absolute right-0 top-0">
-                  <img
-                    src={item.productPic}
-                    alt="Dishes Photos"
-                    className="w-36 h-32 sm:w-32 sm:h-32 object-cover rounded-md"
-                  />
-                </div>
-              </div>
-
-              <p>
-                <span className="text-lg font-semibold text-cyan-400">
-                  Price:
-                </span>{" "}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: highlightMatch(String(item.price), searchkey),
-                  }}
-                />
-              </p>
-              <p>
-                <span className="text-lg font-semibold text-cyan-400">
-                  Category:
-                </span>{" "}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: highlightMatch(item.category, searchkey),
-                  }}
-                />
-              </p>
-              <p>
-                <span className="text-lg font-semibold text-cyan-400">
-                  Description:
-                </span>{" "}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: highlightMatch(item.description, searchkey),
-                  }}
-                />
-              </p>
-
-              <div className="flex flex-row gap-2 justify-items-start mt-2">
-                <button
-                  onClick={() => deleteProduct(item._id)}
-                  className="flex bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-sm"
-                >
-                  <FaTrashAlt className="mt-1 mr-1" /> Delete
-                </button>
-                <Link
-                  to={`/update/${item._id}`}
-                  className="text-cyan-300 border border-cyan-400 px-4 py-2 rounded-full text-sm hover:bg-cyan-500 hover:text-white animate-pulse"
-                >
-                  ✏ Update
-                </Link>
-              </div>
+          {product.length === 0 ? (
+            <div className="text-center text-cyan-300 font-medium text-sm">
+              No Products Found..😞
             </div>
-          ))}
+          ) : (
+            product.map((item, index) => (
+              <div
+                key={index}
+                className="bg-[#202636] border border-cyan-700/30 rounded-xl p-4 py-5 shadow-md text-cyan-100 transition-all duration-300 overflow-hidden"
+              >
+                <p className="text-cyan-400 text-xs sm:text-sm mb-1">
+                  ❤ {index + 1}
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 sm:items-start">
+                  <div className="flex-shrink-0 w-full sm:w-36 md:w-40">
+                    <img
+                      src={item.productPic}
+                      alt="Dish"
+                      className="w-full h-32 sm:h-28 md:h-32 object-contain rounded-lg shadow-[0_0_15px_#00FFFF66] hover:shadow-[0_0_25px_#00FFFFAA] transition-all duration-300 ease-in-out animate-pulse"
+                    />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-cyan-300 mb-2 leading-snug break-words whitespace-normal">
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: highlightMatch(
+                            item.name
+                              ?.split(" ")
+                              .map(
+                                (word) =>
+                                  word.charAt(0).toUpperCase() + word.slice(1)
+                              )
+                              .join(" "),
+                            searchkey
+                          ),
+                        }}
+                      />
+                    </h3>
+
+                    <p className="text-xs sm:text-sm md:text-base break-words whitespace-normal flex flex-wrap items-start">
+                      <span className="font-semibold text-cyan-400 mr-1">
+                        Price:
+                      </span>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: highlightMatch(String(item.price), searchkey),
+                        }}
+                      />
+                    </p>
+
+                    <Category text={item.category} />
+                    <Description text={item.description} />
+
+                    <div className="flex flex-col sm:flex-row gap-2 mt-3">
+                      <button
+                        onClick={() => deleteProduct(item._id)}
+                        className="flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-xs sm:text-sm transition-all duration-300"
+                      >
+                        <FaTrashAlt className="mr-1" /> Delete
+                      </button>
+                      <Link
+                        to={`/update/${item._id}`}
+                        className="flex items-center justify-center text-cyan-300 border border-cyan-400 px-4 py-2 rounded-full text-xs sm:text-sm hover:bg-cyan-500 hover:text-white transition-all duration-300"
+                      >
+                        ✏ Update
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
