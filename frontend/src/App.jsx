@@ -20,7 +20,7 @@ function App() {
   return (
     <div>
       {!isQRProductPage && <Nav />}
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={2000} />
 
       <Routes>
         <Route element={<Private />}>
