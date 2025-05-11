@@ -99,8 +99,10 @@ const ProductList = () => {
     const displayText = showFull ? text : text.slice(0, limit);
 
     return (
-      <div className="text-xs sm:text-sm md:text-base text-cyan-200 leading-snug">
-        <span className="font-semibold text-cyan-400 mr-1">Description:</span>
+      <div className="text-sm sm:text-sm md:text-base text-cyan-200 leading-snug">
+        <span className="font-semibold text-base text-cyan-400 mr-1">
+          Description:
+        </span>
         <span>
           {displayText}
           {!showFull && text.length > limit && (
@@ -135,8 +137,10 @@ const ProductList = () => {
     const displayText = showFull ? text : text.slice(0, limit);
 
     return (
-      <div className="text-xs sm:text-sm md:text-base text-cyan-200 leading-snug">
-        <span className="font-semibold text-cyan-400 mr-1">Category:</span>
+      <div className="text-sm sm:text-sm md:text-base text-cyan-200 leading-snug">
+        <span className="font-semibold text-base text-cyan-400 mr-1">
+          Category:
+        </span>
         <span>
           {displayText}
           {!showFull && text.length > limit && (
@@ -150,7 +154,7 @@ const ProductList = () => {
           {showFull && text.length > limit && (
             <span
               onClick={toggleCategory}
-              className="text-cyan-400 underline cursor-pointer ml-2"
+              className="text-cyan-400 underline cursor-pointer ml-2 "
             >
               Show less
             </span>
@@ -162,7 +166,7 @@ const ProductList = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black sm:p-6 flex justify-center items-start">
-      <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md border border-cyan-400/20 shadow-2xl p-4 sm:p-6 animate-fade-in">
+      <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md border border-cyan-400/20 shadow-2xl p-3 sm:p-6 animate-fade-in">
         {/* Search Bar */}
         <div className="mb-6 flex justify-center">
           <div className="relative w-full max-w-md">
@@ -251,7 +255,7 @@ const ProductList = () => {
                     <td className="px-2 w-[200px] break-words">
                       <div>
                         <p
-                          className={`text-justify ${
+                          className={`text-justify   ${
                             showMoreCategory[index]
                               ? ""
                               : "line-clamp-2 overflow-hidden"
@@ -362,7 +366,7 @@ const ProductList = () => {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-cyan-300 mb-2 leading-snug break-words whitespace-normal">
+                    <h3 className="text-xl sm:text-xl md:text-xl font-bold text-cyan-300 mb-2 leading-snug break-words whitespace-normal">
                       <span
                         dangerouslySetInnerHTML={{
                           __html: highlightMatch(
@@ -379,8 +383,8 @@ const ProductList = () => {
                       />
                     </h3>
 
-                    <p className="text-xs sm:text-sm md:text-base break-words whitespace-normal flex flex-wrap items-start">
-                      <span className="font-semibold text-cyan-400 mr-1">
+                    <p className="text-lg font-semibold sm:text-sm md:text-base break-words whitespace-normal flex flex-wrap items-start">
+                      <span className="font-semibold text-lg text-cyan-400 mr-1">
                         Price:
                       </span>
                       <span

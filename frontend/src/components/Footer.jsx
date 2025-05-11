@@ -49,7 +49,7 @@ const Footer = () => {
             Terms
           </a>
           <a href="#" className="hover:text-yellow-300 transition duration-300">
-            Support
+            Supports
           </a>
         </div>
       </div>
