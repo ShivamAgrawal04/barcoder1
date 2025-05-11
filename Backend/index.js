@@ -31,13 +31,13 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(compression());
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: "Too many requests from this IP, please try again later.",
-});
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // Limit each IP to 100 requests per windowMs
+//   message: "Too many requests from this IP, please try again later.",
+// });
 
-app.use(limiter);
+// app.use(limiter);
 
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);

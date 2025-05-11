@@ -35,6 +35,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetch = async () => {
       const res = await getProducts();
+      console.log(res);
       setProduct(res);
       setAllProducts(res);
     };
@@ -216,7 +217,7 @@ const ProductList = () => {
               </tr>
             </thead>
             <tbody>
-              {product.length > 0 ? (
+              {product?.length > 0 ? (
                 product.map((item, index) => (
                   <tr
                     key={index}
