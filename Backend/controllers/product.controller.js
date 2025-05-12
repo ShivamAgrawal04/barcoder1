@@ -26,7 +26,7 @@ export const getPublicProducts = asyncHandler(async (req, res) => {
       new ApiResponse(200, "Products fetched successfully", products)
     );
   } else {
-    return res.json(new ApiResponse(404, "No products found"));
+    return res.json(new ApiResponse(404, "No products found", []));
   }
 });
 
