@@ -21,6 +21,7 @@ const Navbar = () => {
     } else {
       toast.success(res?.message);
       navigate("/login");
+      window.location.reload();
     }
   };
 
