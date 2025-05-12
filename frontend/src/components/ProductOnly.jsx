@@ -16,7 +16,7 @@ const ProductOnly = () => {
 
   const [products, setProducts] = useState([]);
 
-  const [allProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [searchkey, setsearchkey] = useState("");
   const [text, setText] = useState("");
   const [showMore, setShowMore] = useState({});
@@ -38,8 +38,9 @@ const ProductOnly = () => {
         `${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`
       );
       const data = await response.json();
-      console.log("🛒 Products from API:", data);
+
       setProducts(data.data);
+      setAllProducts(data.data);
     } catch (error) {
       console.error("❌ Failed to fetch products:", error);
     }
@@ -351,7 +352,7 @@ const ProductOnly = () => {
               ) : (
                 <tr>
                   <td colSpan="7" className="text-center py-6 text-cyan-200">
-                    No Products Found..😞
+                    No Dishes Found..😞
                   </td>
                 </tr>
               )}
@@ -360,18 +361,9 @@ const ProductOnly = () => {
         </div>
 
         <div className="md:hidden space-y-4">
-          {/* <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
-  🍕{" "}
-  {shopName
-    ?.split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ")}{" "}
-  Food List
-</h2> */}
-
           {products.length === 0 ? (
             <div className="text-center text-cyan-300 font-medium text-sm">
-              No Products Found..😞
+              No Dishes Found..😞
             </div>
           ) : (
             products.map((item, index) => (
