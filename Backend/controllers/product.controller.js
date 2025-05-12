@@ -45,7 +45,12 @@ export const getProducts = asyncHandler(async (req, res) => {
 });
 
 export const addProduct = asyncHandler(async (req, res) => {
+  console.log(req.file);
+  console.log("Hello");
+
   const { name, price, category, availability, description } = req.body;
+
+  console.log(req.body);
 
   if (!name || !price || !category || !description) {
     return res.status(400).json({ message: "All fields are required" });
@@ -64,7 +69,6 @@ export const addProduct = asyncHandler(async (req, res) => {
     description,
     productPic: imageUrl,
     userId: req.user.id,
-    shopName: req.user.shopName,
   });
 
   global.io.to(req.user.id).emit("menuUpdated", {

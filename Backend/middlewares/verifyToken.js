@@ -21,6 +21,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
   }
 
   req.user = user; // ✅ Now req.user has shopName, email, etc.
+
   next();
 });
 
