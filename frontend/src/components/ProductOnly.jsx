@@ -12,7 +12,7 @@ import { useAuth } from "../context/AuthContext";
 import { CgCloseO } from "react-icons/cg";
 
 const ProductOnly = () => {
-  const { id } = useParams(); // shopId
+  const { id, shopName } = useParams(); // shopId
 
   const [products, setProducts] = useState([]);
 
@@ -230,7 +230,7 @@ const ProductOnly = () => {
         {/* Title */}
         <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
           🍕{" "}
-          {products[0]?.userId?.shopName
+          {shopName
             ?.split(" ")
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
             .join(" ")}{" "}

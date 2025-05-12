@@ -34,7 +34,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} /> {/* Optional */}
         </Route>
-        <Route path="/qrproducts/:id" element={<ProductOnly />} />
+        <Route path="/qrproducts/:id/:shopName" element={<ProductOnly />} />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>

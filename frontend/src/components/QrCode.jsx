@@ -14,7 +14,9 @@ const qrCode = () => {
   useEffect(() => {
     if (!user?._id) return;
 
-    const qrURL = `${import.meta.env.VITE_API_QR_CODE}/qrproducts/${user._id}`;
+    const qrURL = `${import.meta.env.VITE_API_QR_CODE}/qrproducts/${user._id}/${
+      user.shopName
+    }`;
 
     const qr = new QRCodeStyling({
       width: 300,

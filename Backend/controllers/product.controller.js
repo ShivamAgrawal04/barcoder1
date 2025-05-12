@@ -20,10 +20,7 @@ export const getPublicProducts = asyncHandler(async (req, res) => {
   // }
 
   const userId = req.params.id;
-  const products = await Product.find({ userId }).populate(
-    "userId",
-    "shopName"
-  );
+  const products = await Product.find({ userId });
   if (products?.length > 0) {
     return res.json(
       new ApiResponse(200, "Products fetched successfully", products)
