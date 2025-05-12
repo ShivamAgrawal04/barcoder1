@@ -130,18 +130,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getPublicProducts = async (id) => {
-    try {
-      const res = await axios.get(`/products/${id}`, {
-        withCredentials: false,
-      });
-      return {
-        success: true,
-        message: "fetched successfully",
-        data: res.data.data,
-      };
-    } catch (error) {
-      return { success: false, message: error?.response?.data?.message };
-    }
+    const res = await axios.get(`/products/${id}`, {
+      withCredentials: false,
+    });
+    console.log("getpublic", res.data.data);
+    return res.data.data;
   };
 
   const getProductById = async (id) => {
