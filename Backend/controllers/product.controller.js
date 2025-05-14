@@ -4,21 +4,6 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
 export const getPublicProducts = asyncHandler(async (req, res) => {
-  // const products = await Product.find({}).populate({
-  //   path: "userId",
-  //   match: { shopName: req.params.shopname },
-  //   select: "shopName",
-  // });
-
-  // const filterProducts = products.filter((product) => product.userId);
-  // if (filterProducts?.length > 0) {
-  //   return res.json(
-  //     new ApiResponse(200, "Products fetched successfully", filterProducts)
-  //   );
-  // } else {
-  //   return res.json(new ApiResponse(404, "No products found"));
-  // }
-
   const userId = req.params.id;
   const products = await Product.find({ userId });
   if (products?.length > 0) {
@@ -45,12 +30,7 @@ export const getProducts = asyncHandler(async (req, res) => {
 });
 
 export const addProduct = asyncHandler(async (req, res) => {
-  console.log(req.file);
-  console.log("Hello");
-
   const { name, price, category, availability, description } = req.body;
-
-  console.log(req.body);
 
   if (!name || !price || !category || !description) {
     return res.status(400).json({ message: "All fields are required" });

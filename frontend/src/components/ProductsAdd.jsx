@@ -44,10 +44,11 @@ const ProductsAdd = () => {
     e.preventDefault();
     const { name, price, category, description, productPic } = formData;
 
-    if (!name || !price || !category || !description) {
-      setError(true);
-      return;
-    }
+    // if (!name || !price || !category || !description || !productPic) {
+    //   setError(true);
+    //   setImageError(!productPic ? "Please upload an image." : "");
+    //   return;
+    // }
 
     setLoading(true); // Show "Uploading..."
 
@@ -57,9 +58,10 @@ const ProductsAdd = () => {
     productData.append("category", category);
     productData.append("description", description);
     productData.append("productPic", productPic);
-    console.log(productData);
 
     const res = await addProduct(productData);
+    console.log(res);
+
     if (!res.success) {
       toast.error(res?.message);
     } else {
@@ -90,10 +92,10 @@ const ProductsAdd = () => {
   }, [loading]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black flex items-center justify-center px-4">
+    <div className=" min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black flex items-center justify-center px-4">
       <form
         onSubmit={handleAddProduct}
-        className="bg-white/10 mt-2 backdrop-blur-md border border-cyan-500/30 p-8 mb-20 rounded-2xl shadow-[0_0_30px_#00ffff44] w-full max-w-lg space-y-4 animate-fade-in"
+        className="mt-20 bg-white/10 backdrop-blur-md border border-cyan-500/30 p-8 mb-20 rounded-2xl shadow-[0_0_30px_#00ffff44] w-full max-w-lg space-y-4 animate-fade-in"
         encType="multipart/form-data"
       >
         <h2 className="text-3xl font-bold text-center text-cyan-300 ">
@@ -208,7 +210,7 @@ const ProductsAdd = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 rounded-md transition duration-300 shadow-md hover:shadow-xl"
+          className="w-full bg-cyan-500 hover:bg-cyan-600 text-white  py-2 rounded-md transition duration-300 shadow-md hover:shadow-xl"
         >
           {loading ? (
             <span className="flex items-center justify-center">

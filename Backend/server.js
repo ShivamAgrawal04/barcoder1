@@ -17,8 +17,6 @@ const io = new Server(server, {
   },
 });
 
-// ✅ Define globalreq AFTER io is initialized
-// global.globalreq = global.globalreq || {};
 global.io = io;
 
 io.on("connection", (socket) => {
@@ -34,7 +32,18 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(process.env.PORT, "0.0.0.0", () => {
+const gracefulShutdown = async () => {
+  console.log("Received shutdown signal");
+  server.close(() => {
+    console.log("server closed");
+    process.exit(0);
+  });
+};
+
+process.on("SIGTERM", gracefulShutdown);
+process.on("SIGINT", gracefulShutdown);
+
+server.listen(process.env.PORT, "0.0.0.0", async () => {
   console.log("🚀 Server running on port", process.env.PORT);
-  connectDB();
+  await connectDB();
 });

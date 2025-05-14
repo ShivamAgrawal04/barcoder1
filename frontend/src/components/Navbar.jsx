@@ -4,7 +4,6 @@ import Logo from "../assets/Anurag.png";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -12,17 +11,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [menu, setMenu] = useState(false);
+  const [navbarVisible, setNavbarVisible] = useState(true);
+  const [searchBarPosition, setSearchBarPosition] = useState("top-16");
   const ClickRef = useRef();
 
   const handleLogout = async () => {
-    const res = await logout();
-    if (!res.success) {
-      toast.error(res?.message);
-    } else {
-      toast.success(res?.message);
-      navigate("/login");
-      window.location.reload();
-    }
+    await logout();
+    navigate("/login");
   };
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
@@ -31,7 +26,7 @@ const Navbar = () => {
     <>
       <Link
         to="/"
-        className="hover:text-cyan-400 transition-all duration-300"
+        className=" hover:text-cyan-400 transition-all duration-300"
         onClick={() => isMobile && setMenuOpen(false)}
       >
         Product
@@ -97,16 +92,16 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-800 shadow-[0_0_20px_#00ffff44] font-neon">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
+    <nav className="fixed top-0 left-0 right-0 z-50  bg-gray-800 shadow-[0_0_20px_#00ffff44] font-neon">
+      <div className="max-w-7xl mx-auto px-4 ">
+        <div className=" flex justify-between items-center h-16">
           <div className=" items-center flex flex-row">
             <img
               className="w-14 h-14 mr-5 rounded-full object-contain animate-pulse hover:rotate-[360deg] transition-all duration-700"
               src={Logo}
               alt="Logo"
             />
-            <h1 className="text-xl  sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 tracking-wider">
+            <h1 className="text-xl  sm:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 tracking-wider">
               Anurag Code's
             </h1>
           </div>
@@ -180,7 +175,7 @@ const Navbar = () => {
                   handleLogout();
                   setMenu(false);
                 }}
-                className="w-full text-left px-4 py-2 bg-gradient-to-r from-red-400 to-pink-500 text-white font-bold rounded-md shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                className="w-full text-left px-4 py-2 bg-gradient-to-r from-red-400 to-pink-500 text-white rounded-md shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
               >
                 🚪 Logout
               </button>

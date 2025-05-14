@@ -22,7 +22,7 @@ const qrCode = () => {
       width: 300,
       height: 300,
       data: qrURL,
-      image: "/food.png",
+      image: "/bu.png",
       dotsOptions: {
         type: "extra-rounded",
         gradient: {
@@ -61,7 +61,7 @@ const qrCode = () => {
       qrCode.append(qrRef.current);
 
       qrCode.update({
-        image: "/food.png",
+        image: "/bu.png",
         imageOptions: {
           crossOrigin: "anonymous",
           margin: 5,

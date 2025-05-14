@@ -3,14 +3,6 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
 
-export const profilePic = asyncHandler(async (req, res) => {
-  const { filename } = req.file;
-  console.log(filename);
-  return res.json(
-    new ApiResponse(200, "Profile pic uploaded successfully", req.file)
-  );
-});
-
 export const signup = asyncHandler(async (req, res) => {
   const { name, email, password, shopName } = req.body;
   const userExist = await User.findOne({ email });
@@ -78,10 +70,6 @@ export const updateProfile = asyncHandler(async (req, res) => {
 });
 
 export const auth = asyncHandler(async (req, res) => {
-  if (req.user === null) {
-    return res.json(new ApiResponse(401, "User is not authenticated"));
-  }
   const user = await User.findById(req.user.id);
-
   return res.json(new ApiResponse(200, "User is authenticated", user));
 });

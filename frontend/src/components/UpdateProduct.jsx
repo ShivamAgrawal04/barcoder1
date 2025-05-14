@@ -1,4 +1,3 @@
-// Updated UpdateProduct.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaBox, FaDollarSign, FaTags, FaBuilding } from "react-icons/fa";
@@ -39,7 +38,9 @@ const UpdateProduct = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault(); // prevent default form submission behavior
+
     const data = new FormData();
     setLoading(true);
     const changedFields = Object.keys(formData).filter(
@@ -48,6 +49,7 @@ const UpdateProduct = () => {
 
     if (changedFields.length === 0) {
       toast.info("No fields have been changed.");
+      setLoading(false); // ye bhi add karo
       return;
     }
 
@@ -62,7 +64,7 @@ const UpdateProduct = () => {
       toast.error(res?.message);
     } else {
       toast.success(res?.message);
-      navigate("/");
+      navigate("/"); // navigate after successful update
     }
     setLoading(false);
   };
@@ -93,16 +95,19 @@ const UpdateProduct = () => {
   }, [loading]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-[#0f172a] to-[#1e293b] px-4 py-10">
-      <div className="w-full max-w-4xl bg-[#1e293b] text-white rounded-3xl shadow-xl border border-cyan-400/30 flex overflow-hidden">
-        {/* Left Panel */}
-        <div className="w-1/2 bg-cyan-400/10 p-6 flex flex-col justify-between border-r border-cyan-400/20">
+    <div className="min-h-screen flex items-center justify-center px-4 py-10 mt-14 lg:mt-0 md:mt-0 sm:mt-14 bg-gray-900">
+      <form
+        onSubmit={handleUpdate}
+        className="w-full max-w-4xl bg-[#1e293b] text-white rounded-3xl shadow-xl border border-cyan-400/30 flex flex-col md:flex-row overflow-hidden"
+      >
+        {/* 🔵 Left Section - Image */}
+        <div className="md:w-1/2 w-full bg-cyan-400/10 p-6 flex flex-col justify-between border-b md:border-b-0 md:border-r border-cyan-400/20">
           <div>
             <h2 className="text-3xl font-bold text-cyan-300 mb-2">
-              🖼️ Product Image
+              📷 Your Dish Image
             </h2>
             <p className="text-cyan-100 text-sm">
-              Update your product image below.
+              Update your Dish image below 👇
             </p>
           </div>
           <div className="mt-4 flex flex-col items-center">
@@ -111,17 +116,18 @@ const UpdateProduct = () => {
                 <img
                   src={previewImage || formData.productPic}
                   alt="Product Preview"
-                  className="rounded-xl w-full max-h-[300px] object-contain"
+                  className="rounded-xl lg:mb-5 md:mb-5 sm:mb-5 w-full max-h-[300px] object-contain"
                 />
               ) : (
                 <div className="text-center text-cyan-300 py-16">
                   No image available
                 </div>
               )}
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute bottom-5 inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
+                  type="button"
                   onClick={() => fileInputRef.current.click()}
-                  className="text-white bg-cyan-500 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-600"
+                  className="text-white bg-cyan-500 px-4 py-2 rounded-lg hover:bg-cyan-600"
                 >
                   Click to update image
                 </button>
@@ -137,42 +143,56 @@ const UpdateProduct = () => {
           </div>
         </div>
 
-        {/* Right Panel */}
-        <div className="w-1/2 p-6 space-y-6">
-          {[
-            { icon: <FaBox />, name: "name", placeholder: "Product Name" },
-            { icon: <FaDollarSign />, name: "price", placeholder: "Price" },
-            { icon: <FaTags />, name: "category", placeholder: "Category" },
-            {
-              icon: <FaBuilding />,
-              name: "description",
-              placeholder: "Description",
-            },
-          ].map(({ icon, name, placeholder }) => (
-            <div className="flex items-center space-x-3" key={name}>
-              <span className="text-cyan-300">{icon}</span>
-              <input
-                name={name}
-                type="text"
-                placeholder={placeholder}
-                value={formData[name]}
-                onChange={handleInputChange}
-                className="w-full bg-transparent border-b border-cyan-300 placeholder-cyan-200 focus:outline-none py-2"
-              />
-            </div>
-          ))}
+        {/* 🟢 Right Section - Form */}
+        <div className="md:w-1/2 w-full p-6 space-y-2">
+          <div>
+            <label className="block text-cyan-300 mb-1">Dish Name🍔</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-cyan-400/30 focus:outline-none"
+            />
+          </div>
 
-          {/* <button
-            onClick={handleUpdate}
-            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 rounded-lg shadow-lg hover:shadow-cyan-500/30"
-          >
-            💾 Update Product
-          </button> */}
+          <div>
+            <label className="block text-cyan-300 mb-1">Food Category 📄</label>
+            <input
+              type="text"
+              name="category"
+              value={formData.category}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-cyan-400/30 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-cyan-300 mb-1">Description 📄</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              rows="3"
+              className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-cyan-400/30 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-cyan-300 mb-1">Price 💰</label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-cyan-400/30 focus:outline-none"
+            />
+          </div>
+
           <button
             type="submit"
-            onClick={handleUpdate}
             disabled={loading}
-            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 rounded-md transition duration-300 shadow-md hover:shadow-xl"
+            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 rounded-lg transition duration-300"
           >
             {loading ? (
               <span className="flex items-center justify-center">
@@ -184,7 +204,7 @@ const UpdateProduct = () => {
             )}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

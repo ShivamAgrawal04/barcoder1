@@ -1,21 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* More attractive and beautiful highlight styling */
+.highlight {
+  font-weight: bold;
+  color: #ff6347;
+  /* Tomato color for text */
+  background-color: #ffebcd;
+  /* Blanched Almond background */
+  padding: 0 4px;
+  /* Add some padding around the highlighted text */
+  border-radius: 4px;
+  /* Rounded corners for the highlight */
+}
+
 
 @layer utilities {
-    .animate-scale-in {
-      animation: scaleIn 0.25s ease-out;
+  .animate-scale-in {
+    animation: scaleIn 0.25s ease-out;
+  }
+
+  @keyframes scaleIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
     }
-  
-    @keyframes scaleIn {
-      0% {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
+
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
   }
+}
+
+
+
+h2 {
+  font-family: 'Dancing Script', cursive;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
+
+}
+
+.themechange {
+  font-family: 'Marcellus', serif;
+}

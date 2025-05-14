@@ -17,17 +17,6 @@ router.get("/:id", getPublicProducts);
 router.post(
   "/addProduct",
   verifyToken,
-  (req, res, next) => {
-    // Log the file before uploading
-    console.log("Incoming file:", req.file); // This will show the file data received by Multer
-    console.log(req.body);
-
-    if (!req.file) {
-      console.log("No file uploaded.");
-    }
-
-    next(); // Proceed to the next middleware or controller
-  },
   upload.single("productPic"),
   addProduct
 );

@@ -13,14 +13,40 @@ import ProductOnly from "./components/ProductOnly";
 import QrCode from "./components/QrCode";
 import PageNotFound from "./components/PageNotFound";
 import PublicComponent from "./components/PublicComponent";
+import { useAuth } from "./context/AuthContext";
+import load from "../src/assets/fod.gif";
 
 function App() {
   const location = useLocation();
-  const isQRProductPage = location.pathname.startsWith("/qrproducts/");
+  const { loading } = useAuth(); // <-- yeh import karo AuthContext se
+  const currentPath = location.pathname;
+
+  const hideNavbarRoutes = ["/qrproducts"];
+  const shouldHideNavbar = hideNavbarRoutes.some((path) =>
+    currentPath.startsWith(path)
+  );
+
+  const hideFooterRoutes = ["/login", "/signup"];
+  const shouldHideFooter = hideFooterRoutes.some((path) =>
+    currentPath.startsWith(path)
+  );
+
+  if (loading) {
+    return (
+      <div className="bg-gray-600 max-w-full h-screen flex justify-center items-center px-4">
+        <img
+          src={load}
+          alt="Loading..."
+          className="w-80 md:w-32 lg:w-72 mb-96  "
+        />
+      </div>
+    );
+  }
+
   return (
     <div>
-      {!isQRProductPage && <Nav />}
-      <ToastContainer position="top-right" autoClose={2000} />
+      {!shouldHideNavbar && <Nav />}
+      <ToastContainer position="top-right" autoClose={3000} />
 
       <Routes>
         <Route element={<Private />}>
@@ -32,14 +58,14 @@ function App() {
 
         <Route element={<PublicComponent />}>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} /> {/* Optional */}
+          <Route path="/signup" element={<SignUp />} />
         </Route>
-        <Route path="/qrproducts/:id/:shopName" element={<ProductOnly />} />
 
+        <Route path="/qrproducts/:id/:shopName" element={<ProductOnly />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
 
-      {!isQRProductPage && <Footer />}
+      {!shouldHideFooter && <Footer />}
     </div>
   );
 }
