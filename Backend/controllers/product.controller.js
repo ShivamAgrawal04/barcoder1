@@ -36,20 +36,20 @@ export const addProduct = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  let imageUrl = "";
-  if (req.file) {
-    imageUrl = req.file.path;
-  }
-
-  const newProduct = await Product.create({
+  const productData = {
     name,
     price,
     category,
     availability,
     description,
-    productPic: imageUrl,
     userId: req.user.id,
-  });
+  };
+
+  if (req.file) {
+    productData.productPic = req.file.path;
+  }
+
+  const newProduct = await Product.create(productData);
 
   global.io.to(req.user.id).emit("menuUpdated", {
     action: "add",

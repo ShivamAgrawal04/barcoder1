@@ -36,6 +36,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetch = async () => {
       const res = await getProducts();
+      console.log(res);
       setProduct(res);
       setAllProducts(res);
     };
