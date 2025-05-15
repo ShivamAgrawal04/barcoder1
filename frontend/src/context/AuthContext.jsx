@@ -153,6 +153,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getProductsBy20 = async (start) => {
+    try {
+      const res = await axios.get(
+        `/products/productBy20?page=${start}`,
+        {},
+        { withCredentials: true }
+      );
+      console.log("by20", res.data.data);
+      return {
+        success: true,
+        data: res.data.data.products,
+        message: res?.message,
+      };
+    } catch (error) {
+      return { success: false, message: error?.response?.data?.message };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -166,6 +184,7 @@ export const AuthProvider = ({ children }) => {
         signup,
         getPublicProducts,
         deleteProductById,
+        getProductsBy20,
       }}
     >
       {children}

@@ -4,6 +4,7 @@ import {
   deleteProduct,
   getProductById,
   getProducts,
+  getProductsBy20,
   getPublicProducts,
   updateProductById,
 } from "../controllers/product.controller.js";
@@ -13,6 +14,8 @@ import { upload } from "../config/cloudinary.js";
 const router = express.Router();
 
 router.get("/", verifyToken, getProducts);
+router.get("/productBy20", verifyToken, getProductsBy20);
+
 router.get("/:id", getPublicProducts);
 router.post(
   "/addProduct",

@@ -15,6 +15,23 @@ export const getPublicProducts = asyncHandler(async (req, res) => {
   }
 });
 
+export const getProductsBy20 = asyncHandler(async (req, res) => {
+  const userId = req?.user?.id;
+  const page = req.query.page || 0;
+  const limit = req.query.limit || 20;
+
+  const products = await Product.find({ userId }).skip(page).limit(limit);
+  const total = await Product.countDocuments();
+
+  if (products?.length > 0) {
+    return res.json(
+      new ApiResponse(200, "Products fetched successfully", { products, total })
+    );
+  } else {
+    return res.json(new ApiResponse(404, "No products found", []));
+  }
+});
+
 export const getProducts = asyncHandler(async (req, res) => {
   const userId = req?.user?.id;
 
