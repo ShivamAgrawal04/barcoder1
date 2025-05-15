@@ -218,7 +218,7 @@ const ProductList = () => {
     <div className="mt-0 lg:mt-0 min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black sm:p-6 flex justify-center items-start">
       <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md border border-cyan-400/20 shadow-2xl p-3 sm:p-6 md:p-10 md:max-w-7xl animate-fade-in">
         <div className="mb-6 flex justify-center">
-          <div className="relative mt-20 lg:mt-4 md:mt-4 sm:mt-12 w-full max-w-md">
+          <div className="relative mt-20 lg:mt-4 md:mt-4  w-full max-w-md">
             <div className="absolute left- px-3 top-1/2 transform -translate-y-1/2 text-cyan-300 text-xl pointer-events-none animate-pulse">
               🔍
             </div>
@@ -242,7 +242,7 @@ const ProductList = () => {
           </div>
         </div>
 
-        <h2 className="text-3xl mr-5 md:text-4xl sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
+        <h2 className="text-3xl mr-5 md:text-3xl sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
           🍕{" "}
           {user?.shopName
             ?.split(" ")

@@ -99,8 +99,8 @@ const qrCode = () => {
   }
 
   return (
-    <div className="flex flex-col mt- items-center justify-center min-h-screen bg-black text-center px-4">
-      <h2 className="text-5xl mt-14 font-bold ml-8 text-cyan-400">
+    <div className="flex flex-col mt-14 items-center justify-center min-h-screen bg-black text-center px-4">
+      <h2 className="text-5xl font-bold ml-8 text-cyan-400">
         Scan myDish QR 🤤
       </h2>
 

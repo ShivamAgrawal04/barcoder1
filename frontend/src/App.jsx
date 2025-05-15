@@ -52,29 +52,29 @@ function App() {
 
   return (
     <div>
-      <SmoothScrollWrapper>
-        {!shouldHideNavbar && <Nav />}
-        <ToastContainer position="top-right" autoClose={3000} />
+      {/* <SmoothScrollWrapper> */}
+      {!shouldHideNavbar && <Nav />}
+      <ToastContainer position="top-right" autoClose={3000} />
 
-        <Routes>
-          <Route element={<Private />}>
-            <Route path="/" element={<ProductList />} />
-            <Route path="/add" element={<ProductsAdd />} />
-            <Route path="/update/:id" element={<UpdateProduct />} />
-            <Route path="/qrcode" element={<QrCode />} />
-          </Route>
+      <Routes>
+        <Route element={<Private />}>
+          <Route path="/" element={<ProductList />} />
+          <Route path="/add" element={<ProductsAdd />} />
+          <Route path="/update/:id" element={<UpdateProduct />} />
+          <Route path="/qrcode" element={<QrCode />} />
+        </Route>
 
-          <Route element={<PublicComponent />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-          </Route>
+        <Route element={<PublicComponent />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route>
 
-          <Route path="/qrproducts/:id/:shopName" element={<ProductOnly />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+        <Route path="/qrproducts/:id/:shopName" element={<ProductOnly />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
 
-        {!shouldHideFooter && <Footer />}
-      </SmoothScrollWrapper>
+      {!shouldHideFooter && <Footer />}
+      {/* </SmoothScrollWrapper> */}
     </div>
   );
 }
