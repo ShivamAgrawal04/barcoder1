@@ -5,6 +5,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const logout = () => {
+    console.log("hello");
     localStorage.clear();
     navigate("/signup");
   };
