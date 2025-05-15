@@ -2,21 +2,21 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QRCodeStyling from "qr-code-styling";
 import { saveAs } from "file-saver";
-import { useAuth } from "../context/AuthContext"; // 👈 AuthContext से user
+import { useAuth } from "../context/AuthContext";
 
 const qrCode = () => {
   const qrRef = useRef(null);
   const navigate = useNavigate();
-  const { user } = useAuth(); // 👈 Context से user
+  const { user } = useAuth();
   const [qrCode, setQrCode] = useState(null);
 
   // Create QR code once user available
   useEffect(() => {
     if (!user?._id) return;
 
-    const qrURL = `${import.meta.env.VITE_API_QR_CODE}/qrproducts/${user._id}/${
-      user.shopName
-    }`;
+    const qrURL = `${import.meta.env.VITE_API_QR_CODE}/qrproducts/${
+      user?._id
+    }/${user.shopName}`;
 
     const qr = new QRCodeStyling({
       width: 300,
@@ -55,7 +55,6 @@ const qrCode = () => {
     setQrCode(qr);
   }, [user]);
 
-  // Render QR code on screen
   useEffect(() => {
     if (qrRef.current && qrCode) {
       qrCode.append(qrRef.current);
@@ -101,10 +100,10 @@ const qrCode = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-center px-4">
-      <h1 className="text-2xl font-bold mb-4 text-cyan-400">
+    <div className="flex flex-col mt-14 items-center justify-center min-h-screen bg-black text-center px-4">
+      <h2 className="text-5xl font-bold ml-8 text-cyan-400">
         Scan myDish QR 🤤
-      </h1>
+      </h2>
 
       <div ref={qrRef}></div>
 
