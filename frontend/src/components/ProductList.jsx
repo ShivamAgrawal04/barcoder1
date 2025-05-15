@@ -148,11 +148,9 @@ const ProductList = () => {
     const displayText = showFull ? text : text.slice(0, limit);
 
     return (
-      <div className="text-sm sm:text-sm md:text-base text-cyan-200 leading-snug mt-1">
+      <div className="text-sm text-cyan-200 mt-0.5">
         <p className="break-words whitespace-pre-wrap inline">
-          <span className="font-normal text-base text-cyan-400 mr-1">
-            Description:
-          </span>
+          <span className="font-medium text-cyan-400 mr-1">Description:</span>
           {highlightMatch
             ? highlightMatch(displayText, searchKey)
             : displayText}
@@ -189,11 +187,9 @@ const ProductList = () => {
     const displayText = showFull ? text : text.slice(0, limit);
 
     return (
-      <div className="text-sm sm:text-sm md:text-base text-cyan-200 leading-snug mt-1">
+      <div className="text-sm text-cyan-200 mt-0.5">
         <p className="break-words whitespace-pre-wrap inline">
-          <span className="font-normal text-base text-cyan-400 mr-1">
-            Category:
-          </span>
+          <span className="font-medium text-cyan-400 mr-1">Category:</span>
           {highlightMatch
             ? highlightMatch(displayText, searchKey)
             : displayText}
@@ -421,7 +417,7 @@ const ProductList = () => {
                     </h3>
 
                     {/* Price */}
-                    <div className="flex flex-wrap items-start text-lg font-semibold mb-1">
+                    <div className="flex flex-wrap items-start text-base font-semibold mb-0.5">
                       <span className="text-cyan-400 mr-1">Price: ₹</span>
                       <span>
                         {highlightMatch(String(item.price), searchKey)}
