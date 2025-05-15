@@ -118,7 +118,7 @@ const ProductList = () => {
     return (
       <>
         {beforeMatch}
-        <span className="font-bold text-cyan-300">{match}</span>
+        <span className="font-bold text-green-600">{match}</span>
         {afterMatch}
       </>
     );
@@ -134,55 +134,91 @@ const ProductList = () => {
   ];
   const dynamicText = useTypewriter(words);
   // Description and Category collapsible components
-  const Description = ({ text }) => {
-    const [showFull, setShowFull] = useState(false);
+  const Description = ({
+    text,
+    index,
+    showMore,
+    setShowMore,
+    searchKey,
+    highlightMatch,
+  }) => {
     const limit = 90;
+    const isLong = text.length > limit;
+    const showFull = showMore[index];
+    const displayText = showFull ? text : text.slice(0, limit);
+
     return (
-      <div className="tracking-wide text-sm sm:text-sm md:text-base text-cyan-200 leading-snug">
-        <span className="font-normal text-base text-cyan-400 mr-1">
-          Description:
-        </span>
-        <span>
-          {showFull ? text : text.slice(0, limit)}
-          {text.length > limit && (
+      <div className="text-sm sm:text-sm md:text-base text-cyan-200 leading-snug mt-1">
+        <p className="break-words whitespace-pre-wrap inline">
+          <span className="font-normal text-base text-cyan-400 mr-1">
+            Description:
+          </span>
+          {highlightMatch
+            ? highlightMatch(displayText, searchKey)
+            : displayText}
+          {!showFull && isLong && "... "}
+          {isLong && (
             <span
-              onClick={() => setShowFull(!showFull)}
-              className="text-cyan-400 underline cursor-pointer ml-2"
+              onClick={() =>
+                setShowMore((prev) => ({
+                  ...prev,
+                  [index]: !prev[index],
+                }))
+              }
+              className="text-cyan-400 underline cursor-pointer text-xs ml-1"
             >
               {showFull ? "Show less" : "Read more"}
             </span>
           )}
-        </span>
+        </p>
       </div>
     );
   };
 
-  const Category = ({ text }) => {
-    const [showFull, setShowFull] = useState(false);
+  const Category = ({
+    text,
+    index,
+    showMoreCategory,
+    setShowMoreCategory,
+    searchKey,
+    highlightMatch,
+  }) => {
     const limit = 90;
+    const isLong = text.length > limit;
+    const showFull = showMoreCategory[index];
+    const displayText = showFull ? text : text.slice(0, limit);
+
     return (
-      <div className="tracking-wide text-sm sm:text-sm md:text-base text-cyan-200 leading-snug">
-        <span className="font-normal text-base text-cyan-400 mr-1">
-          Category:
-        </span>
-        <span>
-          {showFull ? text : text.slice(0, limit)}
-          {text.length > limit && (
+      <div className="text-sm sm:text-sm md:text-base text-cyan-200 leading-snug mt-1">
+        <p className="break-words whitespace-pre-wrap inline">
+          <span className="font-normal text-base text-cyan-400 mr-1">
+            Category:
+          </span>
+          {highlightMatch
+            ? highlightMatch(displayText, searchKey)
+            : displayText}
+          {!showFull && isLong && "... "}
+          {isLong && (
             <span
-              onClick={() => setShowFull(!showFull)}
-              className="text-cyan-400 underline cursor-pointer ml-2"
+              onClick={() =>
+                setShowMoreCategory((prev) => ({
+                  ...prev,
+                  [index]: !prev[index],
+                }))
+              }
+              className="text-cyan-400 underline cursor-pointer text-xs ml-1"
             >
               {showFull ? "Show less" : "Read more"}
             </span>
           )}
-        </span>
+        </p>
       </div>
     );
   };
 
   return (
-    <div className="mt-14 min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black sm:p-6 flex justify-center items-start">
-      <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md border border-cyan-400/20 shadow-2xl p-3 sm:p-6 animate-fade-in">
+    <div className="mt-20 lg:mt-14 min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black sm:p-6 flex justify-center items-start">
+      <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md border border-cyan-400/20 shadow-2xl p-3 sm:p-6 md:p-10 md:max-w-7xl animate-fade-in">
         <div className="mb-6 flex justify-center">
           <div className="relative mt-1 w-full max-w-md">
             <div className="absolute left- px-3 top-1/2 transform -translate-y-1/2 text-cyan-300 text-xl pointer-events-none animate-pulse">
@@ -192,8 +228,8 @@ const ProductList = () => {
               type="text"
               value={searchKey}
               placeholder={`Search For ${dynamicText}`}
-              className="w-full px-5 py-3 text-left pl-11 rounded-full bg-black/30 text-cyan-100 placeholder-cyan-400 border border-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-500 shadow-[0_0_15px_#00ffff44] transition-all duration-300 ease-in-out backdrop-blur-md animate-pulse"
-              // className="w-full px-5 py-3 text-left pl-11 rounded-full bg-black/30 text-cyan-100 placeholder-cyan-400 border border-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-500 shadow-[0_0_15px_#00ffff44] transition-all duration-300 ease-in-out backdrop-blur-md animate-pulse"
+              // className="w-full px-5 py-3 text-left pl-11 rounded-full bg-black/30 text-cyan-100 placeholder-cyan-400 border border-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-500 shadow-[0_0_15px_#00ffff44] transition-all duration-300 ease-in-out backdrop-blur-md animate-pulse"
+              className="w-full px-5 py-3 text-left pl-11 rounded-full bg-black/30 text-cyan-100 placeholder-cyan-400 border border-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-500 shadow-[0_0_15px_#00ffff44] transition-all duration-300 ease-in-out backdrop-blur-md "
               onChange={handleSearch}
             />
 
@@ -208,7 +244,7 @@ const ProductList = () => {
           </div>
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
+        <h2 className="text-4xl mr-5 md:text-4xl sm:text-4xl font-bold text-cyan-300 mb-6 text-center">
           🍕{" "}
           {user?.shopName
             ?.split(" ")
@@ -218,19 +254,17 @@ const ProductList = () => {
         </h2>
 
         {/* TABLE VIEW */}
-        <div className="overflow-x-auto hidden md:block">
-          <table className=" w-full text-sm sm:text-base text-cyan-100">
+        <div className="w-full hidden md:block">
+          <table className="w-full text-sm sm:text-base text-cyan-100">
             <thead className="text-left uppercase text-cyan-400 border-b border-cyan-500/20">
               <tr>
-                <th className="py-3 px-2 font-semibold ">S.No</th>
-                <th className="py-3 px-2 font-semibold">Preview</th>
-                <th className="py-3 px-2 font-semibold">Dish Name</th>
-                <th className="py-3 px-2 font-semibold">Price</th>
-                <th className="py-3 px-2 font-semibold w-[200px]">Category</th>
-                <th className="py-3 px-2 font-semibold w-[200px]">
-                  Description
-                </th>
-                <th className="py-3 px-2 font-semibold">Operation</th>
+                <th className="py-3 px-2 font-semibold w-[5%]">S.No</th>
+                <th className="py-3 px-2 font-semibold w-[10%]">Preview</th>
+                <th className="py-3 px-2 font-semibold w-[15%]">Dish Name</th>
+                <th className="py-3 px-2 font-semibold w-[10%]">Price</th>
+                <th className="py-3 px-2 font-semibold w-[20%]">Category</th>
+                <th className="py-3 px-2 font-semibold w-[25%]">Description</th>
+                <th className="py-3 px-2 font-semibold w-[15%]">Operation</th>
               </tr>
             </thead>
             <tbody>
@@ -238,7 +272,7 @@ const ProductList = () => {
                 product.map((item, index) => (
                   <tr
                     key={index}
-                    className=" hover:bg-white/10 border-b border-white/10 transition-all"
+                    className="hover:bg-white/10 border-b border-white/10 transition-all"
                   >
                     <td className="py-2 px-2">{index + 1}</td>
                     <td>
@@ -263,7 +297,7 @@ const ProductList = () => {
                     <td className="px-2 tracking-wide">
                       {highlightMatch(String(item.price), searchKey)}
                     </td>
-                    <td className="px-2 w-[200px] break-words tracking-wide">
+                    <td className="px-2 tracking-wide">
                       <div>
                         <p
                           className={`${
@@ -272,8 +306,7 @@ const ProductList = () => {
                               : "line-clamp-2 overflow-hidden"
                           } transition-all duration-300`}
                         >
-                          {highlightMatch(item.category)}{" "}
-                          {/* Render JSX directly */}
+                          {highlightMatch(item.category)}
                         </p>
                         {item.category.length > 40 && (
                           <button
@@ -292,8 +325,7 @@ const ProductList = () => {
                         )}
                       </div>
                     </td>
-
-                    <td className="px-2 w-[200px] break-words">
+                    <td className="px-2">
                       <div>
                         <p
                           className={`${
@@ -302,7 +334,6 @@ const ProductList = () => {
                               : "line-clamp-2 overflow-hidden"
                           } transition-all duration-300`}
                         >
-                          {/* Render the highlighted description directly */}
                           {highlightMatch(item.description)}
                         </p>
                         {item.description.length > 90 && (
@@ -311,7 +342,7 @@ const ProductList = () => {
                             onClick={() =>
                               setShowMore((prev) => ({
                                 ...prev,
-                                [index]: !prev[index], // Toggle Show more/less state
+                                [index]: !prev[index],
                               }))
                             }
                           >
@@ -320,18 +351,17 @@ const ProductList = () => {
                         )}
                       </div>
                     </td>
-
-                    <td className="px-2 py-1">
-                      <div className="flex gap-2 flex-wrap">
+                    <td className="px-2 py-1 ">
+                      <div className="flex gap-2">
                         <button
                           onClick={() => deleteProduct(item._id)}
-                          className="flex items-center bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-sm"
+                          className="flex  items-center bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-sm"
                         >
                           <FaTrashAlt className="mr-1" /> Delete
                         </button>
                         <Link
                           to={`/update/${item._id}`}
-                          className="flex items-center text-cyan-300 border border-cyan-400 px-3  py-2 rounded-full text-sm hover:bg-cyan-500 hover:text-white animate-pulse"
+                          className="flex animate-pulse items-center text-cyan-300 border border-cyan-400 px-3 py-2 rounded-full text-sm hover:bg-cyan-500 hover:text-white"
                         >
                           <FaPenAlt className="mr-1 text-white" /> Update
                         </Link>
@@ -360,59 +390,75 @@ const ProductList = () => {
             product.map((item, index) => (
               <div
                 key={index}
-                className="bg-[#202636] border border-cyan-700/30 rounded-xl p-4 py-5 shadow-md text-cyan-100 transition-all duration-300 overflow-hidden"
+                className="bg-[#202636] border border-cyan-700/30 rounded-xl p-4 shadow-md text-cyan-100 transition-all duration-300"
               >
-                <p className="text-cyan-400 text-xs sm:text-sm mb-1">
-                  ❤ {index + 1}
-                </p>
+                <p className="text-cyan-400 text-xs mb-1">❤ {index + 1}</p>
 
-                <div className="flex flex-col sm:flex-row gap-4 sm:items-start">
-                  <div className="flex-shrink-0 w-full sm:w-36 md:w-40">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  {/* Image */}
+                  <div className="w-full sm:w-36">
                     <img
                       src={item.productPic}
-                      alt="Dish"
-                      className="w-full h-32 sm:h-28 md:h-32 object-contain rounded-lg shadow-[0_0_15px_#00FFFF66] hover:shadow-[0_0_25px_#00FFFFAA] transition-all duration-300 ease-in-out animate-pulse"
+                      alt="Product"
+                      className="w-full h-32 object-contain rounded-lg shadow-[0_0_15px_#00FFFF66] hover:shadow-[0_0_25px_#00FFFFAA] transition-all duration-300"
                     />
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xl sm:text-xl md:text-xl font-semibold text-cyan-300 mb-2 leading-snug break-words whitespace-normal">
-                      <span className="">
-                        {highlightMatch(
-                          item.name
-                            ?.split(" ")
-                            .map(
-                              (word) =>
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                            )
-                            .join(" "),
-                          searchKey
-                        )}
-                      </span>
+                  {/* Product Info */}
+                  <div className="flex-1">
+                    {/* Name */}
+                    <h3 className="text-xl font-semibold text-cyan-300 mb-2 leading-snug break-words whitespace-normal">
+                      {highlightMatch(
+                        item.name
+                          ?.split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" "),
+                        searchKey
+                      )}
                     </h3>
 
-                    <div className="-my-1 mt-2 text-lg font-semibold tracking-wide  sm:text-sm md:text-base break-words whitespace-normal flex flex-wrap items-start">
-                      <span className="font-normal text-lg track text-cyan-400 mr-1">
-                        Price: ₹
-                      </span>
-                      <p className="">
+                    {/* Price */}
+                    <div className="flex flex-wrap items-start text-lg font-semibold mb-1">
+                      <span className="text-cyan-400 mr-1">Price: ₹</span>
+                      <span>
                         {highlightMatch(String(item.price), searchKey)}
-                      </p>
+                      </span>
                     </div>
 
-                    <Category text={item.category} />
-                    <Description text={item.description} />
+                    {/* Category */}
+                    <Category
+                      text={item.category}
+                      index={index}
+                      showMoreCategory={showMoreCategory}
+                      setShowMoreCategory={setShowMoreCategory}
+                      searchKey={searchKey}
+                      highlightMatch={highlightMatch}
+                    />
 
+                    {/* Description */}
+                    <Description
+                      text={item.description}
+                      index={index}
+                      showMore={showMore}
+                      setShowMore={setShowMore}
+                      searchKey={searchKey}
+                      highlightMatch={highlightMatch}
+                    />
+
+                    {/* Buttons */}
                     <div className="flex flex-col sm:flex-row gap-2 mt-3">
                       <button
                         onClick={() => deleteProduct(item._id)}
-                        className="flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-xs sm:text-sm transition-all duration-300"
+                        className="flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-xs transition-all duration-300"
                       >
                         <FaTrashAlt className="mr-1" /> Delete
                       </button>
                       <Link
                         to={`/update/${item._id}`}
-                        className="flex items-center justify-center text-cyan-300 border border-cyan-400 px-4 py-2 rounded-full text-xs sm:text-sm hover:bg-cyan-500 hover:text-white transition-all duration-300"
+                        className="flex items-center justify-center text-cyan-300 border border-cyan-400 px-4 py-2 rounded-full text-xs hover:bg-cyan-500 hover:text-white transition-all duration-300"
                       >
                         ✏ Update
                       </Link>

@@ -50,12 +50,17 @@ function App() {
 
   if (loading) {
     return (
-      <div className="bg-gray-600 max-w-full h-screen flex justify-center items-center px-4">
-        <img
-          src={load}
-          alt="Loading..."
-          className="w-80 md:w-32 lg:w-72 mb-96  "
-        />
+      <div className="bg-gray-600 w-full h-screen flex justify-center px-4 pt-">
+        <div className="flex flex-col items-center">
+          <img
+            src={load}
+            alt="Loading..."
+            className="w-80 md:w-32 lg:w-72 mb-4"
+          />
+          <h1 className="text-white text-center">
+            website only takes 1 minute so be patience please wait...
+          </h1>
+        </div>
       </div>
     );
   }
