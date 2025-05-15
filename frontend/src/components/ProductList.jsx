@@ -244,7 +244,7 @@ const ProductList = () => {
           </div>
         </div>
 
-        <h2 className="text-4xl mr-5 md:text-4xl sm:text-4xl font-bold text-cyan-300 mb-6 text-center">
+        <h2 className="text-3xl mr-5 md:text-4xl sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
           🍕{" "}
           {user?.shopName
             ?.split(" ")

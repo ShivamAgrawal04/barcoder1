@@ -223,7 +223,7 @@ const ProductOnly = () => {
 
       {/* Product List */}
       <div className="pt-24 px-2 sm:px-6 overflow-y-auto flex-1">
-        <h2 className="text-2xl pr-5 sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
+        <h2 className="text-3xl pr-5 sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
           🍕{" "}
           {shopName
             ?.split(" ")
