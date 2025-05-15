@@ -5,52 +5,62 @@
 
 html {
   scroll-behavior: smooth;
+  
 }
+
+/* App.css */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 
 /* More attractive and beautiful highlight styling */
 .highlight {
   font-weight: bold;
-  color: #ff6347;
-  /* Tomato color for text */
-  background-color: #ffebcd;
-  /* Blanched Almond background */
-  padding: 0 4px;
-  /* Add some padding around the highlighted text */
-  border-radius: 4px;
-  /* Rounded corners for the highlight */
+  color: #ff6347; 
+  background-color: #ffebcd; 
+  padding: 0 4px; 
+  border-radius: 4px; 
 }
 
 
 @layer utilities {
-  .animate-scale-in {
-    animation: scaleIn 0.25s ease-out;
+    .animate-scale-in {
+      animation: scaleIn 0.25s ease-out;
+    }
+  
+    @keyframes scaleIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
   }
 
-  @keyframes scaleIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.95);
-    }
+ 
 
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-}
-
-
-
-h2 {
+h2{
   font-family: 'Dancing Script', cursive;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
-  font-weight: 200;
-
+  font-weight: 100; 
+  
 }
 
-.themechange {
+.themechange{
   font-family: 'Marcellus', serif;
+}
+
+.thinbold{
+  font-weight: "200px";
 }

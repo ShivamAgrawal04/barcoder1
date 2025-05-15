@@ -135,88 +135,90 @@ const ProductList = () => {
   const dynamicText = useTypewriter(words);
   // Description and Category collapsible components
   const Description = ({
-    text,
-    index,
-    showMore,
-    setShowMore,
-    searchKey,
-    highlightMatch,
-  }) => {
-    const limit = 90;
-    const isLong = text.length > limit;
-    const showFull = showMore[index];
-    const displayText = showFull ? text : text.slice(0, limit);
-
-    return (
-      <div className="text-sm text-cyan-200 mt-0.5">
-        <p className="break-words whitespace-pre-wrap inline">
-          <span className="font-medium text-cyan-400 mr-1">Description:</span>
-          {highlightMatch
-            ? highlightMatch(displayText, searchKey)
-            : displayText}
-          {!showFull && isLong && "... "}
-          {isLong && (
-            <span
-              onClick={() =>
-                setShowMore((prev) => ({
-                  ...prev,
-                  [index]: !prev[index],
-                }))
-              }
-              className="text-cyan-400 underline cursor-pointer text-xs ml-1"
-            >
-              {showFull ? "Show less" : "Read more"}
-            </span>
-          )}
-        </p>
-      </div>
-    );
-  };
-
-  const Category = ({
-    text,
-    index,
-    showMoreCategory,
-    setShowMoreCategory,
-    searchKey,
-    highlightMatch,
-  }) => {
-    const limit = 90;
-    const isLong = text.length > limit;
-    const showFull = showMoreCategory[index];
-    const displayText = showFull ? text : text.slice(0, limit);
-
-    return (
-      <div className="text-sm text-cyan-200 mt-0.5">
-        <p className="break-words whitespace-pre-wrap inline">
-          <span className="font-medium text-cyan-400 mr-1">Category:</span>
-          {highlightMatch
-            ? highlightMatch(displayText, searchKey)
-            : displayText}
-          {!showFull && isLong && "... "}
-          {isLong && (
-            <span
-              onClick={() =>
-                setShowMoreCategory((prev) => ({
-                  ...prev,
-                  [index]: !prev[index],
-                }))
-              }
-              className="text-cyan-400 underline cursor-pointer text-xs ml-1"
-            >
-              {showFull ? "Show less" : "Read more"}
-            </span>
-          )}
-        </p>
-      </div>
-    );
-  };
+  text,
+  index,
+  showMore,
+  setShowMore,
+  searchKey,
+  highlightMatch,
+}) => {
+  const limit = 90;
+  const isLong = text.length > limit;
+  const showFull = showMore[index];
+  const displayText = showFull ? text : text.slice(0, limit);
 
   return (
-    <div className="mt-20 lg:mt-14 min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black sm:p-6 flex justify-center items-start">
+    <div className="text-sm text-cyan-200 mt-0.5">
+      <p className="break-words whitespace-pre-wrap inline">
+        <span className="font-medium text-cyan-400 mr-1">Description:</span>
+        {highlightMatch
+          ? highlightMatch(displayText, searchKey)
+          : displayText}
+        {!showFull && isLong && "... "}
+        {isLong && (
+          <span
+            onClick={() =>
+              setShowMore((prev) => ({
+                ...prev,
+                [index]: !prev[index],
+              }))
+            }
+            className="text-cyan-400 underline cursor-pointer text-xs ml-1"
+          >
+            {showFull ? "Show less" : "Read more"}
+          </span>
+        )}
+      </p>
+    </div>
+  );
+};
+
+
+  const Category = ({
+  text,
+  index,
+  showMoreCategory,
+  setShowMoreCategory,
+  searchKey,
+  highlightMatch,
+}) => {
+  const limit = 90;
+  const isLong = text.length > limit;
+  const showFull = showMoreCategory[index];
+  const displayText = showFull ? text : text.slice(0, limit);
+
+  return (
+    <div className="text-sm text-cyan-200 mt-0.5">
+      <p className="break-words whitespace-pre-wrap inline">
+        <span className="font-medium text-cyan-400 mr-1">Category:</span>
+        {highlightMatch
+          ? highlightMatch(displayText, searchKey)
+          : displayText}
+        {!showFull && isLong && "... "}
+        {isLong && (
+          <span
+            onClick={() =>
+              setShowMoreCategory((prev) => ({
+                ...prev,
+                [index]: !prev[index],
+              }))
+            }
+            className="text-cyan-400 underline cursor-pointer text-xs ml-1"
+          >
+            {showFull ? "Show less" : "Read more"}
+          </span>
+        )}
+      </p>
+    </div>
+  );
+};
+
+
+  return (
+    <div className="mt-0 lg:mt-0 min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black sm:p-6 flex justify-center items-start">
       <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md border border-cyan-400/20 shadow-2xl p-3 sm:p-6 md:p-10 md:max-w-7xl animate-fade-in">
         <div className="mb-6 flex justify-center">
-          <div className="relative mt-1 w-full max-w-md">
+          <div className="relative mt-20 lg:mt-4 md:mt-4 sm:mt-12 w-full max-w-md">
             <div className="absolute left- px-3 top-1/2 transform -translate-y-1/2 text-cyan-300 text-xl pointer-events-none animate-pulse">
               🔍
             </div>
@@ -418,11 +420,11 @@ const ProductList = () => {
 
                     {/* Price */}
                     <div className="flex flex-wrap items-start text-base font-semibold mb-0.5">
-                      <span className="text-cyan-400 mr-1">Price: ₹</span>
-                      <span>
-                        {highlightMatch(String(item.price), searchKey)}
-                      </span>
-                    </div>
+  <span className="text-cyan-400 mr-1">Price: ₹</span>
+  <span>
+    {highlightMatch(String(item.price), searchKey)}
+  </span>
+</div>
 
                     {/* Category */}
                     <Category

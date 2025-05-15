@@ -1,5 +1,4 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-// import Lenis from "@studio-freight/lenis";
 import Nav from "./components/Navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,10 +15,12 @@ import PageNotFound from "./components/PageNotFound";
 import PublicComponent from "./components/PublicComponent";
 import { useAuth } from "./context/AuthContext";
 import load from "../src/assets/fod.gif";
+import "./index.css"; // ya './App.css' jo bhi hai
+import SmoothScrollWrapper from "./components/SmoothScrollWrapper";
 
 function App() {
   const location = useLocation();
-  const { loading } = useAuth(); // <-- yeh import karo AuthContext se
+  const { loading } = useAuth();
   const currentPath = location.pathname;
 
   const hideNavbarRoutes = ["/qrproducts"];
@@ -31,22 +32,6 @@ function App() {
   const shouldHideFooter = hideFooterRoutes.some((path) =>
     currentPath.startsWith(path)
   );
-
-  // Lenis
-
-  // // Setup Lenis once on app load
-  // const lenis = new Lenis({
-  //   duration: 1.2,
-  //   smooth: true,
-  //   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  // });
-
-  // function raf(time) {
-  //   lenis.raf(time);
-  //   requestAnimationFrame(raf);
-  // }
-
-  // requestAnimationFrame(raf);
 
   if (loading) {
     return (
@@ -67,27 +52,29 @@ function App() {
 
   return (
     <div>
-      {!shouldHideNavbar && <Nav />}
-      <ToastContainer position="top-right" autoClose={3000} />
+      <SmoothScrollWrapper>
+        {!shouldHideNavbar && <Nav />}
+        <ToastContainer position="top-right" autoClose={3000} />
 
-      <Routes>
-        <Route element={<Private />}>
-          <Route path="/" element={<ProductList />} />
-          <Route path="/add" element={<ProductsAdd />} />
-          <Route path="/update/:id" element={<UpdateProduct />} />
-          <Route path="/qrcode" element={<QrCode />} />
-        </Route>
+        <Routes>
+          <Route element={<Private />}>
+            <Route path="/" element={<ProductList />} />
+            <Route path="/add" element={<ProductsAdd />} />
+            <Route path="/update/:id" element={<UpdateProduct />} />
+            <Route path="/qrcode" element={<QrCode />} />
+          </Route>
 
-        <Route element={<PublicComponent />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Route>
+          <Route element={<PublicComponent />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Route>
 
-        <Route path="/qrproducts/:id/:shopName" element={<ProductOnly />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+          <Route path="/qrproducts/:id/:shopName" element={<ProductOnly />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
 
-      {!shouldHideFooter && <Footer />}
+        {!shouldHideFooter && <Footer />}
+      </SmoothScrollWrapper>
     </div>
   );
 }

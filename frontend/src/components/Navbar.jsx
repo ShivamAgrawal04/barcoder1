@@ -5,6 +5,7 @@ import { HiMenuAlt3, HiX } from "react-icons/hi";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
+
 const Navbar = () => {
   const { user, logout } = useAuth();
 
@@ -12,7 +13,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menu, setMenu] = useState(false);
   const [navbarVisible, setNavbarVisible] = useState(true);
-  const [searchBarPosition, setSearchBarPosition] = useState("top-16");
+    const [searchBarPosition, setSearchBarPosition] = useState("top-16");
   const ClickRef = useRef();
 
   const handleLogout = async () => {
@@ -91,8 +92,12 @@ const Navbar = () => {
     return `${firstLetter}`;
   };
 
+  const clicklogo =()=>{
+    navigate('/');
+  }
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50  bg-gray-800 shadow-[0_0_20px_#00ffff44] font-neon">
+    <nav className="fixed top-30 left-0 w-full z-50  bg-gray-800 shadow-[0_0_20px_#00ffff44] font-neon">
       <div className="max-w-7xl mx-auto px-4 ">
         <div className=" flex justify-between items-center h-16">
           <div className=" items-center flex flex-row">
@@ -100,8 +105,10 @@ const Navbar = () => {
               className="w-14 h-14 mr-5 rounded-full object-contain animate-pulse hover:rotate-[360deg] transition-all duration-700"
               src={Logo}
               alt="Logo"
+              
+              
             />
-            <h1 className="text-xl  sm:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 tracking-wider">
+            <h1 onClick={clicklogo} className="cursor-pointer text-xl  sm:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 tracking-wider">
               Anurag Code's
             </h1>
           </div>
