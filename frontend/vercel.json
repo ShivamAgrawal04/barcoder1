@@ -1,12 +1,21 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://barcoder1.onrender.com/api/$1"
-    },
+      "source": "/api/:path*",
+      "destination": "https://barcoder1.onrender.com/api/:path*"
+    }
+  ],
+  "redirects": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "https://barcoder1.vercel.app/"
+        }
+      ],
+      "statusCode": 200
     }
   ]
 }
