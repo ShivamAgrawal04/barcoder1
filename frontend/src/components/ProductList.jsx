@@ -70,9 +70,15 @@ const ProductList = () => {
   // Filter products based on search
   useEffect(() => {
     if (!debouncedKey.trim()) {
-      setProduct(allProducts.slice(0, 20));
-      setVisibleCount(20);
-      return;
+      if (Array.isArray(allProducts)) {
+    setProduct(allProducts.slice(0, 20));
+    setVisibleCount(20);
+  } else {
+    // Handle case if allProducts is undefined/null or not array
+    setProduct([]);
+    setVisibleCount(0);
+  }
+  return;
     }
 
     const key = debouncedKey.toLowerCase();
