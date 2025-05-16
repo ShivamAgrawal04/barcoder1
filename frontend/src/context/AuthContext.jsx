@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
 
   const getProducts = async () => {
    try{
-      const res = await axios.get("/products/", {
+      const res = await axios.get("/products", {
       withCredentials: true,
     });
     console.log("authContext getProducts",res)
