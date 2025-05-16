@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }) => {
       withCredentials: true,
     });
     console.log("authContext getProducts",res)
-    return res.data.data;
+    
    }catch(error){
      return {success:false,message:error?.response?.data?.message}
    }
