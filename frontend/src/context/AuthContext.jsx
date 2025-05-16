@@ -101,6 +101,7 @@ export const AuthProvider = ({ children }) => {
     const res = await axios.get("/products/", {
       withCredentials: true,
     });
+    console.log("authContext getProducts",res)
     return res.data.data;
   };
 
