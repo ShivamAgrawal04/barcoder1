@@ -98,15 +98,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getProducts = async () => {
-   try{
+    try {
       const res = await axios.get("/products", {
-      withCredentials: true,
-    });
-    console.log("authContext getProducts",res)
-    return res.data.data;
-   }catch(error){
-     return {success:false,message:error?.response?.data?.message}
-   }
+        withCredentials: true,
+      });
+      return res.data.data;
+    } catch (error) {
+      return { success: false, message: error?.response?.data?.message };
+    }
   };
 
   const addProduct = async (product) => {
