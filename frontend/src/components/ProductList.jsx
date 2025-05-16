@@ -54,10 +54,15 @@ const ProductList = () => {
 
   // Display updated product list on scroll
   useEffect(() => {
-    if (!debouncedKey) {
+  if (!debouncedKey) {
+    if (Array.isArray(allProducts)) {
       setProduct(allProducts.slice(0, visibleCount));
+    } else {
+      setProduct([]);  // fallback if allProducts not ready
     }
-  }, [visibleCount, allProducts, debouncedKey]);
+  }
+}, [visibleCount, allProducts, debouncedKey]);
+
 
   // Debounce search key
   useEffect(() => {
