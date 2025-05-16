@@ -5,17 +5,10 @@
       "destination": "https://barcoder1.onrender.com/api/:path*"
     }
   ],
-  "redirects": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html",
-      "has": [
-        {
-          "type": "host",
-          "value": "https://barcoder1.vercel.app/"
-        }
-      ],
-      "statusCode": 200
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
