@@ -3,31 +3,31 @@
 ## 📋 User Roles
 
 - [ ] Admin Role (You or system owner)
-- [ ] Shop Owner Role
-- [ ] Customer (Viewer - no login)
+- [✅] Shop Owner Role
+- [✅] Customer (Viewer - no login)
 
 ---
 
 ## 👨‍💼 Shop Owner Features
 
 - [✅] Register / Login (JWT + Cookies)
-- [ ] Create & manage shop profile (name, logo, address)
-- [ ] CRUD menu items (name, desc, price, image, availability, category)
+- [✅] Create & manage shop (Add Products, Update Products, Delete Products)
+- [✅] CRUD menu items (name, desc, price, image, availability, category)
 - [✅] Auto-generate QR Code linking to public menu
-- [ ] Preview public menu as customer
-- [ ] Shop dashboard with basic analytics (visits, scans) – _Optional_
+<!-- - [ ] Preview public menu as customer -->
+- [✅] Shop dashboard with basic analytics (visits, scans) – _Optional_
 
 ---
 
 ## 👥 Customer Features
 
 - [✅] Scan QR code → Open digital menu
-- [ ] View categories and menu items
+<!-- - [ ] View categories and menu items -->
 - [✅] No login required
 
 ---
 
-## 🌟 Optional/Additional Features
+<!-- ## 🌟 Optional/Additional Features
 
 ### 🛍️ For Shop Owners
 
@@ -35,9 +35,9 @@
 - [ ] Discounts / Today's special
 - [ ] Reorder items via drag and drop
 - [ ] Dark/light mode
-- [ ] Export menu as PDF
+- [ ] Export menu as PDF -->
 
-### 📊 Dashboard
+<!-- ### 📊 Dashboard
 
 - [ ] Show number of scans
 - [ ] Show number of items
@@ -48,9 +48,9 @@
 - [ ] Customer can place a basic order (no payment)
 - [ ] Orders visible on separate dashboard page
 
----
+--- -->
 
-## 🚀 Future-Ready & Monetizable Features
+<!-- ## 🚀 Future-Ready & Monetizable Features
 
 ### 💸 Subscription Plans
 
@@ -81,20 +81,20 @@
 
 - [ ] Make app installable on phones
 
----
+--- -->
 
 ## ✅ Planning Checklist
 
-- [ ] Roles & Auth (JWT + Cookie Auth)
-- [ ] Shop Creation & Menu Management
-- [ ] QR Code Generation (Public link)
-- [ ] UI Design (Mobile-first, clean)
-- [ ] Deployment (Vercel + Render + MongoDB Atlas)
-- [ ] Future Planning Document
+- [✅] Roles & Auth (JWT + Cookie Auth)
+- [✅] Shop Creation & Menu Management
+- [✅] QR Code Generation (Public link)
+- [✅] UI Design (Mobile-first, clean)
+- [✅] Deployment (Vercel + Render + MongoDB Atlas)
+<!-- - [✅] Future Planning Document -->
 
 ---
 
-## 🧱 Required Feature Implementation Flow
+<!-- ## 🧱 Required Feature Implementation Flow
 
 ### 📦 Phase 1: Project Setup
 
@@ -263,4 +263,4 @@
 
     Testing Strategy: Jest/Cypress or Postman tests could be mentioned if going full production.
 
-    DevOps or CI/CD: Optional, but great for automatic deployment workflows.
+    DevOps or CI/CD: Optional, but great for automatic deployment workflows. -->
