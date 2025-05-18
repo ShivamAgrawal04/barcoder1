@@ -28,7 +28,7 @@ export const login = asyncHandler(async (req, res) => {
   }
 
   if (password !== user.password) {
-    throw new ApiError(400, "Password is incorrect anurag bsdka");
+    throw new ApiError(400, "Password is incorrect ");
   }
 
   const token = user.generateToken();
