@@ -11,7 +11,6 @@ import { CgCloseO } from "react-icons/cg";
 import Logo from "../assets/Anurag.png";
 import useTypewriter from "./useTypeWriter";
 
-// ✅ Custom debounce hook
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -43,7 +42,6 @@ const ProductOnly = () => {
   const debouncedSearchKey = useDebounce(searchkey, 300);
   const socketRef = useRef(null);
 
-  // ✅ Fetch products initially
   const fetchProducts = async () => {
     try {
       const res = await fetch(
@@ -59,20 +57,38 @@ const ProductOnly = () => {
 
   // ✅ Setup Socket.IO
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_API_BASE_URL, {
+    socketRef.current = io(import.meta.env.VITE_API_BASE_URL, {
       withCredentials: true,
       autoConnect: false,
       query: { shopId: id },
     });
 
-    socketRef.current = socket;
+    const socket = socketRef.current;
+
     socket.connect();
 
-    socket.on("connect", () => socket.emit("join-room", id));
-    socket.on("connect_error", (err) => console.error("Socket error:", err));
+    socket.on("connect", () => {
+      socket.emit("join-room", id);
+      console.log("✅ Joined room:", id);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("❌ Socket connect error:", err);
+    });
 
     socket.on("menuUpdated", ({ action, updateProduct }) => {
       setProducts((prev) => {
+        if (action === "add") return [...prev, updateProduct];
+        if (action === "update")
+          return prev.map((p) =>
+            p._id === updateProduct._id ? updateProduct : p
+          );
+        if (action === "delete")
+          return prev.filter((p) => p._id !== updateProduct._id);
+        return prev;
+      });
+
+      setAllProducts((prev) => {
         if (action === "add") return [...prev, updateProduct];
         if (action === "update")
           return prev.map((p) =>
@@ -92,7 +108,6 @@ const ProductOnly = () => {
     };
   }, [id]);
 
-  // ✅ Scroll behavior for hiding navbar
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
@@ -104,7 +119,6 @@ const ProductOnly = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ Debounced search filter
   const filteredProducts = useMemo(() => {
     const key = debouncedSearchKey.toLowerCase();
 
@@ -121,29 +135,24 @@ const ProductOnly = () => {
     });
   }, [debouncedSearchKey, allProducts]);
 
-  // ✅ Input change handler
   const handelSearch = useCallback((e) => {
     setSearchkey(e.target.value);
   }, []);
 
-  // ✅ Clear search input
   const handelMSGdelete = useCallback(() => {
     setInputValue("");
     setSearchkey("");
     setProducts(allProducts);
   }, [allProducts]);
 
-  // ✅ Toggle show more for long description
   const toggleShowMore = useCallback((id) => {
     setShowMore((prev) => ({ ...prev, [id]: !prev[id] }));
   }, []);
 
-  // ✅ Toggle show more for long category
   const toggleShowMoreCategory = useCallback((id) => {
     setShowMoreCategory((prev) => ({ ...prev, [id]: !prev[id] }));
   }, []);
 
-  // ✅ Highlight matched text
   const highlightMatch = useCallback((text, key) => {
     if (!key) return text;
 
@@ -219,7 +228,6 @@ const ProductOnly = () => {
         </div>
       </nav>
 
-      {/* Search Bar */}
       <div
         className={`fixed ${searchBarPosition} left-0 w-full z-50 bg-black/40 backdrop-blur-lg shadow-md px-4 py-3 transition-all duration-300 ease-in-out`}
       >
@@ -247,7 +255,6 @@ const ProductOnly = () => {
         </div>
       </div>
 
-      {/* Product List */}
       <div className="pt-24 px-2 sm:px-6 overflow-y-auto flex-1">
         <h2 className="text-2xl pr-5 sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
           🍕{" "}
@@ -257,7 +264,7 @@ const ProductOnly = () => {
             .join(" ")}{" "}
           Food List
         </h2>
-        {/* Product cards and table code here */}
+
         <div className="sm:hidden space-y-4">
           {products.length === 0 ? (
             <p className="text-center text-cyan-300 text-lg">
@@ -351,92 +358,91 @@ const ProductOnly = () => {
                 <th className="py-3 px-2 font-semibold">Dish Name</th>
                 <th className="py-3 px-2 font-semibold">Price</th>
                 <th className="py-3 px-2 font-semibold w-[200px]">Category</th>
-                <th className="py-3 px-2 font-semibold w-[200px]">
+                <th className="py-3 px-2 font-semibold w-[300px]">
                   Description
                 </th>
               </tr>
             </thead>
             <tbody>
-              {visibleProducts.map((item, index) => {
-                const name =
-                  item.name.charAt(0).toUpperCase() + item.name.slice(1);
-                const price = String(item.price);
-                const category = item.category || "";
-                const description = item.description || "";
-                const isCatExpanded = showMoreCategory[index];
-                const isDescExpanded = showMore[index];
+              {products.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-5 text-cyan-300">
+                    No Products Found 😞
+                  </td>
+                </tr>
+              ) : (
+                visibleProducts.map((item, index) => {
+                  const desc = item.description || "";
+                  const cat = item.category || "";
+                  const descShort = desc.slice(0, 60);
+                  const catShort = cat.slice(0, 40);
 
-                return (
-                  <tr
-                    key={index}
-                    className="hover:bg-white/10 border-b border-white/10 transition-all"
-                  >
-                    <td className="py-2 px-2">{index + 1}</td>
+                  const isShowFullDesc =
+                    showMore[item._id] || desc.length <= 60;
+                  const isShowFullCat =
+                    showMoreCategory[item._id] || cat.length <= 40;
 
-                    <td>
-                      <img
-                        className="h-14 w-14 object-cover rounded-lg ml-2 mb-1 mt-1"
-                        src={item.productPic}
-                        alt=""
-                      />
-                    </td>
-
-                    <td className="px-2">{highlightMatch(name, searchkey)}</td>
-
-                    <td className="px-2">{highlightMatch(price, searchkey)}</td>
-
-                    <td className="px-2 w-[200px] break-words">
-                      <div>
-                        <p
-                          className={`${
-                            isCatExpanded ? "" : "line-clamp-2 overflow-hidden"
-                          } transition-all duration-300`}
-                        >
-                          {highlightMatch(category, searchkey)}
-                        </p>
-                        {category.length > 40 && (
+                  return (
+                    <tr
+                      key={index}
+                      className="border-b border-cyan-700/20 hover:bg-cyan-900/10 transition"
+                    >
+                      <td className="py-3 px-2">{index + 1}</td>
+                      <td className="py-3 px-2">
+                        <img
+                          src={item.productPic}
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded shadow-md animate-float"
+                        />
+                      </td>
+                      <td className="py-3 px-2">
+                        {highlightMatch(
+                          item.name.charAt(0).toUpperCase() +
+                            item.name.slice(1),
+                          searchkey
+                        )}
+                      </td>
+                      <td className="py-3 px-2">
+                        {highlightMatch(`₹ ${item.price}`, searchkey)}
+                      </td>
+                      <td className="py-3 px-2">
+                        <span>
+                          {highlightMatch(
+                            isShowFullCat ? cat : catShort + "...",
+                            searchkey
+                          )}
+                        </span>
+                        {cat.length > 40 && (
                           <button
-                            className="text-xs text-cyan-400 mt-1 hover:underline focus:outline-none"
-                            onClick={() =>
-                              setShowMoreCategory((prev) => ({
-                                ...prev,
-                                [index]: !prev[index],
-                              }))
-                            }
+                            className="text-cyan-400 ml-2 hover:underline"
+                            onClick={() => toggleShowMoreCategory(item._id)}
                           >
-                            {isCatExpanded ? "Show less" : "Read more"}
+                            {showMoreCategory[item._id]
+                              ? "Read less"
+                              : "Read more"}
                           </button>
                         )}
-                      </div>
-                    </td>
-
-                    <td className="px-2 w-[200px] break-words">
-                      <div>
-                        <p
-                          className={`${
-                            isDescExpanded ? "" : "line-clamp-2 overflow-hidden"
-                          } transition-all duration-300`}
-                        >
-                          {highlightMatch(description, searchkey)}
-                        </p>
-                        {description.length > 90 && (
+                      </td>
+                      <td className="py-3 px-2">
+                        <span>
+                          {highlightMatch(
+                            isShowFullDesc ? desc : descShort + "...",
+                            searchkey
+                          )}
+                        </span>
+                        {desc.length > 60 && (
                           <button
-                            className="text-xs text-cyan-400 mt-1 hover:underline focus:outline-none"
-                            onClick={() =>
-                              setShowMore((prev) => ({
-                                ...prev,
-                                [index]: !prev[index],
-                              }))
-                            }
+                            className="text-cyan-400 ml-2 hover:underline"
+                            onClick={() => toggleShowMore(item._id)}
                           >
-                            {isDescExpanded ? "Show less" : "Read more"}
+                            {showMore[item._id] ? "Read less" : "Read more"}
                           </button>
                         )}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
