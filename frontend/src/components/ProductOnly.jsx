@@ -309,7 +309,8 @@ const ProductOnly = () => {
                         <span className="font-semibold">👉</span>{" "}
                         <span>
                           {highlightMatch(
-                            isShowFullCat ? cat : catShort + "..."
+                            isShowFullCat ? cat : catShort + "...",
+                            searchkey
                           )}
                         </span>
                         {cat.length > 40 && (

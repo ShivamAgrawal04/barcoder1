@@ -14,11 +14,15 @@ import QrCode from "./components/QrCode";
 import PageNotFound from "./components/PageNotFound";
 import PublicComponent from "./components/PublicComponent";
 import { useAuth } from "./context/AuthContext";
-import load from "../src/assets/fod.gif";
+import load from "../src/assets/animated.gif";
+import { MdKeyboardArrowRight, MdKeyboardArrowUp } from "react-icons/md";
+import { GoArrowUp } from "react-icons/go";
 import "./index.css"; // ya './App.css' jo bhi hai
-import SmoothScrollWrapper from "./components/SmoothScrollWrapper";
+import { useEffect, useState } from "react";
+// import SmoothScrollWrapper from "./components/SmoothScrollWrapper";
 
 function App() {
+  const [isVisible, setIsVisible] = useState(false);
   const location = useLocation();
   const { loading } = useAuth();
   const currentPath = location.pathname;
@@ -33,14 +37,46 @@ function App() {
     currentPath.startsWith(path)
   );
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    let currentPosition = window.scrollY;
+    let speed = 10;
+
+    const scrollStep = () => {
+      if (currentPosition > 0) {
+        speed += 1;
+        currentPosition -= speed;
+        window.scrollTo(0, currentPosition);
+
+        if (currentPosition > 0) {
+          requestAnimationFrame(scrollStep);
+        }
+      }
+    };
+
+    requestAnimationFrame(scrollStep);
+  };
+
   if (loading) {
     return (
-      <div className="bg-gray-600 w-full h-screen flex justify-center px-4 pt-">
+      <div className="bg-black  w-full h-screen flex justify-center px-4 pt-">
         <div className="flex flex-col items-center">
           <img
             src={load}
             alt="Loading..."
-            className="w-80 md:w-32 lg:w-72 mb-4"
+            className="w-32 md:w-32 lg:w-32 mb-4"
           />
           <h1 className="text-white text-center">
             website only takes 1 minute so be patience please wait...
@@ -75,6 +111,15 @@ function App() {
 
       {!shouldHideFooter && <Footer />}
       {/* </SmoothScrollWrapper> */}
+
+      {isVisible && (
+        <button
+          onClick={scrollToTop}
+          className="bounce-arrow fixed z-10 bottom-10 lg:bottom-5 right-5  text-white text-lg p-3 rounded-full shadow-lg transition duration-300 hover:scale-110 neon-glow"
+        >
+          <GoArrowUp className=" text-2xl text-white" />
+        </button>
+      )}
     </div>
   );
 }
