@@ -34,9 +34,14 @@ const ProductsAdd = () => {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "description" && value.length > 70) {
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
@@ -49,6 +54,10 @@ const ProductsAdd = () => {
     //   setImageError(!productPic ? "Please upload an image." : "");
     //   return;
     // }
+    if (description.length > 70) {
+      toast.error("Description cannot exceed 70 characters.");
+      return; // Stop submission
+    }
 
     setLoading(true); // Show "Uploading..."
 
@@ -131,6 +140,9 @@ const ProductsAdd = () => {
             className="w-full px-4 py-2 rounded-md bg-white/10 text-white placeholder-cyan-200/70 border border-cyan-400/20 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
             placeholder="Enter Description"
           />
+          <p className="text-xs text-cyan-300 mt-1">
+            {formData.description.length} / 70 characters
+          </p>
           {error && !formData.description && (
             <span className="text-red-500 text-sm">
               Enter a valid description
