@@ -35,8 +35,12 @@ const ProductsAdd = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "description" && value.length > 70) {
-      return;
+    if (name === "description") {
+      const words = value.trim().split(/\s+/).filter(Boolean);
+      if (words.length > 70) {
+        // Prevent typing more than 70 words
+        return;
+      }
     }
 
     setFormData((prev) => ({
@@ -54,7 +58,8 @@ const ProductsAdd = () => {
     //   setImageError(!productPic ? "Please upload an image." : "");
     //   return;
     // }
-    if (description.length > 70) {
+    const wordCount = description.trim().split(/\s+/).filter(Boolean).length;
+    if (wordCount > 70) {
       toast.error("Description cannot exceed 70 characters.");
       return; // Stop submission
     }
@@ -141,7 +146,8 @@ const ProductsAdd = () => {
             placeholder="Enter Description"
           />
           <p className="text-xs text-cyan-300 mt-1">
-            {formData.description.length} / 70 characters
+            {formData.description.trim().split(/\s+/).filter(Boolean).length}/70
+            words
           </p>
           {error && !formData.description && (
             <span className="text-red-500 text-sm">
