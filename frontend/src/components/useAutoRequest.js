@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import axios from "axios";
+import axios from "../context/axios";
 
 const useAutoRequest = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       axios
-        .get("https://your-api.com/endpoint") // Replace with your actual URL
+        .get("/users/me") // Replace with your actual URL
         .then((response) => {
           console.log("Server response:", response.data);
         })
