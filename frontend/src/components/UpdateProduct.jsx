@@ -35,14 +35,31 @@ const UpdateProduct = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === "description") {
+      const words = value.trim().split(/\s+/).filter(Boolean);
+      if (words.length > 70) {
+        // Prevent typing more than 70 words
+        return;
+      }
+    }
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault(); // prevent default form submission behavior
 
-    const data = new FormData();
+    const wordCount = formData.description
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean).length;
+
+    if (wordCount > 70) {
+      toast.error("Description cannot exceed 70 Words.");
+      return; // Stop submission
+    }
     setLoading(true);
+
+    const data = new FormData();
     const changedFields = Object.keys(formData).filter(
       (key) => formData[key] !== initialValues.current[key]
     );
@@ -78,7 +95,8 @@ const UpdateProduct = () => {
       description: res.description,
       productPic: res.productPic,
     });
-    setPreviewImage(res.productPic);
+    setPreviewImage(typeof res.productPic === "string" ? res.productPic : "");
+
     initialValues.current = res;
   };
 
