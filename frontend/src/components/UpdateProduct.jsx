@@ -37,8 +37,8 @@ const UpdateProduct = () => {
     const { name, value } = e.target;
     if (name === "description") {
       const words = value.trim().split(/\s+/).filter(Boolean);
-      if (words.length > 70) {
-        // Prevent typing more than 70 words
+      if (words.length > 50) {
+        // Prevent typing more than 50 words
         return;
       }
     }
@@ -53,8 +53,8 @@ const UpdateProduct = () => {
       .split(/\s+/)
       .filter(Boolean).length;
 
-    if (wordCount > 70) {
-      toast.error("Description cannot exceed 70 Words.");
+    if (wordCount > 50) {
+      toast.error("Description cannot exceed 50 Words.");
       return; // Stop submission
     }
     setLoading(true);
