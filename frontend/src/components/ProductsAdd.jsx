@@ -106,10 +106,10 @@ const ProductsAdd = () => {
   }, [loading]);
 
   return (
-    <div className=" min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black flex items-center justify-center px-4">
+    <div className="lg:-mt-11 min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black flex items-center justify-center px-4">
       <form
         onSubmit={handleAddProduct}
-        className="mt-20 bg-white/10 backdrop-blur-md border border-cyan-500/30 p-8 mb-20 rounded-2xl shadow-[0_0_30px_#00ffff44] w-full max-w-lg space-y-4 animate-fade-in"
+        className="lg:mt-11 mt-24 sm:mt-24 xl:mt-8 bg-white/10 backdrop-blur-md border border-cyan-500/30 p-8 mb-20 rounded-2xl shadow-[0_0_30px_#00ffff44] w-full max-w-lg space-y-4 animate-fade-in"
         encType="multipart/form-data"
       >
         <h2 className="text-3xl font-bold text-center text-cyan-300 ">
@@ -224,7 +224,6 @@ const ProductsAdd = () => {
           )}
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}

@@ -52,28 +52,30 @@ const techStack = [
   { icon: <SiTailwindcss />, label: "Tailwind" },
 ];
 
-const message = "Hello, I need help  Developers for website!";
+const message = "Hello, I need help Developers for website!";
 const encode = encodeURIComponent(message);
+
 const ProfileCard = ({ person }) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
     initial={{ opacity: 0, y: 40 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
-    className="bg-cyan-950/60 backdrop-blur p-5  rounded-2xl shadow-xl border border-cyan-600 text-cyan-100 w-full sm:w-[45%] lg:w-[22%]"
+    className="bg-cyan-950/60 backdrop-blur p-5 rounded-2xl shadow-xl border border-cyan-600 text-cyan-100 w-full sm:w-[80%] md:w-[60%] lg:w-[45%] xl:w-[22%] break-words"
   >
-    <div className="flex items-center space-x-4">
+    <div className="flex flex-col sm:flex-row xl:flex-col items-center gap-4 xl:gap-2 text-center xl:text-center">
+      {/* Image */}
       <img
         src={person.image}
         alt={person.name}
-        className="lg:mb-11 w-20 h-20 rounded-full object-cover shadow-lg border-2 border-blue-600 flex-shrink-0"
+        className="w-20 h-20 xl:w-16 xl:h-16 rounded-full object-cover shadow-lg border-2 border-blue-600"
       />
 
-      <div className="flex flex-col">
-        <h2 className="text-xl font-poppins text-cyan-300">{person.name}</h2>
-        <p className="text-cyan-500">{person.title}</p>
-        {/* <p className="text-sm text-cyan-400 mt-1">{person.company}</p> */}
-        <p className="text-sm mt-1 ">{person.qualifications}</p>
+      {/* Text Content */}
+      <div>
+        <h2 className="text-lg font-poppins text-cyan-300">{person.name}</h2>
+        <p className="text-cyan-500 text-sm">{person.title}</p>
+        <p className="text-sm mt-1">{person.qualifications}</p>
       </div>
     </div>
   </motion.div>
@@ -84,15 +86,13 @@ const ContactCard = ({ icon, title, content, link }) => (
     whileHover={{ scale: 1.05 }}
     href={link}
     target="_blank"
-    rel="Anurag Code's"
-    className="relative overflow-hidden bg-cyan-900/60 backdrop-blur border border-cyan-700 rounded-2xl shadow-lg p-5 flex items-center space-x-4 text-cyan-100 hover:bg-cyan-800 transition w-full sm:w-[45%] lg:w-[30%] group"
+    rel="noopener noreferrer"
+    className="relative overflow-hidden bg-cyan-900/60 backdrop-blur border border-cyan-700 rounded-2xl shadow-lg p-5 flex items-center gap-4 text-cyan-100 hover:bg-cyan-800 transition w-full sm:w-[80%] md:w-[60%] lg:w-[45%] xl:w-[30%] group break-words"
   >
-    {/* Mirror glass shine */}
     <span className="absolute top-0 left-[-75%] w-[24%] h-full bg-gradient-to-r from-transparent via-white/40 to-transparent transform rotate-12 animate-shine pointer-events-none" />
-
     <div className="text-3xl text-green-400">{icon}</div>
     <div>
-      <p className="font-semibold  text-lg text-cyan-500">{title}</p>
+      <p className="font-semibold text-lg text-cyan-500">{title}</p>
       <p className="text-sm text-cyan-300">{content}</p>
     </div>
   </motion.a>
@@ -101,34 +101,35 @@ const ContactCard = ({ icon, title, content, link }) => (
 export default function ProfilePage() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-cyan-950 text-white p-5 ">
-      <div className="flex items-center space-x-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-cyan-950 text-white p-5">
+      {/* Back Button */}
+      <div className="flex flex-col sm:flex-row items-center gap-3">
         <button
           onClick={() => navigate(-1)}
-          className=" rgb-border-btn text-cyan-400 min-w-[120px] px-4 py-2"
+          className="rgb-border-btn text-cyan-400 min-w-[120px] px-4 py-2 border border-cyan-600 rounded"
         >
-          👈Back to Menu
+          👈 Back to Menu
         </button>
-        <p className="text-sm text-gray-600 flex-1">
-          if you want to contact us details in below!👇
+        <p className="text-sm text-gray-400">
+          If you want to contact us, details below 👇
         </p>
       </div>
 
-      <h2 className=" text-3xl font-bold text-center text-yellow-400 mb-4 mt-5">
+      {/* Team Section */}
+      <h2 className="text-3xl font-bold text-center text-yellow-400 mb-6 mt-6">
         Meet Our Awesome Team 🧑‍💼
       </h2>
-
-      <div className="flex flex-wrap justify-center gap-6">
+      <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-6 items-center">
         {people.map((person, i) => (
           <ProfileCard key={i} person={person} />
         ))}
       </div>
 
-      <h1 className="text-2xl font-semibold text-yellow-600 mt-11 mb-3 text-center">
+      {/* Contact Section */}
+      <h1 className="text-2xl font-semibold text-yellow-600 mt-12 mb-4 text-center">
         Contact Us
       </h1>
-
-      <div className="flex flex-wrap justify-center gap-6 ">
+      <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-6 items-center">
         <ContactCard
           icon={<FaWhatsapp />}
           title="WhatsApp"
@@ -149,61 +150,48 @@ export default function ProfilePage() {
         />
       </div>
 
+      {/* Services Section */}
       <h1 className="text-2xl font-semibold text-yellow-600 mt-12 mb-4 text-center">
         Want to Build a Website or App? 🚀
       </h1>
-
-      <div className="flex flex-wrap justify-center gap-6">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-cyan-950/70 p-5 w-full sm:w-[45%] lg:w-[30%] rounded-2xl shadow-lg border border-cyan-700 text-cyan-100"
-        >
-          <h3 className="text-lg font-bold text-cyan-300 mb-2">
-            Personal Portfolio
-          </h3>
-          <p className="text-sm text-cyan-400">
-            Want a stylish and modern portfolio to showcase your skills? We
-            build responsive and elegant portfolios using React and Tailwind
-            CSS.
-          </p>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-cyan-950/70 p-5 w-full sm:w-[45%] lg:w-[30%] rounded-2xl shadow-lg border border-cyan-700 text-cyan-100"
-        >
-          <h3 className="text-lg font-bold text-cyan-300 mb-2">
-            Business Website
-          </h3>
-          <p className="text-sm text-cyan-400">
-            From restaurants to stores, we create fast, beautiful, and
-            mobile-friendly websites tailored for your business.
-          </p>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-cyan-950/70 p-5 w-full sm:w-[45%] lg:w-[30%] rounded-2xl shadow-lg border border-cyan-700 text-cyan-100"
-        >
-          <h3 className="text-lg font-bold text-cyan-300 mb-2">
-            Full-Stack Projects
-          </h3>
-          <p className="text-sm text-cyan-400">
-            Need custom solutions like e-commerce, inventory systems or admin
-            dashboards? We build powerful full-stack apps with React & Node.js.
-          </p>
-        </motion.div>
+      <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-6 items-center">
+        {[
+          {
+            title: "Personal Portfolio",
+            desc: "Want a stylish and modern portfolio to showcase your skills? We build responsive and elegant portfolios using React and Tailwind CSS.",
+          },
+          {
+            title: "Business Website",
+            desc: "From restaurants to stores, we create fast, beautiful, and mobile-friendly websites tailored for your business.",
+          },
+          {
+            title: "Full-Stack Projects",
+            desc: "Need custom solutions like e-commerce, inventory systems or admin dashboards? We build powerful full-stack apps with React & Node.js.",
+          },
+        ].map((service, i) => (
+          <motion.div
+            key={i}
+            whileHover={{ scale: 1.05 }}
+            className="bg-cyan-950/70 p-5 w-full sm:w-[80%] md:w-[60%] lg:w-[45%] xl:w-[30%] rounded-2xl shadow-lg border border-cyan-700 text-cyan-100 break-words"
+          >
+            <h3 className="text-lg font-bold text-cyan-300 mb-2">
+              {service.title}
+            </h3>
+            <p className="text-sm text-cyan-400">{service.desc}</p>
+          </motion.div>
+        ))}
       </div>
 
-      <h1 className="text-2xl font-semibold text-yellow-600 mt-11 mb-3 text-center">
+      {/* Tech Stack Section */}
+      <h1 className="text-2xl font-semibold text-yellow-600 mt-12 mb-4 text-center">
         Our Stack 💻
       </h1>
-      <div className="flex flex-wrap justify-center gap-3">
+      <div className="flex flex-wrap justify-center gap-4">
         {techStack.map((tech, index) => (
           <motion.div
             key={index}
             whileHover={{ rotate: 10 }}
-            className="text-3xl text-cyan-300 bg-gray-900 p-2 rounded-full shadow-md border border-cyan-600 flex flex-col items-center"
+            className="text-3xl text-cyan-300 bg-gray-900 p-3 rounded-full shadow-md border border-cyan-600 flex flex-col items-center"
             style={{ width: "60px" }}
           >
             {tech.icon}

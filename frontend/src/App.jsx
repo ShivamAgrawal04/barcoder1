@@ -142,7 +142,9 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-      {!shouldHideFooter && <Footer />}
+      {(publicRoutes.includes(currentPath) ||
+        (!screenSize && !shouldHideNavbar)) && <Footer />}
+
       {/* </SmoothScrollWrapper> */}
       {isVisible && (
         <button
