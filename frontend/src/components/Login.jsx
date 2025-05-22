@@ -16,7 +16,7 @@ const Login = () => {
       toast.error(res?.message);
     } else {
       toast.success(res?.message || "✅ Login successfully");
-      navigate("/");
+      navigate("/list");
     }
   };
 

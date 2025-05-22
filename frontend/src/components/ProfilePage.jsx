@@ -1,12 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Anurag from "../assets/Anurag.jpg";
+import Tanmay from "../assets/Tanmay.jpg";
+import Shivam from "../assets/Shivam.jpg";
 import {
   FaWhatsapp,
   FaEnvelope,
   FaReact,
   FaNodeJs,
   FaJava,
+  FaInstagram,
 } from "react-icons/fa";
 import { SiTailwindcss } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
@@ -21,17 +24,17 @@ const people = [
   },
   {
     name: "Shivam Agarwal",
-    title: "Full Stack Developer",
+    title: "Backend Developer",
     company: "DesignCraft Studio",
     qualifications: "MCA | BCA",
-    image: Anurag,
+    image: Shivam,
   },
   {
     name: "Tanmay Chaudhary",
-    title: "Frontend Developer",
+    title: "Android Developer",
     company: "ServerHub",
     qualifications: "MCA | BCA",
-    image: Anurag,
+    image: Tanmay,
   },
   {
     name: "Ankur Chauhan",
@@ -49,6 +52,8 @@ const techStack = [
   { icon: <SiTailwindcss />, label: "Tailwind" },
 ];
 
+const message = "Hello, I need help  Developers for website!";
+const encode = encodeURIComponent(message);
 const ProfileCard = ({ person }) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
@@ -109,7 +114,7 @@ export default function ProfilePage() {
         </p>
       </div>
 
-      <h2 className="text-3xl font-bold text-center text-yellow-400 mb-4 mt-5">
+      <h2 className=" text-3xl font-bold text-center text-yellow-400 mb-4 mt-5">
         Meet Our Awesome Team 🧑‍💼
       </h2>
 
@@ -128,14 +133,66 @@ export default function ProfilePage() {
           icon={<FaWhatsapp />}
           title="WhatsApp"
           content="Chat with us on WhatsApp"
-          link="https://wa.me/919876543210"
+          link={`https://wa.me/9452034738?text=${encode}`}
         />
         <ContactCard
           icon={<FaEnvelope className="text-orange-600" />}
           title="Email"
-          content="support@codeverse.com"
-          link="mailto:support@codeverse.com"
+          content="scanmydish@gmail.com"
+          link="mailto:scanmydish@gmail.com"
         />
+        <ContactCard
+          icon={<FaInstagram className="text-pink-400" />}
+          title="Instagram"
+          content="#ScanMyDish (Visit for updates!)"
+          link="https://www.instagram.com/scanmydish/"
+        />
+      </div>
+
+      <h1 className="text-2xl font-semibold text-yellow-600 mt-12 mb-4 text-center">
+        Want to Build a Website or App? 🚀
+      </h1>
+
+      <div className="flex flex-wrap justify-center gap-6">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="bg-cyan-950/70 p-5 w-full sm:w-[45%] lg:w-[30%] rounded-2xl shadow-lg border border-cyan-700 text-cyan-100"
+        >
+          <h3 className="text-lg font-bold text-cyan-300 mb-2">
+            Personal Portfolio
+          </h3>
+          <p className="text-sm text-cyan-400">
+            Want a stylish and modern portfolio to showcase your skills? We
+            build responsive and elegant portfolios using React and Tailwind
+            CSS.
+          </p>
+        </motion.div>
+
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="bg-cyan-950/70 p-5 w-full sm:w-[45%] lg:w-[30%] rounded-2xl shadow-lg border border-cyan-700 text-cyan-100"
+        >
+          <h3 className="text-lg font-bold text-cyan-300 mb-2">
+            Business Website
+          </h3>
+          <p className="text-sm text-cyan-400">
+            From restaurants to stores, we create fast, beautiful, and
+            mobile-friendly websites tailored for your business.
+          </p>
+        </motion.div>
+
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="bg-cyan-950/70 p-5 w-full sm:w-[45%] lg:w-[30%] rounded-2xl shadow-lg border border-cyan-700 text-cyan-100"
+        >
+          <h3 className="text-lg font-bold text-cyan-300 mb-2">
+            Full-Stack Projects
+          </h3>
+          <p className="text-sm text-cyan-400">
+            Need custom solutions like e-commerce, inventory systems or admin
+            dashboards? We build powerful full-stack apps with React & Node.js.
+          </p>
+        </motion.div>
       </div>
 
       <h1 className="text-2xl font-semibold text-yellow-600 mt-11 mb-3 text-center">

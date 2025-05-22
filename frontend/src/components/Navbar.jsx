@@ -4,7 +4,7 @@ import Logo from "../assets/Anurag.png";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -13,7 +13,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menu, setMenu] = useState(false);
   const [navbarVisible, setNavbarVisible] = useState(true);
-    const [searchBarPosition, setSearchBarPosition] = useState("top-16");
+  const [searchBarPosition, setSearchBarPosition] = useState("top-16");
   const ClickRef = useRef();
 
   const handleLogout = async () => {
@@ -27,14 +27,23 @@ const Navbar = () => {
     <>
       <Link
         to="/"
-        className=" hover:text-cyan-400 transition-all duration-300"
+        className={`px-2 py-1 rounded-md text-sm transition-all duration-300 ${
+          location.pathname === "/"
+            ? "bg-cyan-500 text-white"
+            : "hover:text-cyan-400"
+        }`}
         onClick={() => isMobile && setMenuOpen(false)}
       >
         Product
       </Link>
+
       <Link
         to="/add"
-        className="hover:text-cyan-400 transition-all duration-300"
+        className={`px-2 py-1 rounded-md text-sm transition-all duration-300 ${
+          location.pathname === "/add"
+            ? "bg-cyan-500 text-white"
+            : "hover:text-cyan-400"
+        }`}
         onClick={() => isMobile && setMenuOpen(false)}
       >
         Add Product
@@ -42,10 +51,25 @@ const Navbar = () => {
 
       <Link
         to="/qrcode"
-        className="hover:text-cyan-400 transition-all duration-300"
+        className={`px-2 py-1 rounded-md text-sm transition-all duration-300 ${
+          location.pathname === "/qrcode"
+            ? "bg-cyan-500 text-white"
+            : "hover:text-cyan-400"
+        }`}
         onClick={() => isMobile && setMenuOpen(false)}
       >
         QRCode
+      </Link>
+
+      <Link
+        to="/profile"
+        className={`px-2 py-1 rounded-md text-sm transition-all duration-300 underline ${
+          location.pathname === "/profile"
+            ? "bg-cyan-500 text-green-600"
+            : "text-red-500"
+        }`}
+      >
+        Developers Support
       </Link>
 
       <Link
@@ -92,9 +116,9 @@ const Navbar = () => {
     return `${firstLetter}`;
   };
 
-  const clicklogo =()=>{
-    navigate('/');
-  }
+  const clicklogo = () => {
+    navigate("/");
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50  bg-gray-800 shadow-[0_0_20px_#00ffff44] font-neon">
@@ -105,10 +129,11 @@ const Navbar = () => {
               className="w-14 h-14 mr-5 rounded-full object-contain animate-pulse hover:rotate-[360deg] transition-all duration-700"
               src={Logo}
               alt="Logo"
-              
-              
             />
-            <h1 onClick={clicklogo} className="cursor-pointer text-xl  sm:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 tracking-wider">
+            <h1
+              onClick={clicklogo}
+              className="cursor-pointer text-xl  sm:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 tracking-wider"
+            >
               Anurag Code's
             </h1>
           </div>

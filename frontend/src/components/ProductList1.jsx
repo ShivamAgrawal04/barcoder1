@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 import useTypewriter from "./useTypeWriter";
 
-const ProductList = () => {
+const ProductList1 = () => {
   const { user, getProducts, deleteProductById } = useAuth();
   const [product, setProduct] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
@@ -76,6 +76,7 @@ const ProductList = () => {
     }
 
     const key = debouncedKey.toLowerCase();
+
     const filtered = allProducts.filter((item) => {
       const nameMatch = item.name.toLowerCase().includes(key);
       const priceMatch = String(item.price).includes(key);
@@ -470,4 +471,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default ProductList1;

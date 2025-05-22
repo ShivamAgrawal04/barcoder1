@@ -220,36 +220,26 @@ const ProductOnly = () => {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <div className="items-center flex flex-row">
+          <div className="flex justify-between items-center h-16 space-x-3 overflow-hidden">
+            {/* LEFT SIDE */}
+            <div className="flex items-center space-x-2 min-w-0">
               <img
-                className="w-14 h-14 mr-5 rounded-full object-contain animate-pulse hover:rotate-[360deg] transition-all duration-700"
+                className="w-10 h-10 sm:w-14 sm:h-14 rounded-full object-contain animate-pulse hover:rotate-[360deg] transition-all duration-700 flex-shrink-0"
                 src={Logo}
                 alt="Logo"
               />
-              <h1 className="text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 tracking-wider">
+              <h1 className="text-base sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 tracking-wider truncate">
                 Anurag Code's
               </h1>
-
-              {/* Animated "Click Me" button next to name on large screens */}
-              <button
-                className="ml-6 hidden lg:inline-flex flex-col items-center justify-center px-3 py-1.5 rounded-full text-white text-sm bg-gradient-to-r from-pink-500 via-yellow-500 to-cyan-500 bg-[length:200%_auto] animate-gradient-x transition-all duration-300 shadow-md hover:scale-105"
-                onClick={() => navigate("/profile")}
-              >
-                Click Me!
-                <span className="text-[10px] leading-none font-light">
-                  For Developers
-                </span>
-              </button>
             </div>
 
-            {/* Same button on smaller screens, positioned on the right */}
+            {/* BUTTON always visible and row aligned */}
             <button
-              className="lg:hidden flex flex-col items-center justify-center px-3 py-1.5 rounded-full text-white text-sm  bg-gradient-to-r from-pink-500 via-yellow-500 to-cyan-500 bg-[length:200%_auto] animate-gradient-x transition-all duration-300 shadow-md hover:scale-105"
+              className=" flex flex-col items-center justify-center px-2 sm:px-3 py-1.5 rounded-full text-white text-xs sm:text-sm bg-gradient-to-r from-pink-500 via-yellow-500 to-cyan-500 bg-[length:200%_auto] animate-gradient-x transition-all duration-300 shadow-md hover:scale-105 flex-shrink-0"
               onClick={() => navigate("/profile")}
             >
-              Click Me!
-              <span className="text-[10px] leading-none font-light">
+              <span className="text-[10px]  sm:text-sm">Click!</span>
+              <span className="text-[8px] sm:text-[10px] leading-none font-light">
                 For Developers
               </span>
             </button>
