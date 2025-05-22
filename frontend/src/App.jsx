@@ -107,7 +107,7 @@ function App() {
     <div>
       {/* <SmoothScrollWrapper> */}
       {(publicRoutes.includes(currentPath) ||
-        (screenSize && !shouldHideNavbar)) && <Nav />}
+        (!screenSize && !shouldHideNavbar)) && <Nav />}
 
       <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
