@@ -1,6 +1,8 @@
 import React from "react";
 import useAnimatedPlaceholder from "./useAnimatedPlaceholder";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const words = [
   "Paneer 😋",
@@ -14,7 +16,19 @@ const words = [
 
 const SearchBar = ({ products, onSearch, searchQuery, setSearchQuery }) => {
   const animatedPlaceholder = useAnimatedPlaceholder({ words });
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const res = await logout();
+    if (res.success) {
+      toast.success(res.message);
+      navigate("/login");
+    } else {
+      toast.error(res.message);
+    }
+  };
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -76,13 +90,15 @@ const SearchBar = ({ products, onSearch, searchQuery, setSearchQuery }) => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 p-2 shadow"
           >
             <li>
               <a className="justify-between">{user?.name.toUpperCase()}</a>
             </li>
             <li>
-              <a>Logout</a>
+              <button onClick={handleLogout} className="bg-red-400">
+                Logout
+              </button>
             </li>
           </ul>
         </div>
