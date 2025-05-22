@@ -53,12 +53,21 @@ const Row = ({ index, style, data }) => {
         />
       </div>
       <div className="flex-grow basis-[200px]">
-        {highlightMatch(item.name, searchQuery)}
+        {highlightMatch(
+          item.name
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" "),
+
+          searchQuery
+        )}
       </div>
       <div className="flex-shrink-0 flex-grow-0 basis-[80px]">
-        ₹{item.price}
+        ₹ {highlightMatch(item.price.toString(), searchQuery)}
       </div>
-      <div className="flex-grow basis-[120px] capitalize">{item.category}</div>
+      <div className="flex-grow basis-[120px] capitalize">
+        {highlightMatch(item.category ?? "", searchQuery)}
+      </div>
       <div className="flex-grow basis-[300px] pr-4">
         <DescriptionToggle
           text={item.description}
@@ -146,9 +155,20 @@ const ProductList = () => {
   const filteredProducts = useMemo(() => {
     const lower = searchQuery.toLowerCase();
     return products
-      .filter((p) => p.name?.toLowerCase().includes(lower))
-      .map((item) => ({ item, searchQuery }));
-  }, [products, searchQuery]);
+      .filter((p) => {
+        const nameMatch = p.name?.toLowerCase().includes(lower);
+        const priceMatch = p.price?.toString().includes(lower);
+        const categoryMatch = p.category?.toLowerCase().includes(lower);
+        return nameMatch || priceMatch || categoryMatch;
+      })
+      .map((item, index) => ({
+        item,
+        searchQuery,
+        isExpanded: expandedRows.has(index),
+        onToggle: toggleRow,
+        setProducts,
+      }));
+  }, [products, searchQuery, expandedRows]);
 
   const itemData = filteredProducts.map(({ item, searchQuery }, idx) => ({
     item,
@@ -178,16 +198,32 @@ const ProductList = () => {
             </div>
           </div>
 
-          <List
-            height={listHeight}
-            itemCount={filteredProducts.length}
-            itemSize={getItemSize}
-            width={listWidth}
-            itemData={itemData}
-            ref={listRef}
-          >
-            {Row}
-          </List>
+          {filteredProducts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 animate-fade-in">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png"
+                alt="No products"
+                className="w-20 h-20 mb-4 opacity-80"
+              />
+              <p className="text-cyan-300 text-lg font-semibold">
+                No Products Found 😞
+              </p>
+              <p className="text-sm text-cyan-500 mt-1">
+                Try searching something else.
+              </p>
+            </div>
+          ) : (
+            <List
+              height={listHeight}
+              itemCount={filteredProducts.length}
+              itemSize={getItemSize}
+              width={listWidth}
+              itemData={itemData}
+              ref={listRef}
+            >
+              {Row}
+            </List>
+          )}
         </div>
       </div>
     </div>
