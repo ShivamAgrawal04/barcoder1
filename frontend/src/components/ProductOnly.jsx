@@ -5,11 +5,13 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { CgCloseO } from "react-icons/cg";
 import Logo from "../assets/Anurag.png";
 import useTypewriter from "./useTypeWriter";
+import { useNavigate } from "react-router-dom";
+import Profile from "./ProfilePage";
 
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -26,6 +28,7 @@ function useDebounce(value, delay) {
 }
 
 const ProductOnly = () => {
+  const navigate = useNavigate();
   const { id, shopName } = useParams();
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
@@ -56,6 +59,7 @@ const ProductOnly = () => {
   };
 
   // ✅ Setup Socket.IO
+
   useEffect(() => {
     socketRef.current = io(import.meta.env.VITE_API_BASE_URL, {
       withCredentials: true,
@@ -129,8 +133,11 @@ const ProductOnly = () => {
     return allProducts.filter((item) => {
       const name = item.name.toLowerCase();
       const price = String(item.price);
+      const category = item.category?.toLowerCase() || ""; // optional chaining for safety
+
       return searchWords.every(
-        (word) => name.includes(word) || price.includes(word)
+        (word) =>
+          name.includes(word) || price.includes(word) || category.includes(word)
       );
     });
   }, [debouncedSearchKey, allProducts]);
@@ -213,7 +220,7 @@ const ProductOnly = () => {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex  justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16">
             <div className="items-center flex flex-row">
               <img
                 className="w-14 h-14 mr-5 rounded-full object-contain animate-pulse hover:rotate-[360deg] transition-all duration-700"
@@ -223,7 +230,29 @@ const ProductOnly = () => {
               <h1 className="text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 tracking-wider">
                 Anurag Code's
               </h1>
+
+              {/* Animated "Click Me" button next to name on large screens */}
+              <button
+                className="ml-6 hidden lg:inline-flex flex-col items-center justify-center px-3 py-1.5 rounded-full text-white text-sm bg-gradient-to-r from-pink-500 via-yellow-500 to-cyan-500 bg-[length:200%_auto] animate-gradient-x transition-all duration-300 shadow-md hover:scale-105"
+                onClick={() => navigate("/profile")}
+              >
+                Click Me!
+                <span className="text-[10px] leading-none font-light">
+                  For Developers
+                </span>
+              </button>
             </div>
+
+            {/* Same button on smaller screens, positioned on the right */}
+            <button
+              className="lg:hidden flex flex-col items-center justify-center px-3 py-1.5 rounded-full text-white text-sm  bg-gradient-to-r from-pink-500 via-yellow-500 to-cyan-500 bg-[length:200%_auto] animate-gradient-x transition-all duration-300 shadow-md hover:scale-105"
+              onClick={() => navigate("/profile")}
+            >
+              Click Me!
+              <span className="text-[10px] leading-none font-light">
+                For Developers
+              </span>
+            </button>
           </div>
         </div>
       </nav>
@@ -266,10 +295,20 @@ const ProductOnly = () => {
         </h2>
 
         <div className="sm:hidden space-y-4">
-          {products.length === 0 ? (
-            <p className="text-center text-cyan-300 text-lg">
-              No Products Found 😞
-            </p>
+          {filteredProducts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 animate-fade-in">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png"
+                alt="No products"
+                className="w-20 h-20 mb-4 opacity-80"
+              />
+              <p className="text-cyan-300 text-lg font-semibold">
+                No Products Found 😞
+              </p>
+              <p className="text-sm text-cyan-500 mt-1">
+                Try searching something else.
+              </p>
+            </div>
           ) : (
             visibleProducts.map((item, index) => {
               const desc = item.description || "";
@@ -365,10 +404,22 @@ const ProductOnly = () => {
               </tr>
             </thead>
             <tbody>
-              {products.length === 0 ? (
+              {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center py-5 text-cyan-300">
-                    No Products Found 😞
+                  <td colSpan="6">
+                    <div className="flex flex-col items-center justify-center py-10 animate-fade-in">
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png"
+                        alt="No products"
+                        className="w-24 h-24 mb-4 opacity-80"
+                      />
+                      <p className="text-cyan-300 text-lg font-medium">
+                        No Products Found 😞
+                      </p>
+                      <p className="text-sm text-cyan-500 mt-1">
+                        Try searching something else.
+                      </p>
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -427,8 +478,7 @@ const ProductOnly = () => {
                       <td className="py-3 px-2">
                         <span>
                           {highlightMatch(
-                            isShowFullDesc ? desc : descShort + "...",
-                            searchkey
+                            isShowFullDesc ? desc : descShort + "..."
                           )}
                         </span>
                         {desc.length > 60 && (

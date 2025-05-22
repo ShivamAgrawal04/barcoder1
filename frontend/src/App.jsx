@@ -13,6 +13,7 @@ import ProductOnly from "./components/ProductOnly";
 import QrCode from "./components/QrCode";
 import PageNotFound from "./components/PageNotFound";
 import PublicComponent from "./components/PublicComponent";
+import ProfilePage from "./components/ProfilePage";
 import { useAuth } from "./context/AuthContext";
 import load from "../src/assets/animated.gif";
 import { MdKeyboardArrowRight, MdKeyboardArrowUp } from "react-icons/md";
@@ -27,12 +28,12 @@ function App() {
   const { loading } = useAuth();
   const currentPath = location.pathname;
 
-  const hideNavbarRoutes = ["/qrproducts"];
+  const hideNavbarRoutes = ["/qrproducts", "/profile"];
   const shouldHideNavbar = hideNavbarRoutes.some((path) =>
     currentPath.startsWith(path)
   );
 
-  const hideFooterRoutes = ["/login", "/signup"];
+  const hideFooterRoutes = ["/login", "/signup", "/profile"];
   const shouldHideFooter = hideFooterRoutes.some((path) =>
     currentPath.startsWith(path)
   );
@@ -106,6 +107,7 @@ function App() {
         </Route>
 
         <Route path="/qrproducts/:id/:shopName" element={<ProductOnly />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
 

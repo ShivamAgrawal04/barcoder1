@@ -1,0 +1,161 @@
+import React from "react";
+import { motion } from "framer-motion";
+import Anurag from "../assets/Anurag.jpg";
+import {
+  FaWhatsapp,
+  FaEnvelope,
+  FaReact,
+  FaNodeJs,
+  FaJava,
+} from "react-icons/fa";
+import { SiTailwindcss } from "react-icons/si";
+import { useNavigate } from "react-router-dom";
+
+const people = [
+  {
+    name: "Anurag Vishwakarma",
+    title: "Full Stack Developer",
+    company: "CodeVerse Pvt. Ltd.",
+    qualifications: "MCA | BCA",
+    image: Anurag,
+  },
+  {
+    name: "Shivam Agarwal",
+    title: "Full Stack Developer",
+    company: "DesignCraft Studio",
+    qualifications: "MCA | BCA",
+    image: Anurag,
+  },
+  {
+    name: "Tanmay Chaudhary",
+    title: "Frontend Developer",
+    company: "ServerHub",
+    qualifications: "MCA | BCA",
+    image: Anurag,
+  },
+  {
+    name: "Ankur Chauhan",
+    title: "Data Management",
+    company: "PixelSoft",
+    qualifications: "MCA | BCA",
+    image: Anurag,
+  },
+];
+
+const techStack = [
+  { icon: <FaReact />, label: "React.js" },
+  { icon: <FaNodeJs />, label: "Node.js" },
+  { icon: <FaJava />, label: "Java" },
+  { icon: <SiTailwindcss />, label: "Tailwind" },
+];
+
+const ProfileCard = ({ person }) => (
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="bg-cyan-950/60 backdrop-blur p-5  rounded-2xl shadow-xl border border-cyan-600 text-cyan-100 w-full sm:w-[45%] lg:w-[22%]"
+  >
+    <div className="flex items-center space-x-4">
+      <img
+        src={person.image}
+        alt={person.name}
+        className="lg:mb-11 w-20 h-20 rounded-full object-cover shadow-lg border-2 border-blue-600 flex-shrink-0"
+      />
+
+      <div className="flex flex-col">
+        <h2 className="text-xl font-poppins text-cyan-300">{person.name}</h2>
+        <p className="text-cyan-500">{person.title}</p>
+        {/* <p className="text-sm text-cyan-400 mt-1">{person.company}</p> */}
+        <p className="text-sm mt-1 ">{person.qualifications}</p>
+      </div>
+    </div>
+  </motion.div>
+);
+
+const ContactCard = ({ icon, title, content, link }) => (
+  <motion.a
+    whileHover={{ scale: 1.05 }}
+    href={link}
+    target="_blank"
+    rel="Anurag Code's"
+    className="relative overflow-hidden bg-cyan-900/60 backdrop-blur border border-cyan-700 rounded-2xl shadow-lg p-5 flex items-center space-x-4 text-cyan-100 hover:bg-cyan-800 transition w-full sm:w-[45%] lg:w-[30%] group"
+  >
+    {/* Mirror glass shine */}
+    <span className="absolute top-0 left-[-75%] w-[24%] h-full bg-gradient-to-r from-transparent via-white/40 to-transparent transform rotate-12 animate-shine pointer-events-none" />
+
+    <div className="text-3xl text-green-400">{icon}</div>
+    <div>
+      <p className="font-semibold  text-lg text-cyan-500">{title}</p>
+      <p className="text-sm text-cyan-300">{content}</p>
+    </div>
+  </motion.a>
+);
+
+export default function ProfilePage() {
+  const navigate = useNavigate();
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-cyan-950 text-white p-5 ">
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={() => navigate(-1)}
+          className=" rgb-border-btn text-cyan-400 min-w-[120px] px-4 py-2"
+        >
+          👈Back to Menu
+        </button>
+        <p className="text-sm text-gray-600 flex-1">
+          if you want to contact us details in below!👇
+        </p>
+      </div>
+
+      <h2 className="text-3xl font-bold text-center text-yellow-400 mb-4 mt-5">
+        Meet Our Awesome Team 🧑‍💼
+      </h2>
+
+      <div className="flex flex-wrap justify-center gap-6">
+        {people.map((person, i) => (
+          <ProfileCard key={i} person={person} />
+        ))}
+      </div>
+
+      <h1 className="text-2xl font-semibold text-yellow-600 mt-11 mb-3 text-center">
+        Contact Us
+      </h1>
+
+      <div className="flex flex-wrap justify-center gap-6 ">
+        <ContactCard
+          icon={<FaWhatsapp />}
+          title="WhatsApp"
+          content="Chat with us on WhatsApp"
+          link="https://wa.me/919876543210"
+        />
+        <ContactCard
+          icon={<FaEnvelope className="text-orange-600" />}
+          title="Email"
+          content="support@codeverse.com"
+          link="mailto:support@codeverse.com"
+        />
+      </div>
+
+      <h1 className="text-2xl font-semibold text-yellow-600 mt-11 mb-3 text-center">
+        Our Stack 💻
+      </h1>
+      <div className="flex flex-wrap justify-center gap-3">
+        {techStack.map((tech, index) => (
+          <motion.div
+            key={index}
+            whileHover={{ rotate: 10 }}
+            className="text-3xl text-cyan-300 bg-gray-900 p-2 rounded-full shadow-md border border-cyan-600 flex flex-col items-center"
+            style={{ width: "60px" }}
+          >
+            {tech.icon}
+            <p className="text-xs mt-1 text-center text-cyan-400">
+              {tech.label}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}

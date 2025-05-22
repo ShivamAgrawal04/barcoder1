@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,7 +29,6 @@
   border-radius: 4px;
 }
 
-
 @layer utilities {
   .animate-scale-in {
     animation: scaleIn 0.25s ease-out;
@@ -48,25 +47,22 @@
   }
 }
 
-
-
 h2 {
-  font-family: 'Dancing Script', cursive;
+  font-family: "Dancing Script", cursive;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 100;
   background-color: #000;
   /* or match your bg color */
   /* min-height: 100%;
   scroll-behavior: smooth;
   overscroll-behavior: none; */
-
 }
 
 .themechange {
-  font-family: 'Marcellus', serif;
+  font-family: "Marcellus", serif;
 }
 
 .thinbold {
@@ -89,12 +85,57 @@ body {
   animation: bounce 1.5s infinite;
 }
 
-
 /* ✨ Neon glow effect */
 .neon-glow {
-  box-shadow:
-    0 0 5px #00ffff,
-    0 0 10px #00ffff,
-    0 0 20px #00ffff,
+  box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff,
     0 0 40px #00ffff;
+}
+
+.rgb-border-btn {
+  position: relative;
+  padding: 0.6rem 0.6rem;
+  font-weight: 400;
+  background: black;
+  /* color: cyan; */
+  border-radius: 8px;
+  /* border: 3px solid; */
+  /* border-image: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red) 1; */
+  background-clip: padding-box;
+  z-index: 0;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.rgb-border-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(90deg,
+      red,
+      orange,
+      yellow,
+      green,
+      blue,
+      indigo,
+      violet,
+      red);
+  background-size: 300% 300%;
+  animation: animate-border 3s linear infinite;
+  z-index: -1;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+}
+
+@keyframes animate-border {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
 }

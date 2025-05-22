@@ -5,24 +5,34 @@ export default {
     extend: {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
+        dancing: ["Dancing Script", "cursive"],
+        sans: ["Montserrat", "sans-serif"],
       },
       animation: {
-        float: "float 4s ease-in-out infinite",
+        float: "float 7s ease-in-out infinite",
+        "fade-in": "fadeIn 1s ease-in-out",
+        shine: "shine 2s ease-in-out infinite",
+        "gradient-x": "gradient-x 3s ease infinite",
       },
       keyframes: {
         float: {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
         },
-        fontFamily: {
-          sans: ["Montserrat", "sans-serif"],
-          poppins: ["Poppins", "sans-serif"],
-          dancing: ["Dancing Script", "cursive"], // fallback bhi dena best practice hai
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        shine: {
+          "0%": { left: "-75%" },
+          "100%": { left: "125%" },
+        },
+        "gradient-x": {
+          "0%, 100%": { backgroundPosition: "0% center" },
+          "50%": { backgroundPosition: "100% center" },
         },
       },
     },
   },
-  // plugins: [require("@tailwindcss/line-clamp")],
-  // plugins: [require('tailwind-scrollbar-hide')],
-  
+  plugins: [require("@tailwindcss/line-clamp")],
 };
