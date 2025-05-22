@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
+import { IoIosEyeOff } from "react-icons/io";
+import { IoMdEye } from "react-icons/io";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -50,16 +53,29 @@ const Login = () => {
         </div>
 
         {/* Input: Password */}
-        <div className="mb-6 themechange">
+        <div className="mb-6 themechange relative">
           <label className="text-sm text-cyan-200 block mb-1">Password</label>
           <input
-            type="password"
+            type={isActive ? "text" : "password"}
             className="w-full px-4 py-2 rounded-md bg-white/10 text-white placeholder-cyan-200/70 border border-cyan-400/20 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
             placeholder="•••••••• 🔑"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onKeyDown={handleKeyDown}
           />
+          {isActive}
+
+          <div className="absolute top-[2.3rem] right-3 ">
+            {isActive ? (
+              <button onClick={() => setIsActive(!isActive)}>
+                <IoMdEye className="-scale-150" />
+              </button>
+            ) : (
+              <button onClick={() => setIsActive(!isActive)}>
+                <IoIosEyeOff className="-scale-150" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Button */}
