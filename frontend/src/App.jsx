@@ -26,6 +26,8 @@ import ProductList from "./components/productlistComponents/ProductList";
 // import SmoothScrollWrapper from "./components/SmoothScrollWrapper";
 
 function App() {
+  // useEffect(())
+  const publicRoutes = ["/login", "/signup"];
   const [screenSize, setScreenSize] = useState(window.innerWidth > 700);
 
   useEffect(() => {
@@ -104,7 +106,8 @@ function App() {
   return (
     <div>
       {/* <SmoothScrollWrapper> */}
-      {!screenSize && !shouldHideNavbar && <Nav />}
+      {(publicRoutes.includes(currentPath) ||
+        (screenSize && !shouldHideNavbar)) && <Nav />}
 
       <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
