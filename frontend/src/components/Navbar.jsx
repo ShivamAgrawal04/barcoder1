@@ -4,7 +4,6 @@ import Logo from "../assets/Anurag.png";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logout } = useAuth();

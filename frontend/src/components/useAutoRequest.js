@@ -5,14 +5,16 @@ const useAutoRequest = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       axios
-        .get("/users/me") // Replace with your actual URL
+        .get("/users/me", {
+          withCredentials: true,
+        }) // Replace with your actual URL
         .then((response) => {
           console.log("Server response:", response.data);
         })
         .catch((error) => {
           console.error("Request error:", error);
         });
-    }, 14 * 60 * 1000); // 14 minutes in milliseconds
+    }, 5000); // 14 minutes in milliseconds
 
     return () => clearInterval(interval); // Cleanup
   }, []);
