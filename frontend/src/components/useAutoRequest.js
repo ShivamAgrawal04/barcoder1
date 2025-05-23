@@ -14,7 +14,7 @@ const useAutoRequest = () => {
         .catch((error) => {
           console.error("Request error:", error);
         });
-    }, 5000); // 14 minutes in milliseconds
+    }, 14 * 60 * 1000); // 14 minutes in milliseconds
 
     return () => clearInterval(interval); // Cleanup
   }, []);
