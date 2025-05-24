@@ -161,7 +161,7 @@ const ProductList1 = () => {
           </div>
         </div>
 
-        <h2 className="text-3xl mr-5 md:text-3xl sm:text-3xl font-bold text-cyan-300 mb-6 text-center">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-cyan-300 mb-6 text-center mr-5">
           🍕{" "}
           {user?.shopName
             ?.split(" ")
@@ -278,8 +278,20 @@ const ProductList1 = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7" className="text-center py-6 text-cyan-200">
-                    No Products Found..😞
+                  <td colSpan="7" className="py-10">
+                    <div className="flex flex-col items-center justify-center animate-fade-in">
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png"
+                        alt="No products"
+                        className="w-20 h-20 mb-4 opacity-80"
+                      />
+                      <p className="text-cyan-300 text-lg font-semibold">
+                        No Products Found 😞
+                      </p>
+                      <p className="text-sm text-cyan-500 mt-1">
+                        Try searching something else.
+                      </p>
+                    </div>
                   </td>
                 </tr>
               )}
@@ -290,108 +302,83 @@ const ProductList1 = () => {
         {/* CARD VIEW */}
         <div className="md:hidden space-y-4">
           {visibleProducts.length === 0 ? (
-            <div className="text-center text-cyan-300 font-medium text-sm">
-              No Products Found..😞
+            <div className="flex flex-col items-center justify-center py-10 animate-fade-in">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png"
+                alt="No products"
+                className="w-20 h-20 mb-4 opacity-80"
+              />
+              <p className="text-cyan-300 text-lg font-semibold">
+                No Products Found 😞
+              </p>
+              <p className="text-sm text-cyan-500 mt-1">
+                Try searching something else.
+              </p>
             </div>
           ) : (
             visibleProducts.map((item, index) => (
               <div
                 key={item._id}
-                className="bg-[#202636] border border-cyan-700/30 rounded-xl p-4 shadow-md text-cyan-100 transition-all duration-300"
+                className="bg-[#202636] rounded-2xl overflow-hidden shadow-[0_0_20px_#00FFFF33] ring-1 ring-cyan-500/20 transition-all duration-300"
               >
-                <p className="text-cyan-400 text-xs mb-1">❤ {index + 1}</p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="w-full sm:w-36">
+                <div className="flex items-stretch min-h-48">
+                  {/* Left Content (align bottom) */}
+                  <div className="p-4 flex flex-col justify-end flex-1 min-h-full text-cyan-100">
+                    <div>
+                      <h3 className="text-lg font-bold text-cyan-300 mb-1">
+                        {highlightMatch(
+                          item.name
+                            .split(" ")
+                            .map((w) => w[0].toUpperCase() + w.slice(1))
+                            .join(" "),
+                          debouncedSearchKey
+                        )}
+                      </h3>
+                      <div className="text-sm text-cyan-200">
+                        <span className="font-semibold text-cyan-400">₹</span>{" "}
+                        {highlightMatch(String(item.price), debouncedSearchKey)}
+                      </div>
+                      <p className="text-xs mt-1 text-cyan-400 line-clamp-2">
+                        <span className="font-semibold text-cyan-300">
+                          Category:{" "}
+                        </span>
+                        {highlightMatch(item.category, debouncedSearchKey)}
+                      </p>
+                      <p className="text-xs mt-1 text-cyan-400 line-clamp-2">
+                        <span className="font-semibold text-cyan-300">
+                          Description:{" "}
+                        </span>
+                        {item.description}
+                      </p>
+                      <div className="flex gap-2 mt-3 flex-wrap">
+                        <button
+                          onClick={() => deleteProduct(item._id)}
+                          className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs shadow hover:brightness-110"
+                        >
+                          <FaTrashAlt className="inline-block mr-1" />
+                          Delete
+                        </button>
+                        <Link
+                          to={`/update/${item._id}`}
+                          className="border border-cyan-400 text-cyan-300 px-3 py-1 rounded-full text-xs hover:bg-cyan-500 hover:text-white"
+                        >
+                          <FaPenAlt className="inline-block mr-1" />
+                          Update
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Image */}
+                  <div className="w-28 flex-shrink-0 relative bg-[#1a1f2b] flex items-center justify-center">
                     <img
                       src={item.productPic}
                       alt="Product"
-                      className="w-full h-32 object-contain rounded-lg shadow-[0_0_15px_#00FFFF66]"
+                      className="h-full max-h-52 w-full object-contain"
                     />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-cyan-300 mb-2">
-                      {highlightMatch(
-                        item.name
-                          .split(" ")
-                          .map((w) => w[0].toUpperCase() + w.slice(1))
-                          .join(" "),
-                        debouncedSearchKey
-                      )}
-                    </h3>
-                    {/* PRICE */}
-                    <div className="font-semibold mt-3 -mb-0.5">
-                      <span className="text-cyan-400">Price: ₹</span>{" "}
-                      {highlightMatch(String(item.price), debouncedSearchKey)}
-                    </div>
-
-                    {/* CATEGORY */}
-                    <p
-                      className={
-                        showMoreCategory[index]
-                          ? "mt-1"
-                          : " -mb-0.5 line-clamp-2 overflow-hidden"
-                      }
-                    >
-                      <span className="font-semibold text-cyan-400">
-                        Category:{" "}
-                      </span>
-                      {highlightMatch(item.category, debouncedSearchKey)}
-                    </p>
-                    {item.category?.length > 40 && (
-                      <button
-                        className="text-xs text-cyan-400 mt-1 hover:underline"
-                        onClick={() =>
-                          setShowMoreCategory((prev) => ({
-                            ...prev,
-                            [index]: !prev[index],
-                          }))
-                        }
-                      >
-                        {showMoreCategory[index] ? "Show less" : "Read more"}
-                      </button>
-                    )}
-
-                    {/* DESCRIPTION */}
-                    <p
-                      className={
-                        showMore[index]
-                          ? "mt-1"
-                          : "-mb-0.5 line-clamp-2 overflow-hidden"
-                      }
-                    >
-                      <span className="font-semibold text-cyan-400">
-                        Description:{" "}
-                      </span>
-                      {item.description}
-                    </p>
-                    {item.description?.length > 90 && (
-                      <button
-                        className="text-xs  text-cyan-400 mt-1 hover:underline"
-                        onClick={() =>
-                          setShowMore((prev) => ({
-                            ...prev,
-                            [index]: !prev[index],
-                          }))
-                        }
-                      >
-                        {showMore[index] ? "Show less" : "Read more"}
-                      </button>
-                    )}
-
-                    <div className="flex flex-col sm:flex-row gap-2 mt-3">
-                      <button
-                        onClick={() => deleteProduct(item._id)}
-                        className="flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-xs"
-                      >
-                        <FaTrashAlt className="mr-1" /> Delete
-                      </button>
-                      <Link
-                        to={`/update/${item._id}`}
-                        className="flex items-center justify-center text-cyan-300 border border-cyan-400 px-4 py-2 rounded-full text-xs hover:bg-cyan-500 hover:text-white"
-                      >
-                        ✏ Update
-                      </Link>
-                    </div>
+                    <span className="absolute top-1 left-1 text-xs bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full">
+                      💖{index + 1}
+                    </span>
                   </div>
                 </div>
               </div>
