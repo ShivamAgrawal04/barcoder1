@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Anurag from "../assets/Anurag.jpg";
 import Tanmay from "../assets/Tanmay.jpg";
 import Shivam from "../assets/Shivam.jpg";
+import Ankur from "../assets/Ankur.jpg";
 import {
   FaWhatsapp,
   FaEnvelope,
@@ -41,7 +42,7 @@ const people = [
     title: "Data Management",
     company: "PixelSoft",
     qualifications: "MCA | BCA",
-    image: Anurag,
+    image: Ankur,
   },
 ];
 
@@ -63,19 +64,19 @@ const ProfileCard = ({ person }) => (
     transition={{ duration: 0.5 }}
     className="bg-cyan-950/60 backdrop-blur p-5 rounded-2xl shadow-xl border border-cyan-600 text-cyan-100 w-full sm:w-[80%] md:w-[60%] lg:w-[45%] xl:w-[22%] break-words"
   >
-    <div className="flex flex-col sm:flex-row xl:flex-col items-center gap-4 xl:gap-2 text-center xl:text-center">
+    <div className=" flex flex-col sm:flex-row xl:flex-col items-center gap-4 xl:gap-2 text-center xl:text-center">
       {/* Image */}
       <img
         src={person.image}
         alt={person.name}
-        className="w-20 h-20 xl:w-16 xl:h-16 rounded-full object-cover shadow-lg border-2 border-blue-600"
+        className="w-20  h-20 xl:w-16 xl:h-16 rounded-full object-cover shadow-lg border-2 border-blue-600"
       />
 
       {/* Text Content */}
       <div>
-        <h2 className="text-lg font-poppins text-cyan-300">{person.name}</h2>
+        <h2 className="text-lg font-poppins  text-cyan-300">{person.name}</h2>
         <p className="text-cyan-500 text-sm">{person.title}</p>
-        <p className="text-sm mt-1">{person.qualifications}</p>
+        <p className="text-sm ">{person.qualifications}</p>
       </div>
     </div>
   </motion.div>
@@ -89,7 +90,7 @@ const ContactCard = ({ icon, title, content, link }) => (
     rel="noopener noreferrer"
     className="relative overflow-hidden bg-cyan-900/60 backdrop-blur border border-cyan-700 rounded-2xl shadow-lg p-5 flex items-center gap-4 text-cyan-100 hover:bg-cyan-800 transition w-full sm:w-[80%] md:w-[60%] lg:w-[45%] xl:w-[30%] group break-words"
   >
-    <span className="absolute top-0 left-[-75%] w-[24%] h-full bg-gradient-to-r from-transparent via-white/40 to-transparent transform rotate-12 animate-shine pointer-events-none" />
+    <span className="absolute  top-0 left-[-75%] w-[24%] h-full bg-gradient-to-r from-transparent via-white/40 to-transparent transform rotate-12 animate-shine pointer-events-none" />
     <div className="text-3xl text-green-400">{icon}</div>
     <div>
       <p className="font-semibold text-lg text-cyan-500">{title}</p>

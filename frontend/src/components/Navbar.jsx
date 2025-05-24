@@ -23,14 +23,15 @@ const Navbar = () => {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   const MenuItems = ({ isMobile = false }) => (
-    <>
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-">
       <Link
         to="/"
-        className={`px-2 py-1 rounded-md text-sm transition-all duration-300 ${
-          location.pathname === "/"
-            ? "bg-cyan-500 text-white"
-            : "hover:text-cyan-400"
-        }`}
+        className={`px-2 py-1 rounded-md text-sm transition-colors duration-300
+    ${
+      location.pathname === "/"
+        ? "bg-cyan-500 text-white"
+        : "hover:bg-cyan-400 hover:text-white text-cyan-300"
+    }`}
         onClick={() => isMobile && setMenuOpen(false)}
       >
         Product
@@ -73,23 +74,12 @@ const Navbar = () => {
 
       <Link
         to="#"
-        className="hover:text-cyan-400 border w-10 h-10 py-1 bg-slate-50 text-black text-center rounded-full  transition-all duration-300"
-        // onClick={() => isMobile && setMenuOpen(false)}
+        className="w-10 h-10 bg-slate-50 text-black text-center rounded-full flex items-center justify-center transition-all duration-300 hover:text-cyan-400 border"
         onClick={toggle}
       >
         {getShortName()}
       </Link>
-
-      {/* <button
-        onClick={() => {
-          logout();
-          if (isMobile) setMenuOpen(false);
-        }}
-        className="text-red-400 hover:text-red-600 font-semibold transition-all duration-300"
-      >
-        Log Out {auth && JSON.parse(auth).name}
-      </button> */}
-    </>
+    </div>
   );
 
   useEffect(() => {
