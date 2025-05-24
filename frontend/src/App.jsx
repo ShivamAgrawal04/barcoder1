@@ -23,11 +23,9 @@ import { useEffect, useState } from "react";
 import OptimizeProductList from "./components/OptimizeProductList";
 import Dashboard from "./components/productlistComponents/Dashboard";
 import ProductList from "./components/productlistComponents/ProductList";
-import useAutoRequest from "./components/useAutoRequest";
 // import SmoothScrollWrapper from "./components/SmoothScrollWrapper";
 
 function App() {
-  useAutoRequest();
   const publicRoutes = ["/login", "/signup"];
   const [screenSize, setScreenSize] = useState(window.innerWidth > 700);
 
