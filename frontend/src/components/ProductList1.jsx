@@ -321,9 +321,9 @@ const ProductList1 = () => {
                 key={item._id}
                 className="bg-[#202636] rounded-2xl overflow-hidden shadow-[0_0_20px_#00FFFF33] ring-1 ring-cyan-500/20 transition-all duration-300"
               >
-                <div className="flex items-stretch min-h-48">
-                  {/* Left Content (align bottom) */}
-                  <div className="p-4 flex flex-col justify-end flex-1 min-h-full text-cyan-100">
+                <div className="flex reverse-on-small items-stretch min-h-48">
+                  {/* Left Content */}
+                  <div className="p-4 flex flex-col justify-end flex-1 text-cyan-100">
                     <div>
                       <h3 className="text-lg font-bold text-cyan-300 mb-1">
                         {highlightMatch(
@@ -338,18 +338,56 @@ const ProductList1 = () => {
                         <span className="font-semibold text-cyan-400">₹</span>{" "}
                         {highlightMatch(String(item.price), debouncedSearchKey)}
                       </div>
-                      <p className="text-xs mt-1 text-cyan-400 line-clamp-2">
+                      {/* ✅ CATEGORY */}
+                      <p
+                        className={`text-xs mt-2 text-cyan-400 ${
+                          !showMoreCategory[index] ? "line-clamp-2" : ""
+                        }`}
+                      >
                         <span className="font-semibold text-cyan-300">
                           Category:{" "}
                         </span>
                         {highlightMatch(item.category, debouncedSearchKey)}
                       </p>
-                      <p className="text-xs mt-1 text-cyan-400 line-clamp-2">
+                      {item.category?.length > 40 && (
+                        <button
+                          className="text-xs text-cyan-400  hover:underline"
+                          onClick={() =>
+                            setShowMoreCategory((prev) => ({
+                              ...prev,
+                              [index]: !prev[index],
+                            }))
+                          }
+                        >
+                          {showMoreCategory[index] ? "Show less" : "Read more"}
+                        </button>
+                      )}
+
+                      {/* ✅ DESCRIPTION */}
+                      <p
+                        className={`text-xs text-cyan-400 ${
+                          !showMore[index] ? "line-clamp-2" : ""
+                        }`}
+                      >
                         <span className="font-semibold text-cyan-300">
                           Description:{" "}
                         </span>
                         {item.description}
                       </p>
+                      {item.description?.length > 90 && (
+                        <button
+                          className="text-xs text-cyan-400  hover:underline"
+                          onClick={() =>
+                            setShowMore((prev) => ({
+                              ...prev,
+                              [index]: !prev[index],
+                            }))
+                          }
+                        >
+                          {showMore[index] ? "Show less" : "Read more"}
+                        </button>
+                      )}
+
                       <div className="flex gap-2 mt-3 flex-wrap">
                         <button
                           onClick={() => deleteProduct(item._id)}
