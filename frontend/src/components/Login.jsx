@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
-import { IoIosEyeOff } from "react-icons/io";
-import { IoMdEye } from "react-icons/io";
+import { IoIosEyeOff, IoMdEye } from "react-icons/io";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,8 +12,12 @@ const Login = () => {
   const { login } = useAuth();
 
   const handleSubmit = async () => {
+    if (!email || !password) {
+      toast.error("❌ Please fill both fields");
+      return;
+    }
+
     const res = await login({ email, password });
-    console.log(res);
     if (!res.success) {
       toast.error(res?.message);
     } else {
@@ -25,22 +28,20 @@ const Login = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      if (email && password) {
-        handleSubmit();
-      } else {
-        alert("Please fill both fields first");
-      }
+      handleSubmit();
     }
   };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-black via-slate-900 to-gray-900">
-      <div className="relative w-[90%] h-[400px] lg:mt-5 mb-20 lg:mb-0  max-w-md p-8 rounded-2xl backdrop-blur-lg bg-white/5 border border-cyan-500/30 shadow-[0_0_20px_#00ffff44] animate-float">
-        <h2 className="themechange text-3xl font-bold mt-11 text-cyan-300 text-center mb-6 drop-shadow-md">
+    <div className="min-h-screen flex items-start sm:items-center justify-center bg-gradient-to-tr from-black via-slate-900 to-gray-900 px-4 pt-32 sm:pt-0">
+      <div className="w-full max-w-md p-6 sm:p-8 rounded-2xl backdrop-blur-lg bg-white/5 border border-cyan-500/30 shadow-[0_0_20px_#00ffff44] animate-float">
+        {/* Heading */}
+        <h2 className="themechange text-[20px] sm:text-3xl font-bold text-cyan-300 text-center mb-6 whitespace-nowrap overflow-hidden text-ellipsis">
           🔐 Welcome Back
         </h2>
 
-        {/* Input: Email */}
-        <div className="mb-5 themechange ">
+        {/* Email */}
+        <div className="mb-5 themechange">
           <label className="text-sm text-cyan-200 block mb-1">Email</label>
           <input
             type="email"
@@ -52,7 +53,7 @@ const Login = () => {
           />
         </div>
 
-        {/* Input: Password */}
+        {/* Password */}
         <div className="mb-6 themechange relative">
           <label className="text-sm text-cyan-200 block mb-1">Password</label>
           <input
@@ -63,25 +64,23 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-          {isActive}
-
-          <div className="absolute top-[2.3rem] right-3 ">
+          <button
+            onClick={() => setIsActive(!isActive)}
+            className="absolute top-[2.3rem] right-3 text-white"
+            type="button"
+          >
             {isActive ? (
-              <button onClick={() => setIsActive(!isActive)}>
-                <IoMdEye className="-scale-150" />
-              </button>
+              <IoMdEye className="scale-125" />
             ) : (
-              <button onClick={() => setIsActive(!isActive)}>
-                <IoIosEyeOff className="-scale-150" />
-              </button>
+              <IoIosEyeOff className="scale-125" />
             )}
-          </div>
+          </button>
         </div>
 
         {/* Button */}
         <button
           onClick={handleSubmit}
-          className="relative w-full py-2 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-md overflow-hidden transition-all duration-300 shadow-lg group"
+          className="w-full py-2 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-md transition-all duration-300 shadow-lg relative overflow-hidden group"
         >
           <span className="z-10 relative">🚀 Login</span>
           <span className="absolute inset-0 bg-cyan-400 opacity-0 group-hover:opacity-20 transition-opacity rounded-md" />
