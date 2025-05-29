@@ -32,18 +32,18 @@ const SignUp = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-100 to-pink-200 p-4">
       <form className="backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl -mt-24 lg:mt-20 rounded-2xl p-10 max-w-md w-full transition-all duration-300 hover:scale-105">
-        <h2 className="themechange text-3xl font-extrabold mb-5 text-center text-blue-900 drop-shadow">
-          Sign In to Continue 🚀
+        <h2 className="themechange text-[16px] sm:text-2xl md:text-3xl font-extrabold mb-5 text-center text-blue-900 drop-shadow">
+          Sign In to Continue🛡️
         </h2>
 
-        <div className="mb-2 themechange">
+        <div className="mb-2 themechange ">
           <label className="block text-blue-800 font-semibold ">
             Restaurant/Cafe
           </label>
           <input
             type="text"
             name="shopName"
-            className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white bg-blue-50"
+            className="text-black w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white bg-blue-50 "
             placeholder="Your Restaurant/Cafe 🍔"
             value={formData.shopName}
             onChange={handleChange}
@@ -55,7 +55,7 @@ const SignUp = () => {
           <input
             type="text"
             name="name"
-            className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white bg-blue-50"
+            className=" text-black w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white bg-blue-50"
             placeholder="Your Name 🙎‍♂"
             value={formData.name}
             onChange={handleChange}
@@ -67,7 +67,7 @@ const SignUp = () => {
           <input
             type="email"
             name="email"
-            className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white bg-blue-50"
+            className="text-black w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white bg-blue-50"
             placeholder="your@gmail.com 📧"
             value={formData.email}
             onChange={handleChange}
@@ -79,7 +79,7 @@ const SignUp = () => {
           <input
             type="password"
             name="password"
-            className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white bg-blue-50"
+            className="text-black w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white bg-blue-50"
             placeholder="•••••••• 🔑"
             value={formData.password}
             onChange={handleChange}
