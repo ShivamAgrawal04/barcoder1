@@ -19,7 +19,7 @@ const Login = () => {
 
     const res = await login({ email, password });
     if (!res.success) {
-      toast.error(res?.message);
+      toast.error(res?.message || "Login Failed");
     } else {
       toast.success(res?.message || "✅ Login successfully");
       navigate("/list");
