@@ -191,6 +191,7 @@ const ProductList1 = () => {
                     key={item._id}
                     className="hover:bg-white/10 border-b border-white/10 transition-all"
                   >
+                    {console.log(item)}
                     <td className="py-2 px-2">{index + 1}</td>
                     <td>
                       <img
@@ -326,8 +327,10 @@ const ProductList1 = () => {
                   <div className="p-4 flex flex-col justify-end flex-1 text-cyan-100">
                     <div>
                       <h3 className="text-lg font-bold text-cyan-300 mb-1">
+                        {console.log(item.name)}
                         {highlightMatch(
-                          item.name
+                          item?.name
+                            ?.trim()
                             .split(" ")
                             .map((w) => w[0].toUpperCase() + w.slice(1))
                             .join(" "),
