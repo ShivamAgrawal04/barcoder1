@@ -5,10 +5,10 @@ const productSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    name: { type: String, lowercase: true },
-    description: { type: String, lowercase: true },
+    name: { type: String, lowercase: true, trim: true },
+    description: { type: String, lowercase: true, trim: true },
     price: { type: Number, required: true },
-    category: { type: String, lowercase: true },
+    category: { type: String, lowercase: true, trim: true },
     productPic: {
       type: String,
       default:
