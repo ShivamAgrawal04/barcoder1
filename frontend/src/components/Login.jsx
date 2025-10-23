@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import { IoIosEyeOff, IoMdEye } from "react-icons/io";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("temp@gmail.com");
+  const [password, setPassword] = useState("1234");
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
